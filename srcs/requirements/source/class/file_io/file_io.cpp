@@ -1,34 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   file_io.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/11 15:58:01 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/12 11:34:20 by tda-silv         ###   ########.fr       */
+/*   Created: 2023/07/17 17:54:46 by yfoucade          #+#    #+#             */
+/*   Updated: 2023/09/12 10:08:31 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
-int	main(int argc, char **argv, char **env)
+std::vector< std::string > read_file( std::string filename )
 {
-	if ( argc > 2 )
-	{
-		std::cerr << "Usage: webserv [config_file]" << std::endl;
-		return(1);
-	}
+	std::ifstream				file(filename.c_str() );
+	std::string					line;
+	std::vector< std::string >	content;
 
-	try
-	{
-		Gateway gateway( argc == 1 ? DEFAULT_CONF_FILE : argv[1] );
+	if ( !file.is_open() )
+		throw FileOpeningException(std::string("Cannot open config file: ") + std::string(filename));
+	while (std::getline(file, line) )
+		content.push_back(line);
 
-		gateway.listen_loop(env);
-	}
-	catch(const std::exception& e)
-	{
-		std::cerr << e.what() << '\n';
-	}
-
+	file.close();
+	return content;
 }

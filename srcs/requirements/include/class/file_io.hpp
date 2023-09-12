@@ -1,34 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   file_io.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/11 15:58:01 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/12 11:34:20 by tda-silv         ###   ########.fr       */
+/*   Created: 2023/07/17 17:53:09 by yfoucade          #+#    #+#             */
+/*   Updated: 2023/09/12 09:59:56 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <header.hpp>
+#pragma once
 
-int	main(int argc, char **argv, char **env)
-{
-	if ( argc > 2 )
-	{
-		std::cerr << "Usage: webserv [config_file]" << std::endl;
-		return(1);
-	}
+#include <fstream>
+#include <vector>
 
-	try
-	{
-		Gateway gateway( argc == 1 ? DEFAULT_CONF_FILE : argv[1] );
+#include "exceptions.hpp"
 
-		gateway.listen_loop(env);
-	}
-	catch(const std::exception& e)
-	{
-		std::cerr << e.what() << '\n';
-	}
-
-}
+std::vector< std::string > read_file( std::string filename );

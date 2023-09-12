@@ -1,34 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   print_utils.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/11 15:58:01 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/12 11:34:20 by tda-silv         ###   ########.fr       */
+/*   Created: 2023/07/25 14:26:42 by yfoucade          #+#    #+#             */
+/*   Updated: 2023/09/12 11:26:09 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <header.hpp>
+#pragma once
 
-int	main(int argc, char **argv, char **env)
-{
-	if ( argc > 2 )
-	{
-		std::cerr << "Usage: webserv [config_file]" << std::endl;
-		return(1);
-	}
+#include <iostream>
+#include <vector>
+#include <string>
 
-	try
-	{
-		Gateway gateway( argc == 1 ? DEFAULT_CONF_FILE : argv[1] );
-
-		gateway.listen_loop(env);
-	}
-	catch(const std::exception& e)
-	{
-		std::cerr << e.what() << '\n';
-	}
-
-}
+void	print_string_vector( std::vector< std::string > vec, std::string sep = " " );

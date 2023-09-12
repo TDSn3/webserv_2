@@ -1,34 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   print_utils.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/11 15:58:01 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/12 11:34:20 by tda-silv         ###   ########.fr       */
+/*   Created: 2023/07/25 14:27:37 by yfoucade          #+#    #+#             */
+/*   Updated: 2023/09/12 11:26:46 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
-int	main(int argc, char **argv, char **env)
+void	print_string_vector( std::vector< std::string > vec, std::string sep )
 {
-	if ( argc > 2 )
-	{
-		std::cerr << "Usage: webserv [config_file]" << std::endl;
-		return(1);
-	}
+	std::vector< std::string >::iterator first = vec.begin();
+	std::vector< std::string >::iterator last = vec.end();
 
-	try
+	for ( ; first != last; ++first )
 	{
-		Gateway gateway( argc == 1 ? DEFAULT_CONF_FILE : argv[1] );
-
-		gateway.listen_loop(env);
+		std::cout << *first << (first + 1 == last ? "" : sep);
 	}
-	catch(const std::exception& e)
-	{
-		std::cerr << e.what() << '\n';
-	}
-
+	std::cout << std::endl;
 }
