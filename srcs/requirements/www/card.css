@@ -1,0 +1,108 @@
+h1 {
+    font-family: helvetica;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+th {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-family: helvetica;
+    font-size: 25px;
+    font-weight: 600;
+}
+
+h3 {
+    margin-top: 0px;
+    margin-bottom: 15px;
+    font-family: helvetica;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+h4{
+    margin-top: 0px;
+    margin-bottom: 15px;
+    font-family: helvetica;
+    font-size: 14px;
+    font-weight: 500;
+    color: gray;
+}
+
+h5 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-family: helvetica;
+    font-size: 12px;
+    font-weight: 500;
+    color: white;
+}
+
+table {
+    text-align: center;
+}
+
+.global {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 250px;
+    height: 450px; /* 383px sans correction graphique */
+}
+
+.titre {
+    margin-top: 0;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.card {
+    position: relative;
+    height: 350px;
+    width: 250px;
+    background-color: white;
+    box-shadow: 0px 5px 50px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+}
+
+.image {
+    height: 140px;  /* 16:9 */
+    width: 250px;   /* 16:9 */
+
+    background-image: url('https://i.pinimg.com/564x/32/ee/c6/32eec6193f432fe6c5c6ebb3d9bf8c6b.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: rgb(0, 0, 0);
+    border-radius: 8px 8px 0px 0px;
+}
+
+.texte {
+    margin: auto;
+}
+
+.contact {
+    position: absolute;
+    bottom: 0px;
+
+    height: 30px;  /* 16:9 */
+    width: 250px;   /* 16:9 */
+    background-color: rgb(0, 0, 0);
+    border: 0px;
+    border-radius: 0px 0px 8px 8px;
+
+    display: flex;  
+    align-items: center;
+    justify-content: center;
+}
+
+.contact:hover {
+    background-color: rgb(95, 95, 95);
+}
+
+.contact:active {
+    background-color: rgb(0, 0, 0);
+}

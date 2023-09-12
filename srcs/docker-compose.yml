@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+    webserv:
+        container_name: webserv
+        build: ./requirements
+        ports:
+            - "8080:8080"
+        restart: always
+
+    nginx:
+        container_name: nginx
+        build: ./nginx
+        ports:
+            - "8181:8181"
+        restart: always
