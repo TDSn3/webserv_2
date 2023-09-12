@@ -6,7 +6,7 @@
 #    By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/14 16:32:49 by tda-silv          #+#    #+#              #
-#    Updated: 2023/09/04 18:27:00 by tda-silv         ###   ########.fr        #
+#    Updated: 2023/09/12 13:00:51 by tda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,7 +90,13 @@ fclean: clean
 
 down_other_fclean downfc: down
 	@make -C srcs/requirements fclean
-	@make -C client_test fclean	
+	@make -C client_test fclean
+	@if [ $$(docker ps -a -q | wc -l) -gt 0 ]; then	\
+		docker rm -f $$(docker ps -a -q);			\
+	fi
+	@if [ $$(docker images -a -q | wc -l) -gt 0 ]; then	\
+		docker rmi -f $$(docker images -a -q);			\
+	fi
 
 re: down all
 

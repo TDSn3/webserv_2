@@ -1,38 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   _set_non_blocking_fd.cpp                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/11 15:58:01 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/12 12:26:39 by tda-silv         ###   ########.fr       */
+/*   Created: 2023/09/12 13:20:00 by tda-silv          #+#    #+#             */
+/*   Updated: 2023/09/12 13:21:18 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
-int	main(int argc, char **argv, char **env)
+int	Gateway::_set_non_blocking_fd(int fd)
 {
-	// LogFile		log_file;	// redirige cout et cerr vers le fichier log
-
-	if ( argc > 2 )
+	if (fcntl(fd, F_SETFL, O_NONBLOCK) )	// unique utilisation autorisé par le sujet
 	{
-		std::cerr << "Usage: webserv [config_file]" << std::endl;
-		return(1);
+		close(fd);
+		// my_perror_and_throw("fcntl", std::exception() );
 	}
-
-	try
-	{
-		Gateway gateway( argc == 1 ? DEFAULT_CONF_FILE : argv[1] );
-
-		std::cout << COLOR_BOLD_RED << "test main\n" << COLOR_RESET;
-		gateway.listen_loop(env);
-	}
-	catch(const std::exception& e)
-	{
-		std::cerr << e.what() << '\n';
-	}
-
 	return (0);
 }

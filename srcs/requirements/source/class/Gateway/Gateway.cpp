@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:30:24 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/12 11:19:52 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/12 14:42:07 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,23 @@ void	Gateway::create_servers( std::vector< std::string > content )
 
 	for ( ; server_block_start != end; ++server_block_start )
 	{
+
 		if ( server_block_start->compare("server {") )	// TODO: tokenize possible
 			continue;
+
 		for ( server_block_end = server_block_start + 1;
 			  server_block_end->compare("}") && (server_block_end != end);
 			  ++server_block_end){}
+
+		std::cout << COLOR_BOLD_RED << "test 1\n" << COLOR_RESET;
+
 		if ( server_block_end != end )
 			add_server(server_block_start, server_block_end);
+
 		server_block_start = server_block_end;
 	}
+
+	std::cout << COLOR_BOLD_RED << "test end create_servers\n" << COLOR_RESET;
 }
 
 void Gateway::add_server( std::vector< std::string >::iterator server_block_start, std::vector< std::string >::iterator server_block_end)
@@ -75,28 +83,10 @@ void	Gateway::create_origin_sockets_mapping( void )
 			if ( _map_origin_socket.count(*origin_it) )
 				continue;
 			// TODO: handle errors (recursively) in the following lines
-			int new_socket = create_socket(*origin_it);
+			int new_socket = _give_new_socket(*origin_it, POLLIN | POLLOUT);	// TODO: a affiner plus tard
 			_map_origin_socket.insert(std::make_pair(*origin_it, new_socket));
 		}
 	}
-}
-
-int	Gateway::create_socket( const Origin& origin )
-{
-	struct addrinfo	*origin_info = resolve_name(origin);
-	// int new_socket = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK | SOCK_CLOEXEC, IPPROTO_TCP);
-	int new_socket = socket(AF_INET, SOCK_STREAM | SOCK_CLOEXEC, IPPROTO_TCP);
-	int value = 1;
-	setsockopt(new_socket, SOL_SOCKET, SO_REUSEADDR, &value, sizeof(value));
-	int err = bind(new_socket, origin_info->ai_addr, origin_info->ai_addrlen);
-	if ( err )
-	{
-		std::cout << "failed to bind socket to origin ";
-		std::cout << origin.get_host() << ":" << origin.get_port() << std::endl;
-	}
-	freeaddrinfo(origin_info);
-	err = listen(new_socket, 2);
-	return new_socket;
 }
 
 struct addrinfo* Gateway::resolve_name( const Origin& origin )
@@ -117,21 +107,6 @@ struct addrinfo* Gateway::resolve_name( const Origin& origin )
 		std::cerr << "Error\n";
 	}
 	return res;
-}
-
-void Gateway::listen_loop( char **env )
-{
-	(void) env;
-
-	while (true)
-	{
-		reset_fds();
-		select(get_max_socket_fd() + 1, &_readfds, &_writefds, NULL, NULL);
-		open_new_connections();
-		receive_on_connections();
-		send_responses();
-		close_connections();
-	}
 }
 
 void Gateway::reset_fds( void )
@@ -178,15 +153,27 @@ void	Gateway::open_connection( Origin origin, int socket )
 
 void	Gateway::receive_on_connections( void )
 {
-	connection_iter_type connection_iter = _connections.begin();
-	connection_iter_type end = _connections.end();
+	// connection_iter_type connection_iter = _connections.begin();
+	// connection_iter_type end = _connections.end();
+
+	std::vector<pollfd>	:: iterator	it = poll_struct.begin();
+
+	while (it != poll_struct.end())
+	{
+		if (it->revents & (POLLIN | POLLERR | POLLHUP) )
+			std::cout << "POLLIN" << std::endl;
+		if (it->revents & POLLOUT )
+			std::cout << "POLLOUT" << std::endl;
+
+		it++;
+	}
 
 	// Receive messages on connections
-	for ( ; connection_iter != end; ++connection_iter )
-	{
-		if ( FD_ISSET(connection_iter->get_socket(), &_readfds) )
-			connection_iter->receive();
-	}
+	// for ( ; connection_iter != end; ++connection_iter )
+	// {
+	// 	if ( FD_ISSET(connection_iter->get_socket(), &_readfds) )
+	// 		connection_iter->receive();
+	// }
 }
 
 void	Gateway::send_responses( void )
@@ -296,10 +283,12 @@ void 	Gateway::print_origin_sockets_mapping( void )
 
 	for ( ; it != end; ++it )
 	{
-		std::cout << it->first.get_host() << ":" << it->first.get_port();
-		std::cout << " has socket number " << it->second;
+		std::cout << it->first.get_host() << ":" << COLOR_BLUE << it->first.get_port() << COLOR_RESET;
+		std::cout << " has socket number " << COLOR_GREEN << it->second << COLOR_RESET;
 		std::cout << std::endl;
+		std::cout << COLOR_BOLD_RED << "test loop\n" << COLOR_RESET;
 	}
+	std::cout << COLOR_BOLD_RED << "test end print_origin_sockets_mapping\n" << COLOR_RESET;
 }
 
 void	Gateway::reply( Connection& connection )

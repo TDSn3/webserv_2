@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:52:49 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/12 10:57:42 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/12 14:36:17 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <poll.h>
 
 #include "Connection.hpp"
 #include "exceptions.hpp"
@@ -30,14 +31,16 @@ class Gateway
 		Gateway( std::string config_file );
 		~Gateway();
 
+		std::vector<pollfd>			poll_struct;
+
 		void						create_servers( std::vector< std::string > content );
 		void						create_origin_sockets_mapping( void );
-		int							create_socket( const Origin& origin );
 		struct addrinfo*			resolve_name( const Origin& );
 		void 						print_origin_sockets_mapping( void );
 		void						reset_fds( void );
 		void						listen_loop( char **env );
 		int							get_max_socket_fd( void );
+		void						add_fd_poll_struct(int fd, short events);
 		// void	process_request( int socket, Origin origin );
 
 	private:
@@ -62,4 +65,8 @@ class Gateway
 		void						close_connections( void );
 		void						reply( Connection& );
 		server_iter_type			decide_server( Connection& );
+		int							_give_new_socket( const Origin& origin, short events );
+		int							_creat_socket(void);
+		void						_assign_socket_name(const Origin &origin, int &fd, struct sockaddr_in &address);
+		int							_set_non_blocking_fd(int fd);
 };

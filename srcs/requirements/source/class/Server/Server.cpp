@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 19:41:02 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/12 11:23:38 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/12 12:16:59 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,22 @@ Server::Server( std::vector< std::string >::iterator first,
 _id(_n_servers++),
 _parsing_error(false)
 {
-	std::cout << "Server #" << _id << " constructor :\n";
+	std::cout << COLOR_BLUE << "Server #" << _id << " constructor :\n" << COLOR_RESET;
 	while (++first != last)
 	{
-		std::cout << "processing directive: " << *first << std::endl;
+		// std::cout << "processing directive: " << *first << std::endl;
 		std::vector< std::string > tokens = tokenize_nows( *first );
 		if (is_simple_directive(tokens))
 			process_simple_directive(*first, tokens);
 		else if (is_location_directive(*first, tokens))
 		{
-			std::cout << "location directive\n";
+			// std::cout << "location directive\n";
 			std::vector< std::string >::iterator end_of_location_block;
 			end_of_location_block = find_end_of_location_block(first, last);
-			std::cout << "location block found, from:\n";
-			std::cout << *first << std::endl;
-			std::cout << "to\n";
-			std::cout << *end_of_location_block << std::endl;
+			// std::cout << "location block found, from:\n";
+			// std::cout << *first << std::endl;
+			// std::cout << "to\n";
+			// std::cout << *end_of_location_block << std::endl;
 			process_location_directive(first, end_of_location_block);
 			first = end_of_location_block;
 		}
@@ -57,8 +57,9 @@ _names(other._names){}
 
 Server::~Server(){}
 
-void Server::print_config( void ){
-	std::cout << "Config of Server #" << _id << std::endl;
+void Server::print_config( void )
+{
+	std::cout << COLOR_DIM_BLUE << "Config of Server #" << _id << COLOR_RESET << std::endl;
 	std::cout << "Origins:\n";
 	for (std::set< Origin >::iterator it = _origins.begin(); it != _origins.end(); ++it)
 	{
@@ -71,6 +72,7 @@ void Server::print_config( void ){
 	std::cout << "Locations:" << std::endl;
 	for ( location_map::iterator it = _locations.begin(); it != _locations.end(); ++it)
 	{
+		std::cout << "\t";
 		it->second.print_location();
 		std::cout << std::endl;
 	}
@@ -91,7 +93,7 @@ void	Server::parse_listen( std::string& line, std::vector<std::string> tokens )
 	if ( n_colons == 1 || n_colons == 8 )
 	{
 		host = arg.substr(0, last_colon);
-		port = arg.substr(last_colon + 1, -1);
+		port = arg.substr(last_colon + 1, static_cast<size_t>(-1) );
 	}
 	else if ( !( n_colons || n_dots ) )
 		port = arg;
