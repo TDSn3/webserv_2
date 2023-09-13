@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 11:59:07 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/13 11:55:40 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 21:48:22 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,10 @@ void	Request::add_data( const std::string & line )
 
 void	Request::parse_request_line( const std::string & line)
 {
-	std::cout << "Received request line: " << line << std::endl;
 	if ( line.size() == 0 )
 		return;
 	request_line = RequestLine(line);
-	request_line.print_request_line();
+	// request_line.print_request_line();
 	_parsing_status = header_section;
 }
 
@@ -120,7 +119,6 @@ void	Request::add_header_line( const std::string & line)
 
 	if ( line.size() == 0 )
 	{
-		std::cout << "End of header section\n";
 		if ( request_line.has_syntax_error() )
 		{
 			_parsing_status = done;
@@ -130,12 +128,11 @@ void	Request::add_header_line( const std::string & line)
 		parse_field_section(_raw_header_section, _header_section);
 		if ( set_field_values( _header_section ) )
 			return;
-		print_field_section(_header_section);
+		// print_field_section(_header_section);
 		// todo: Check that each field-value is correct, depending on the field's requirements
 		_parsing_status = get_status_after_header();
 		return;
 	}
-	std::cout << "Received header line: " << line << std::endl;
 	// add_field_to_section(line, _header_section);
 	_raw_header_section.push_back(line);
 }

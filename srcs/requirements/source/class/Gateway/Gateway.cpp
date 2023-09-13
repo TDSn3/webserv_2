@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:30:24 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/13 21:01:03 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 22:05:47 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,8 +131,8 @@ void	Gateway::open_connection( Origin origin, pollfd pfd )
 	if (new_socket > -1)	// si une nouvelle connexion est arrivée et donc qu'il y a un client à créer
 	{
 		std::cout << "Accepted new connection on ";
-		std::cout << origin.get_host() << ":" << origin.get_port() << ". ";
-		std::cout << "new socket on fd: " << new_socket << std::endl;
+		std::cout << origin.get_host() << ":" << COLOR_BOLD_BLUE << origin.get_port() << COLOR_RESET << ". ";
+		std::cout << "new socket on fd: " << COLOR_GREEN << new_socket << COLOR_RESET << "\n\n";
 		_connections.push_back( Connection(origin, new_socket) );
 		_add_fd_poll_struct(new_socket, (POLLIN | POLLOUT) );
 	}
@@ -157,7 +157,7 @@ Gateway::decide_server( Connection& connection )
 	server_iter_type	end = _servers.end();
 	server_iter_type	res = end;
 
-	std::cout << "decide_server: host = " << connection.get_request().get_host_value() << std::endl;
+	std::cout << "\n" << "decide_server: host = " << connection.get_request().get_host_value() << std::endl;
 	for ( ; it != end; ++it )
 	{
 		// if origin mismatch, continue
@@ -173,24 +173,56 @@ Gateway::decide_server( Connection& connection )
 		if ( res == end )
 		{
 			res = it;
-			std::cout << "decide_server: Server #" << res->get_id() << " is default\n";
+			std::cout << "decide_server: Server #" << res->get_id() << " is default\n\n";
 		}
 	}
 	return res;
 }
 
+static ssize_t	give_index_fd_in_poll_struct(std::vector<pollfd> &poll_struct, int fd)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < poll_struct.size() )
+	{
+		if (poll_struct[i].fd == fd)
+			return (static_cast<ssize_t>(i) );
+		i++;
+	}
+	return (-1);
+}
+
+static bool	give_and_check_index(std::vector<pollfd> &poll_struct, int fd, size_t &index)
+{
+	ssize_t	index_check;
+	
+	index_check = give_index_fd_in_poll_struct(poll_struct, fd);
+	if (index_check == -1)
+	{
+		std::cout << COLOR_BOLD_MAGENTA << "STRANGE !" << COLOR_RESET << std::endl;	// TODO: à supprimer à la fin
+		return (false);
+	}
+	index = static_cast<size_t>(index_check);
+	return (true);
+}
+
 void	Gateway::close_connections( void )
 {
 	connection_iter_type	connection_iter = _connections.begin();
-	connection_iter_type	end = _connections.end();
+	size_t					index;
 
-	while ( connection_iter != end )
+	while ( connection_iter != _connections.end() )
 	{
 		connection_iter->update_close();
 		if ( connection_iter->get_close() )
 		{
+			if (give_and_check_index(poll_struct, connection_iter->get_socket(), index) == false)
+				continue ;
+
 			connection_iter->close_connection();
 			connection_iter = _connections.erase( connection_iter );
+			poll_struct.erase( poll_struct.begin() + static_cast<long>( index ) );
 		}
 		else
 			++connection_iter;

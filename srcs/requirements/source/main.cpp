@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:58:01 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/13 15:56:46 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 21:37:12 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@ volatile sig_atomic_t	siginit_status = 0;
 int	main( int argc, char **argv, char **env )
 {
 	// LogFile		log_file;		// redirige cout et cerr vers le fichier log
+
+	if (check_arg(argc, argv) == false)
+		return (1);
 
 	if ( argc > 2 )
 	{

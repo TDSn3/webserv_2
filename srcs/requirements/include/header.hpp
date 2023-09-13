@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:58:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/13 15:50:40 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 21:39:14 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,9 @@
 # include "class/Server.hpp"
 # include "class/StatusCode.hpp"
 
-void	handler(int sig);
-void	my_perror_and_throw(const char *str, const std::exception &e);
-void	my_perror_and_throw(const char *str, const StatusCode &e);
+bool	check_arg( const int argc, const char * const *argv );
+void	handler( int sig );
+void	my_perror_and_throw( const char *str, const std::exception &e );
+void	my_perror_and_throw( const char *str, const StatusCode &e );
 
 #endif

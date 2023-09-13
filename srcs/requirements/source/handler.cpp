@@ -6,16 +6,14 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 10:02:00 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/08/11 13:22:33 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 21:39:23 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
-void handler(int sig) 
+void handler( int sig ) 
 {
-	(void) sig;
-
 	if (sig == SIGINT)
 		siginit_status = 1;
 }

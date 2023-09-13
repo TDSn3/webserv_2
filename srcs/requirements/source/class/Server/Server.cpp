@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 19:41:02 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/13 21:00:49 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 21:35:08 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,16 @@ Server::~Server(){}
 
 void Server::print_config( void )
 {
-	std::cout << COLOR_DIM_BLUE << "Config of Server #" << _id << COLOR_RESET << std::endl;
-	std::cout << "Origins:\n";
+	std::cout << COLOR_DIM_BLUE << "Origins:\n" << COLOR_RESET;
 	for (std::set< Origin >::iterator it = _origins.begin(); it != _origins.end(); ++it)
 	{
 		std::cout << "\t" << it->get_host() << ":" << COLOR_BOLD_BLUE << it->get_port() << COLOR_RESET << std::endl;
 	}
-	std::cout << "Names:";
+	std::cout << COLOR_DIM_BLUE << "Names:" << COLOR_RESET;
 	for ( unsigned long i=0; i < _names.size(); ++i )
 		std::cout << " " << _names[i];
 	std::cout << std::endl;
-	std::cout << "Locations:" << std::endl;
+	std::cout << COLOR_DIM_BLUE<< "Locations:" << COLOR_RESET << std::endl;
 	for ( location_map::iterator it = _locations.begin(); it != _locations.end(); ++it)
 	{
 		std::cout << "\t";
