@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:30:24 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/13 11:59:59 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 21:01:03 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,31 +140,12 @@ void	Gateway::open_connection( Origin origin, pollfd pfd )
 
 void	Gateway::receive_on_connections( void )
 {
-	size_t							i = _map_origin_socket.size();
+	size_t	i = _map_origin_socket.size();
 
-	while (i < poll_struct.size() )
+	while ( i < poll_struct.size() )
 	{
-		if (poll_struct[i].revents & (POLLIN | POLLERR | POLLHUP) )
-		{
+		if ( poll_struct[i].revents & (POLLIN | POLLERR | POLLHUP) )
 			_connections[i - _map_origin_socket.size() ].receive();
-		}
-		i++;
-	}
-}
-
-void	Gateway::send_responses( void )
-{
-	size_t							i = _map_origin_socket.size();
-	server_iter_type				server_iter;
-
-	while (i < poll_struct.size() )
-	{
-		if (poll_struct[i].revents & POLLOUT && _connections[i - _map_origin_socket.size() ].is_ready_for_reply() == true )
-		{
-			// TODO: send data
-			server_iter = decide_server(  _connections[i - _map_origin_socket.size() ] );
-			server_iter->reply( _connections[i - _map_origin_socket.size() ] );
-		}
 		i++;
 	}
 }
@@ -200,8 +181,8 @@ Gateway::decide_server( Connection& connection )
 
 void	Gateway::close_connections( void )
 {
-	connection_iter_type connection_iter = _connections.begin();
-	connection_iter_type end = _connections.end();
+	connection_iter_type	connection_iter = _connections.begin();
+	connection_iter_type	end = _connections.end();
 
 	while ( connection_iter != end )
 	{
@@ -209,7 +190,7 @@ void	Gateway::close_connections( void )
 		if ( connection_iter->get_close() )
 		{
 			connection_iter->close_connection();
-			connection_iter = _connections.erase(connection_iter);
+			connection_iter = _connections.erase( connection_iter );
 		}
 		else
 			++connection_iter;
@@ -246,12 +227,4 @@ void 	Gateway::print_origin_sockets_mapping( void )
 		std::cout << " has socket number " << COLOR_GREEN << it->second.fd << COLOR_RESET;
 		std::cout << std::endl;
 	}
-}
-
-void	Gateway::reply( Connection& connection )
-{
-	(void)connection;
-	// Origin origin = connection.get_origin();
-	// std::cout << "Replying on origin: " << origin.get_host();
-	// std::cout << ":" << origin.get_port() << std::endl;
 }

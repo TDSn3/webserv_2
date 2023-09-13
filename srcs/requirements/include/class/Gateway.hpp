@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:52:49 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/13 10:00:21 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 21:03:27 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,8 @@ class Gateway
 		void						check_new_connections( void );
 		void						open_connection( Origin origin, pollfd pfd );
 		void						receive_on_connections( void );
-		void						send_responses( void );
+		void						_send_responses( char **env );
 		void						close_connections( void );
-		void						reply( Connection& );
 		server_iter_type			decide_server( Connection& );
 		int							_give_new_socket( const Origin& origin, short events );
 		int							_creat_socket( void );
