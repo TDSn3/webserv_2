@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 19:41:02 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/13 09:12:13 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 11:00:09 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,4 +236,5 @@ void	Server::reply( Connection& connection )
 {
 	std::cout << "Server #" << _id << " responds to connection.\n";
 	connection.flush_request();
+	
 }

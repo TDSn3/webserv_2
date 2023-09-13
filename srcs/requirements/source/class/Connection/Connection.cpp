@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:11:02 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/12 11:32:56 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 10:53:58 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,15 @@ void Connection::receive( void )
 	// TODO: handle error in recv
 	ssize_t	ret = recv(_socket, _read_buffer, BUFF_SIZE, 0);
 
-	if (ret >= 0)
+	if (ret > 0)
 		_read_buffer[ret] = 0;
+	else	// la connexion a été fermée par le client
+	{
+		std::cout << COLOR_RED << "Déconnexion de [" << _origin.get_host() << ":" << _origin.get_port() << "]" << COLOR_RESET << "\n" << std::endl;
+		_close = true;
+		_continue_reading = false;
+	}
+
 	if ( _continue_reading)
 		_parse_buffer += _read_buffer;
 

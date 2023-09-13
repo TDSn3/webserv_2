@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 14:42:00 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/13 09:44:54 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 10:54:06 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,8 @@ void Gateway::listen_loop( char **env )
 
 
 		check_new_connections();
-		// open_new_connections();
 		receive_on_connections();
-		// send_responses();
-		// close_connections();
+		send_responses();
+		close_connections();
 	}
 }

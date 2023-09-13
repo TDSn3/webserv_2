@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:30:24 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/13 10:34:11 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 10:59:19 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,44 +140,48 @@ void	Gateway::open_connection( Origin origin, pollfd pfd )
 
 void	Gateway::receive_on_connections( void )
 {
-	// connection_iter_type connection_iter = _connections.begin();
-	// connection_iter_type end = _connections.end();
+	size_t							i = _map_origin_socket.size();
 
-	std::vector<pollfd>	:: iterator	it = poll_struct.begin();
-
-	while (it != poll_struct.end())
+	while (i < poll_struct.size() )
 	{
-		if (it->revents & (POLLIN | POLLERR | POLLHUP) )
-			(void) it;
-		if (it->revents & POLLOUT )
-			(void) it;
-		it++;
+		if (poll_struct[i].revents & (POLLIN | POLLERR | POLLHUP) )
+		{
+			_connections[i - _map_origin_socket.size() ].receive();
+		}
+		i++;
 	}
-
-	// Receive messages on connections
-	// for ( ; connection_iter != end; ++connection_iter )
-	// {
-	// 	if ( FD_ISSET(connection_iter->get_socket(), &_readfds) )
-	// 		connection_iter->receive();
-	// }
 }
 
 void	Gateway::send_responses( void )
 {
-	connection_iter_type connection_iter = _connections.begin();
-	connection_iter_type end = _connections.end();
-	server_iter_type	server_iter;
+	// connection_iter_type connection_iter = _connections.begin();
+	// connection_iter_type end = _connections.end();
+	// server_iter_type	server_iter;
 
-	// If a connection is ready to answer and can be written on, send response.
-	for ( ; connection_iter != end; ++connection_iter )
+	// // If a connection is ready to answer and can be written on, send response.
+	// for ( ; connection_iter != end; ++connection_iter )
+	// {
+	// 	if ( connection_iter->is_ready_for_reply() && FD_ISSET(connection_iter->get_socket(), &_writefds) )
+	// 	{
+	// 		std::cout << "send_responses: host = " << connection_iter->get_request().get_host_value() << std::endl;
+	// 		server_iter = decide_server( *connection_iter );
+	// 		server_iter->reply( *connection_iter );
+	// 		// reply(*connection_iter); // sets the 'close' flag to true if applicable
+	// 	}
+	// }
+
+	size_t							i = _map_origin_socket.size();
+	server_iter_type				server_iter;
+
+	while (i < poll_struct.size() )
 	{
-		if ( connection_iter->is_ready_for_reply() && FD_ISSET(connection_iter->get_socket(), &_writefds) )
+		if (poll_struct[i].revents & POLLOUT && _connections[i - _map_origin_socket.size() ].is_ready_for_reply() == true )
 		{
-			std::cout << "send_responses: host = " << connection_iter->get_request().get_host_value() << std::endl;
-			server_iter = decide_server( *connection_iter );
-			server_iter->reply( *connection_iter );
-			// reply(*connection_iter); // sets the 'close' flag to true if applicable
+			// TODO: send data
+			server_iter = decide_server(  _connections[i - _map_origin_socket.size() ] );
+			server_iter->reply( _connections[i - _map_origin_socket.size() ] );
 		}
+		i++;
 	}
 }
 
