@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 19:41:02 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/12 12:16:59 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 09:12:13 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void Server::print_config( void )
 	std::cout << "Origins:\n";
 	for (std::set< Origin >::iterator it = _origins.begin(); it != _origins.end(); ++it)
 	{
-		std::cout << it->get_host() << ":" << it->get_port() << std::endl;
+		std::cout << "\t" << it->get_host() << ":" << COLOR_BOLD_BLUE << it->get_port() << COLOR_RESET << std::endl;
 	}
 	std::cout << "Names:";
 	for ( unsigned long i=0; i < _names.size(); ++i )

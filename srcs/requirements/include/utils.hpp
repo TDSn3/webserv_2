@@ -6,12 +6,12 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 15:49:59 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/12 11:10:13 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 09:00:22 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENUM_HPP
-# define ENUM_HPP
+#ifndef UTILS_HPP
+# define UTILS_HPP
 
 # include <vector>
 

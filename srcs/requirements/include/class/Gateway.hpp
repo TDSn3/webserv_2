@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:52:49 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/12 14:36:17 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 09:02:27 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ class Gateway
 		void						reply( Connection& );
 		server_iter_type			decide_server( Connection& );
 		int							_give_new_socket( const Origin& origin, short events );
-		int							_creat_socket(void);
-		void						_assign_socket_name(const Origin &origin, int &fd, struct sockaddr_in &address);
-		int							_set_non_blocking_fd(int fd);
+		int							_creat_socket( void );
+		void						_assign_socket_name( const Origin &origin, int &fd, struct sockaddr_in &address );
+		int							_set_non_blocking_fd( int fd );
 };

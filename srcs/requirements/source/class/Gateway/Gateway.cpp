@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:30:24 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/12 14:42:07 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 09:12:41 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,11 @@ void	Gateway::create_servers( std::vector< std::string > content )
 			  server_block_end->compare("}") && (server_block_end != end);
 			  ++server_block_end){}
 
-		std::cout << COLOR_BOLD_RED << "test 1\n" << COLOR_RESET;
-
 		if ( server_block_end != end )
 			add_server(server_block_start, server_block_end);
 
 		server_block_start = server_block_end;
 	}
-
-	std::cout << COLOR_BOLD_RED << "test end create_servers\n" << COLOR_RESET;
 }
 
 void Gateway::add_server( std::vector< std::string >::iterator server_block_start, std::vector< std::string >::iterator server_block_end)
@@ -161,10 +157,9 @@ void	Gateway::receive_on_connections( void )
 	while (it != poll_struct.end())
 	{
 		if (it->revents & (POLLIN | POLLERR | POLLHUP) )
-			std::cout << "POLLIN" << std::endl;
+			(void) it;
 		if (it->revents & POLLOUT )
-			std::cout << "POLLOUT" << std::endl;
-
+			(void) it;
 		it++;
 	}
 
@@ -283,12 +278,10 @@ void 	Gateway::print_origin_sockets_mapping( void )
 
 	for ( ; it != end; ++it )
 	{
-		std::cout << it->first.get_host() << ":" << COLOR_BLUE << it->first.get_port() << COLOR_RESET;
+		std::cout << it->first.get_host() << ":" << COLOR_BOLD_BLUE << it->first.get_port() << COLOR_RESET;
 		std::cout << " has socket number " << COLOR_GREEN << it->second << COLOR_RESET;
 		std::cout << std::endl;
-		std::cout << COLOR_BOLD_RED << "test loop\n" << COLOR_RESET;
 	}
-	std::cout << COLOR_BOLD_RED << "test end print_origin_sockets_mapping\n" << COLOR_RESET;
 }
 
 void	Gateway::reply( Connection& connection )
