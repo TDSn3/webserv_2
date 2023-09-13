@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 15:49:59 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/13 11:55:06 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 15:30:46 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,7 @@ enum e_final_status
 
 bool						is_whitespace( char c );
 std::vector< std::string >	tokenize( std::string str );
+
+extern volatile sig_atomic_t	siginit_status;
 
 #endif

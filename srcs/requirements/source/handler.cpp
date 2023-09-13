@@ -1,35 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   listen_loop.cpp                                    :+:      :+:    :+:   */
+/*   handler.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/12 14:42:00 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/13 15:32:45 by tda-silv         ###   ########.fr       */
+/*   Created: 2023/08/10 10:02:00 by tda-silv          #+#    #+#             */
+/*   Updated: 2023/08/11 13:22:33 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
-void Gateway::listen_loop( char **env )
+void handler(int sig) 
 {
-	int	ret;
-	
-	(void) env;
+	(void) sig;
 
-	while (1)
-	{
-		ret = poll(poll_struct.data(), static_cast<nfds_t>(poll_struct.size() ), 0);	// poll() vérifie l'état de chaque socket
-		if (ret == -1)
-			perror("poll error");	// TODO: a gerer plus tard
-
-		check_new_connections();
-		receive_on_connections();
-		send_responses();
-		close_connections();
-
-		if (siginit_status)
-			break ;
-	}
+	if (sig == SIGINT)
+		siginit_status = 1;
 }

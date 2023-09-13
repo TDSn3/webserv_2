@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:58:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/13 11:03:20 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 15:31:11 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,6 @@
 # include "class/RequestLine.hpp"
 # include "class/Server.hpp"
 
-void	listen_loop(char **env);
+void	handler(int sig);
 
 #endif

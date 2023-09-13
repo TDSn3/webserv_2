@@ -33,6 +33,7 @@ void	Gateway::_assign_socket_name(const Origin& origin, int &fd, struct sockaddr
 
 	if (bind(fd, (struct sockaddr *) &address, sizeof(address) ) < 0) 
 	{
+		perror("bind");
 		// TODO: err plus tard
 	}
 }
