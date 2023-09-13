@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:30:24 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/13 09:12:41 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 10:11:13 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,10 @@ void	Gateway::create_origin_sockets_mapping( void )
 			if ( _map_origin_socket.count(*origin_it) )
 				continue;
 			// TODO: handle errors (recursively) in the following lines
-			int new_socket = _give_new_socket(*origin_it, POLLIN | POLLOUT);	// TODO: a affiner plus tard
-			_map_origin_socket.insert(std::make_pair(*origin_it, new_socket));
+			int new_socket = _give_new_socket(*origin_it, POLLIN);	// TODO: a affiner plus tard
+			if (new_socket < 0)
+				continue ;
+			_map_origin_socket.insert(std::make_pair(*origin_it, poll_struct.back() ) );
 		}
 	}
 }
@@ -105,46 +107,36 @@ struct addrinfo* Gateway::resolve_name( const Origin& origin )
 	return res;
 }
 
-void Gateway::reset_fds( void )
+void	Gateway::check_new_connections( void )
 {
-	std::map< Origin, int >::iterator socket_it = _map_origin_socket.begin();
-	std::map< Origin, int >::iterator socket_end = _map_origin_socket.end();
-	std::vector< Connection >::iterator connection_it = _connections.begin();
-	std::vector< Connection >::iterator connection_end = _connections.end();
-	int socket;
+	socket_iter_type	socket_iter = _map_origin_socket.begin();
 
-	FD_ZERO(&_readfds);
-	FD_ZERO(&_writefds);
-	for ( ; socket_it != socket_end; ++socket_it)
-		FD_SET(socket_it->second, &_readfds);
-	for ( ; connection_it != connection_end; ++connection_it )
+	std::vector<pollfd>	:: iterator it = poll_struct.begin();
+	size_t							i;
+
+	i = 0;
+	while (it != poll_struct.end() && i < _map_origin_socket.size() )
 	{
-		socket = connection_it->get_socket();
-		FD_SET(socket, &_readfds);
-		FD_SET(socket, &_writefds);
+		if (it->revents & POLLIN)
+			open_connection( socket_iter->first, socket_iter->second );
+
+		it++;
 	}
 }
 
-void	Gateway::open_new_connections( void )
-{
-	socket_iter_type socket_iter = _map_origin_socket.begin();
-	socket_iter_type end = _map_origin_socket.end();
-	// Open new_connections
-	for ( ; socket_iter != end; ++socket_iter )
-	{
-		if ( FD_ISSET(socket_iter->second, &_readfds) )
-			open_connection( socket_iter->first, socket_iter->second);
-	}
-}
-
-void	Gateway::open_connection( Origin origin, int socket )
+void	Gateway::open_connection( Origin origin, pollfd pfd )
 {
 	// todo: dup() and do not add to _connections if initialization failed
-	int new_socket = accept( socket, NULL, NULL );
-	std::cout << "Accepted new connection on ";
-	std::cout << origin.get_host() << ":" << origin.get_port() << ". ";
-	std::cout << "new socket on fd: " << new_socket << std::endl;
-	_connections.push_back( Connection(origin, new_socket) );
+	int new_socket = accept( pfd.fd, NULL, NULL );	// TODO: peut etre ajouter address
+
+	if (new_socket > -1)	// si une nouvelle connexion est arrivée et donc qu'il y a un client à créer
+	{
+		std::cout << "Accepted new connection on ";
+		std::cout << origin.get_host() << ":" << origin.get_port() << ". ";
+		std::cout << "new socket on fd: " << new_socket << std::endl;
+		_connections.push_back( Connection(origin, new_socket) );
+		_add_fd_poll_struct(new_socket, (POLLIN | POLLOUT) );
+	}
 }
 
 void	Gateway::receive_on_connections( void )
@@ -237,21 +229,6 @@ void	Gateway::close_connections( void )
 	}
 }
 
-int		Gateway::get_max_socket_fd( void )
-{
-	int res = -1;
-	std::map< Origin, int >::iterator socket_it = _map_origin_socket.begin();
-	std::map< Origin, int >::iterator socket_end = _map_origin_socket.end();
-	std::vector< Connection >::iterator connection_it = _connections.begin();
-	std::vector< Connection >::iterator connection_end = _connections.end();
-
-	for (; socket_it != socket_end; ++socket_it)
-		res = std::max(res, socket_it->second);
-	for (; connection_it != connection_end; ++connection_it)
-		res = std::max(res, connection_it->get_socket());
-	return res;
-}
-
 // void	Gateway::process_request( int socket, Origin origin )
 // {
 // 	char buff[1024];
@@ -273,13 +250,13 @@ int		Gateway::get_max_socket_fd( void )
 
 void 	Gateway::print_origin_sockets_mapping( void )
 {
-	std::map< Origin, int >::iterator it = _map_origin_socket.begin();
-	std::map< Origin, int >::iterator end = _map_origin_socket.end();
+	socket_iter_type it = _map_origin_socket.begin();
+	socket_iter_type end = _map_origin_socket.end();
 
 	for ( ; it != end; ++it )
 	{
 		std::cout << it->first.get_host() << ":" << COLOR_BOLD_BLUE << it->first.get_port() << COLOR_RESET;
-		std::cout << " has socket number " << COLOR_GREEN << it->second << COLOR_RESET;
+		std::cout << " has socket number " << COLOR_GREEN << it->second.fd << COLOR_RESET;
 		std::cout << std::endl;
 	}
 }
