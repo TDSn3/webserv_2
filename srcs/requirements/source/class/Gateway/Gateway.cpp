@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:30:24 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/13 10:11:13 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 10:34:11 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,19 +110,18 @@ struct addrinfo* Gateway::resolve_name( const Origin& origin )
 void	Gateway::check_new_connections( void )
 {
 	socket_iter_type	socket_iter = _map_origin_socket.begin();
-
-	std::vector<pollfd>	:: iterator it = poll_struct.begin();
-	size_t							i;
+	size_t				i;
 
 	i = 0;
-	while (it != poll_struct.end() && i < _map_origin_socket.size() )
+	while (i < poll_struct.size() && i < _map_origin_socket.size() )
 	{
-		if (it->revents & POLLIN)
-			open_connection( socket_iter->first, socket_iter->second );
+		if ( poll_struct[i].revents & POLLIN )
+			open_connection( socket_iter->first, poll_struct[i] );
 
-		it++;
+		i++;
 	}
 }
+
 
 void	Gateway::open_connection( Origin origin, pollfd pfd )
 {
