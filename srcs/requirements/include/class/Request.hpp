@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 11:54:40 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/12 11:11:24 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 11:39:09 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ class Request
 		std::string::size_type _nchars_remaining;
 		std::string::size_type _chunk_size_cumsum;
 
-		RequestLine _request_line;
 		std::vector< std::string > _raw_header_section;
 		std::vector< std::string > _raw_trailer_section;
 		field_section_type _header_section;
@@ -54,6 +53,9 @@ class Request
 		Request( const Request & other );
 		Request& operator=( const Request& other );
 		~Request( void );
+
+		RequestLine request_line;
+
 		bool is_complete( void );
 		std::string::size_type get_required_size( void );
 		void	add_data( const std::string & line );

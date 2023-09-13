@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 15:49:59 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/13 09:00:22 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 11:55:06 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,25 @@
 # define FAILURE 1
 #endif
 
+#ifndef HTTP_VERSION
+# define HTTP_VERSION "HTTP/1.1"
+#endif
+
+#ifndef INDEX_FILE_NAME
+# define INDEX_FILE_NAME "card.html"
+#endif
+
+#ifndef FAVICON_FILE_NAME
+# define FAVICON_FILE_NAME "favicon.png"
+#endif
+
+#ifndef ROOT
+# define ROOT "www"
+#endif
+
 enum e_parsing_status
 {
-	request_line,
+	e_request_line,
 	header_section,
 	expect_100_continue,
 	body,

@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 11:25:27 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/12 11:30:41 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 11:32:18 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ _syntax_is_ok(true)
 	it = extract_method(it, end);
 	it = extract_target(it, end);
 	it = extract_version(it, end);
+	_parse_url();
 }
 
 RequestLine::RequestLine( const RequestLine& other )
@@ -36,10 +37,12 @@ RequestLine& RequestLine::operator=( const RequestLine& other )
 {
 	if ( this != &other )
 	{
-		_method = other._method;
+		method = other.method;
 		_request_target = other._request_target;
 		_http_version = other._http_version;
 		_syntax_is_ok = other._syntax_is_ok;
+		parsed_url = other.parsed_url;
+		parsed_url.query_parameters = other.parsed_url.query_parameters; // TODO: attention peut etre une fuite ?
 	}
 	return *this;
 }
@@ -64,7 +67,7 @@ RequestLine::extract_method( std::string::const_iterator first, std::string::con
 		_syntax_is_ok = false;
 		return last;
 	}
-	_method = std::string(first, it);
+	method = std::string(first, it);
 	return ++it;
 }
 
@@ -144,7 +147,7 @@ void
 RequestLine::print_request_line( std::string before, std::string after )
 {
 	std::cout << before << (before.size() ? "\n" : "");
-	std::cout << "Method: " << _method;
+	std::cout << "Method: " << method;
 	std::cout << ", target: " << _request_target;
 	std::cout << ", version: " << _http_version << std::endl;
 	std::cout << after << (after.size() ? "\n" : "");

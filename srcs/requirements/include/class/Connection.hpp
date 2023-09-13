@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:05:04 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/12 11:10:48 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 12:05:12 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "../utils.hpp"
 #include "Origin.hpp"
 #include "Request.hpp"
+#include "HttpResponse.hpp"
 
 class Connection
 {
@@ -26,7 +27,9 @@ class Connection
 		Connection( Origin, int );
 		Connection( const Connection& other );
 		Connection& operator=( const Connection& other );
-	
+
+		HttpResponse			response;
+
 		Origin&					get_origin( void );
 		int						get_socket( void ) const;
 		bool					get_close( void ) const;

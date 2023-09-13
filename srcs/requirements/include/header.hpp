@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:58:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/12 11:35:39 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 11:03:20 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@
 # include "class/exceptions.hpp"
 # include "class/file_io.hpp"
 # include "class/Gateway.hpp"
+# include "class/HttpResponse.hpp"
 # include "class/Location.hpp"
 # include "class/LogFile.hpp"
 # include "class/Origin.hpp"

@@ -6,14 +6,14 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 11:59:07 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/12 11:25:02 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 11:55:40 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
 Request::Request():
-_parsing_status(request_line),
+_parsing_status(e_request_line),
 _final_status(parsing),
 _has_host(false),
 _has_content_length(false),
@@ -36,7 +36,7 @@ Request& Request::operator=( const Request& other )
 		_content = other._content;
 		_nchars_remaining = other._nchars_remaining;
 		_chunk_size_cumsum = other._chunk_size_cumsum;
-		_request_line = other._request_line;
+		request_line = other.request_line;
 		_raw_header_section = other._raw_header_section;
 		_raw_trailer_section = other._raw_trailer_section;
 		_header_section = other._header_section;
@@ -77,7 +77,7 @@ void	Request::add_data( const std::string & line )
 
 	switch (_parsing_status)
 	{
-		case request_line:
+		case e_request_line:
 			parse_request_line(line);
 			break;
 		case header_section:
@@ -105,8 +105,8 @@ void	Request::parse_request_line( const std::string & line)
 	std::cout << "Received request line: " << line << std::endl;
 	if ( line.size() == 0 )
 		return;
-	_request_line = RequestLine(line);
-	_request_line.print_request_line();
+	request_line = RequestLine(line);
+	request_line.print_request_line();
 	_parsing_status = header_section;
 }
 
@@ -121,7 +121,7 @@ void	Request::add_header_line( const std::string & line)
 	if ( line.size() == 0 )
 	{
 		std::cout << "End of header section\n";
-		if ( _request_line.has_syntax_error() )
+		if ( request_line.has_syntax_error() )
 		{
 			_parsing_status = done;
 			_final_status = bad_request;

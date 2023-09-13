@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:30:24 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/13 10:59:19 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/13 11:59:59 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,22 +154,6 @@ void	Gateway::receive_on_connections( void )
 
 void	Gateway::send_responses( void )
 {
-	// connection_iter_type connection_iter = _connections.begin();
-	// connection_iter_type end = _connections.end();
-	// server_iter_type	server_iter;
-
-	// // If a connection is ready to answer and can be written on, send response.
-	// for ( ; connection_iter != end; ++connection_iter )
-	// {
-	// 	if ( connection_iter->is_ready_for_reply() && FD_ISSET(connection_iter->get_socket(), &_writefds) )
-	// 	{
-	// 		std::cout << "send_responses: host = " << connection_iter->get_request().get_host_value() << std::endl;
-	// 		server_iter = decide_server( *connection_iter );
-	// 		server_iter->reply( *connection_iter );
-	// 		// reply(*connection_iter); // sets the 'close' flag to true if applicable
-	// 	}
-	// }
-
 	size_t							i = _map_origin_socket.size();
 	server_iter_type				server_iter;
 
