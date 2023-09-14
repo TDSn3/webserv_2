@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 19:41:02 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/14 20:07:27 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/09/15 00:17:43 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,9 @@ void Server::print_config( void )
 	for ( unsigned long i=0; i < _names.size(); ++i )
 		std::cout << " " << _names[i];
 	std::cout << std::endl;
+	std::cout << "Default Error Pages\n";
+	print_map(_default_error_pages);
+	std::cout << "Max client body size: " << _max_client_body_size << std::endl;
 	std::cout << "Locations:" << std::endl;
 	for ( location_map::iterator it = _locations.begin(); it != _locations.end(); ++it)
 	{
@@ -136,6 +139,18 @@ void	Server::parse_client_max_body_size( std::string line, std::vector<std::stri
 		throw ParsingError(line, strerror(errno));
 }
 
+void	Server::parse_error_page( std::string line, std::vector< std::string > tokens )
+{
+	if ( tokens.size() < 4 )
+		throw ParsingError(line, "Not enough arguments for directive.");
+	if ( !is_digit(tokens[1].c_str()) )
+		throw ParsingError(line, "Expected status code, got: " + tokens[1]);
+	long status_code = strtol(tokens[1].c_str(), NULL, 10);
+	if ( errno )
+		throw ParsingError(line, strerror(errno));
+	_default_error_pages[status_code] = tokens[2];
+}
+
 const std::set< Origin >& Server::get_origins( void ) const
 {
 	return _origins;
@@ -194,6 +209,8 @@ void	Server::process_simple_directive(
 		parse_server_name(tokens);
 	else if ( tokens[0] == "client_max_body_size" )
 		parse_client_max_body_size(line, tokens);
+	else if ( tokens[0] == "error_page" )
+		parse_error_page(line, tokens);
 	else
 		throw ParsingError(line, "Unknown directive name.");
 }
