@@ -32,7 +32,7 @@ Use ` client_test/http_request.txt ` to customise your HTTP request.
 - [x] Setup the ```server_names``` or not.  
 - [x] The first server for ```host:port``` will be the default one.  
 - [ ] Setup default error pages.  
-- [ ] Limit client body size.  
+- [x] Limit client body size.  
 - For routes:  
 - [ ] Define a list of accepted HTTP methods  
 - [ ] Define a HTTP redirection  

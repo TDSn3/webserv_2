@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 19:41:02 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/13 12:10:36 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/14 20:07:27 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,14 @@ _parsing_error(false)
 		// std::cout << "processing directive: " << *first << std::endl;
 		std::vector< std::string > tokens = tokenize_nows( *first );
 		if (is_simple_directive(tokens))
-			process_simple_directive(*first, tokens);
+		{
+			try {
+				process_simple_directive(*first, tokens);
+			}
+			catch ( const std::exception& e ) {
+				throw;
+			}
+		}
 		else if (is_location_directive(*first, tokens))
 		{
 			// std::cout << "location directive\n";
@@ -111,13 +118,22 @@ void	Server::set_names( std::vector< std::string > directive_and_names )
 		_names.push_back(*it);
 }
 
-void	Server::parse_server_name( std::vector<std::string> tokens)
+void	Server::parse_server_name( std::vector<std::string> tokens )
 {
 	std::vector< std::string >::iterator it = tokens.begin();
 	std::vector< std::string >::iterator last = tokens.end();
 
 	while ((++it + 1) != last)
 		_names.push_back(*it);
+}
+
+void	Server::parse_client_max_body_size( std::string line, std::vector<std::string> tokens )
+{
+	if ( !is_digit(tokens[1].c_str()) )
+		throw ParsingError(line, "Expected a number.");
+	_max_client_body_size = strtol(tokens[1].c_str(), NULL, 10);
+	if ( errno )
+		throw ParsingError(line, strerror(errno));
 }
 
 const std::set< Origin >& Server::get_origins( void ) const
@@ -176,6 +192,8 @@ void	Server::process_simple_directive(
 		parse_listen(line, tokens);
 	else if (!tokens[0].compare("server_name"))
 		parse_server_name(tokens);
+	else if ( tokens[0] == "client_max_body_size" )
+		parse_client_max_body_size(line, tokens);
 	else
 		throw ParsingError(line, "Unknown directive name.");
 }

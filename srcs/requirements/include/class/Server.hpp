@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 17:47:51 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/12 14:08:47 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/14 19:51:25 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,15 @@ class Server
 		std::set< Origin >						_origins;
 		std::vector< std::string >				_names;
 		std::map< std::string, Location >		_locations;
+		long									_max_client_body_size;
 
 		bool									is_simple_directive( std::vector< std::string > tokens ) const;
 		bool									is_location_directive( std::string& line, std::vector< std::string > tokens ) const;
-		void									process_simple_directive(std::string line, std::vector< std::string > tokens );
-		void									process_location_directive(std::vector< std::string >::iterator curr ,std::vector< std::string >::iterator last);
-		std::vector< std::string >::iterator	find_end_of_location_block(std::vector< std::string >::iterator first, std::vector< std::string >::iterator last);
-		void									parse_listen(std::string&, std::vector< std::string >);
-		void									parse_server_name(std::vector<std::string>);
+		void									process_simple_directive( std::string line, std::vector< std::string > tokens );
+		void									process_location_directive( std::vector< std::string >::iterator curr ,std::vector< std::string >::iterator last );
+		std::vector< std::string >::iterator	find_end_of_location_block( std::vector< std::string >::iterator first, std::vector< std::string >::iterator last );
+		void									parse_listen( std::string&, std::vector< std::string > );
+		void									parse_server_name( std::vector<std::string> );
+		void									parse_client_max_body_size( std::string line, std::vector<std::string> );
 
 };
