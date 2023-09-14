@@ -28,17 +28,17 @@ Use ` client_test/http_request.txt ` to customise your HTTP request.
 ## Todo
 
 ### Config file parsing
-[x] Choose the port and host of each server.  
-[x] Setup the ```server_names``` or not.  
-[x] The first server for ```host:port``` will be the default one.  
-[ ] Setup default error pages.  
-[ ] Limit client body size.  
-For routes:  
-[ ] Define a list of accepted HTTP methods  
-[ ] Define a HTTP redirection  
-[ ] Define a root directory  
-[ ] Turn on or off directory listing  
-[ ] Set a default file to answer if the request is a directory  
-[ ] Execute CGI based on certain file extension  
-[ ] Make it work with POST and GET methods  
-[ ] Make the route able to accept uploaded files and configure where they should be saved  
+- [x] Choose the port and host of each server.  
+- [x] Setup the ```server_names``` or not.  
+- [x] The first server for ```host:port``` will be the default one.  
+- [ ] Setup default error pages.  
+- [ ] Limit client body size.  
+- For routes:  
+- [ ] Define a list of accepted HTTP methods  
+- [ ] Define a HTTP redirection  
+- [ ] Define a root directory  
+- [ ] Turn on or off directory listing  
+- [ ] Set a default file to answer if the request is a directory  
+- [ ] Execute CGI based on certain file extension  
+- [ ] Make it work with POST and GET methods  
+- [ ] Make the route able to accept uploaded files and configure where they should be saved  
