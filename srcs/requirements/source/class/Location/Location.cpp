@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:55:13 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/15 17:05:00 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/09/15 20:21:06 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void	Location::parse_location_line(
 		set_root(line, tokens);
 	if ( tokens[0] == "allowed_methods" )
 		parse_allowed_methods(line, tokens);
+	if ( tokens[0] == "return" )
+		parse_return(line, tokens);
 }
 
 void	Location::set_root( std::string line, std::vector< std::string > tokens )
@@ -93,6 +95,13 @@ void	Location::parse_allowed_methods( std::string line, std::vector< std::string
 {
 	(void)line;
 	_parameters["allowed_methods"] = std::vector< std::string >( tokens.begin() + 1, tokens.end() - 1 );
+}
+
+void	Location::parse_return( std::string line, std::vector< std::string > tokens )
+{
+	if ( tokens.size() < 3 )
+		throw ParsingError(line, "Missing arguments for 'return' directive.");
+	_parameters["return"] = std::vector< std::string >(tokens.begin() + 1, tokens.begin() + 2);
 }
 
 void Location::print_location( void )
