@@ -38,7 +38,7 @@ Use ` client_test/http_request.txt ` to customise your HTTP request.
 - [x] Define a HTTP redirection  
 - [x] Define a root directory  
 - [x] Turn on or off directory listing  
-- [ ] Set a default file to answer if the request is a directory  
+- [x] Set a default file to answer if the request is a directory  
 - [ ] Execute CGI based on certain file extension  
 - [ ] Make it work with POST and GET methods  
 - [ ] Make the route able to accept uploaded files and configure where they should be saved  

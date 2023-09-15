@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:45:48 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/15 21:10:27 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/09/15 21:53:39 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,5 @@ class Location
 		void	parse_allowed_methods( std::string, std::vector< std::string > );
 		void	parse_return( std::string, std::vector< std::string > );
 		void	parse_autoindex( std::string, std::vector< std::string > );
+		void	parse_index( std::string, std::vector< std::string > );
 };
