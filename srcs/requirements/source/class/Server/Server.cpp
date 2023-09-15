@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 19:41:02 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/15 00:17:43 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/09/15 17:03:24 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ void Server::print_config( void )
 	std::cout << "Locations:" << std::endl;
 	for ( location_map::iterator it = _locations.begin(); it != _locations.end(); ++it)
 	{
-		std::cout << "\t";
 		it->second.print_location();
 		std::cout << std::endl;
 	}
