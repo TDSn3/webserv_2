@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:55:13 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/15 21:56:06 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/09/15 22:38:01 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ void	Location::parse_location_line(
 		parse_autoindex(line, tokens);
 	if ( tokens[0] == "index" )
 		parse_index(line, tokens);
+	if ( tokens[0] == "cgi" )
+		parse_cgi(line, tokens);
 }
 
 void	Location::set_root( std::string line, std::vector< std::string > tokens )
@@ -120,6 +122,12 @@ void	Location::parse_index( std::string line, std::vector< std::string > tokens 
 	if (tokens.size() < 3 )
 		throw ParsingError(line, "Missing arguments for 'index' directive.");
 	_parameters["index"] = std::vector< std::string >(tokens.begin() + 1, tokens.end() - 1);
+}
+
+void	Location::parse_cgi( std::string line, std::vector< std::string > tokens )
+{
+	(void)line;
+	_parameters["cgi"] = std::vector< std::string >(tokens.begin() + 1, tokens.end() - 1);
 }
 
 void Location::print_location( void )
