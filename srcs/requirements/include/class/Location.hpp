@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:45:48 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/07/25 14:11:10 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/09/15 16:35:58 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,6 @@ class Location
 	private:
 		void	parse_location_line( std::string line, std::vector< std::string > tokens );
 		void	set_root( std::string line, std::vector< std::string > tokens );
+		void	init_allowed_methods( void );
+		void	parse_allowed_methods( std::string, std::vector< std::string > );
 };

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Location.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:55:13 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/12 11:22:49 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/15 17:05:00 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,23 @@ Location::Location(
 	if (!is_uri(tokens[1]))
 		throw ParsingError(header, tokens[1] + " is not a uri.");
 	_uri = tokens[1];
+	init_allowed_methods();
 	while (++first != last)
 	{
 		tokens = tokenize_nows(*first);
 		parse_location_line(*first, tokens);
 	}
+}
+
+void	Location::init_allowed_methods( void )
+{
+	std::vector< std::string > allowed_methods;
+	
+	allowed_methods.push_back("GET");
+	allowed_methods.push_back("POST");
+	allowed_methods.push_back("DELETE");
+	
+	_parameters["allowed_methods"] = allowed_methods;
 }
 
 Location::Location( const Location& other ):
@@ -63,6 +75,8 @@ void	Location::parse_location_line(
 		throw ParsingError(line, "Invalid directive format.");
 	if ( !tokens[0].compare("root"))
 		set_root(line, tokens);
+	if ( tokens[0] == "allowed_methods" )
+		parse_allowed_methods(line, tokens);
 }
 
 void	Location::set_root( std::string line, std::vector< std::string > tokens )
@@ -73,6 +87,12 @@ void	Location::set_root( std::string line, std::vector< std::string > tokens )
 	if ( _parameters.find("root") != _parameters.end() )
 		throw ParsingError(line, "Parameter 'root' defined twice.");
 	_parameters["root"] = std::vector< std::string >(tokens.begin() + 1, tokens.end() - 1);
+}
+
+void	Location::parse_allowed_methods( std::string line, std::vector< std::string > tokens)
+{
+	(void)line;
+	_parameters["allowed_methods"] = std::vector< std::string >( tokens.begin() + 1, tokens.end() - 1 );
 }
 
 void Location::print_location( void )

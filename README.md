@@ -34,9 +34,9 @@ Use ` client_test/http_request.txt ` to customise your HTTP request.
 - [x] Setup default error pages.  
 - [x] Limit client body size.  
 - For routes:  
-- [ ] Define a list of accepted HTTP methods  
+- [x] Define a list of accepted HTTP methods  
 - [ ] Define a HTTP redirection  
-- [ ] Define a root directory  
+- [x] Define a root directory  
 - [ ] Turn on or off directory listing  
 - [ ] Set a default file to answer if the request is a directory  
 - [ ] Execute CGI based on certain file extension  
