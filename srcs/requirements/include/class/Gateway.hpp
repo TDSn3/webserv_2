@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:52:49 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/17 10:41:08 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/17 11:32:46 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include <poll.h>
 
 #include "Connection.hpp"
-#include "exceptions.hpp"
+#include "other/exceptions.hpp"
 #include "Origin.hpp"
 #include "Server.hpp"
 

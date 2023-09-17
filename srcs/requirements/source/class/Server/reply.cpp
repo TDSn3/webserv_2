@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 21:00:45 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/13 21:25:35 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/17 10:55:41 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ void	Server::reply( Connection &connection, char **env )
 {
 	try
 	{
-		connection.response.build(connection.get_request(), env);	// Si le build throw, build une réponse d'erreur
+		connection.response.build( connection.get_request(), env );							// Si le build throw, build une réponse d'erreur
 	}
-	catch(const StatusCode &e)
+	catch( const StatusCode &e )
 	{
-		e.build_response_error(connection);
+		e.build_response_error( connection );
 	}
 
 	size_t	to_send =  connection.response.str_response.size();
@@ -29,10 +29,10 @@ void	Server::reply( Connection &connection, char **env )
 	std::cout << "[" << COLOR_BOLD_GREEN << "RESPONSE" << COLOR_RESET << "]\n" << connection.response.str_response << std::endl;
 	std::cout << "[" << COLOR_BOLD_RED << "END OF RESPONSE" << COLOR_RESET << "]\n" << std::endl;
 
-	sended = send(connection.get_socket() , connection.response.str_response.c_str() , to_send, 0);
-	if (sended < static_cast<ssize_t>(to_send) )
+	sended = send( connection.get_socket() , connection.response.str_response.c_str() , to_send, 0 );
+	if ( sended < static_cast< ssize_t >( to_send ) )
 		std::cout << COLOR_BOLD_RED << "RESPONSE WAS NOT COMPLETELY SEND !" << std::endl;	// TODO: gerer cela
 
 	connection.response.clear();
-	connection.flush_request();	// TODO:expliquer a Thomas
+	connection.flush_request();																// TODO:expliquer a Thomas
 }

@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:58:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/17 10:40:28 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/17 11:34:26 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,20 +48,21 @@
 # include "colors.hpp"
 # include "utils.hpp"
 
+# include "class/other/exceptions.hpp"
+# include "class/other/file_io.hpp"
+# include "class/other/Location.hpp"
+# include "class/other/LogFile.hpp"
+# include "class/other/print_utils.hpp"
+# include "class/other/parsing_utils.hpp"
+# include "class/other/RequestLine.hpp"
+# include "class/other/StatusCode.hpp"
+
 # include "class/Connection.hpp"
-# include "class/exceptions.hpp"
-# include "class/file_io.hpp"
 # include "class/Gateway.hpp"
 # include "class/HttpResponse.hpp"
-# include "class/Location.hpp"
-# include "class/LogFile.hpp"
 # include "class/Origin.hpp"
-# include "class/print_utils.hpp"
-# include "class/parsing_utils.hpp"
 # include "class/Request.hpp"
-# include "class/RequestLine.hpp"
 # include "class/Server.hpp"
-# include "class/StatusCode.hpp"
 
 bool	check_arg( const int argc, const char * const *argv );
 void	handler( int sig );

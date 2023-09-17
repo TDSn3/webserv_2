@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 11:54:40 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/13 11:39:09 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/17 11:32:37 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <string>
 
 #include "../utils.hpp"
-#include "RequestLine.hpp"
+#include "other/RequestLine.hpp"
 
 class Request
 {

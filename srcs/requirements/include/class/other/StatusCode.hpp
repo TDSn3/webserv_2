@@ -6,14 +6,15 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 16:13:31 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/13 21:16:14 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/17 11:35:04 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STATUSCODE_HPP
 # define STATUSCODE_HPP
 
-# include "HttpResponse.hpp"
+# include "../HttpResponse.hpp"
+# include "../Connection.hpp"
 
 class StatusCode : public std::exception
 {

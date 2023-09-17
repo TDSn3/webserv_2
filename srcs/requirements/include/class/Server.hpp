@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 17:47:51 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/13 21:04:22 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/17 11:32:24 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 #include <string>
 
 #include "Connection.hpp"
-#include "exceptions.hpp"
-#include "Location.hpp"
+#include "other/exceptions.hpp"
+#include "other/Location.hpp"
 #include "Origin.hpp"
 
 class Server

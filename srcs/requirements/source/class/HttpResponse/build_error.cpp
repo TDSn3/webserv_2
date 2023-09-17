@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   _make_response.cpp                                 :+:      :+:    :+:   */
+/*   build_error.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/31 09:52:55 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/17 11:14:24 by tda-silv         ###   ########.fr       */
+/*   Created: 2023/09/17 11:01:25 by tda-silv          #+#    #+#             */
+/*   Updated: 2023/09/17 11:01:52 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
-void	HttpResponse::_make_response(Request &request, char **env)	// ! throw possible
+void	HttpResponse::build_error(Request &request, const int status_code)
 {
 	std::ostringstream	oss;
-
+			
 	(void) request;
+	status_line.version = std::string(HTTP_VERSION);
+	status_line.code = status_code;
+	_make_reason_phrase();
 
-	oss << status_line.code;
+	_add_status_line();
 
-	str_response += status_line.version;
-	str_response += " ";
-	str_response += oss.str();
-	str_response += " ";
-	str_response += status_line.reason_phrase;
-	str_response += "\r\n";
-
-	_give_content_type(request);
-
-	_add_body(request, env);		// ! throw possible
-}
+	_add_field_line("server", "webserv");
+	_add_field_line("content-type", "text/html");
+			
+	oss << status_code;
+	_add_body("error_page/" + oss.str() + ".html");
+};
