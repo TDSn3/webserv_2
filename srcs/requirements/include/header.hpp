@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:58:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/13 21:39:14 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/17 10:40:28 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,6 @@ bool	check_arg( const int argc, const char * const *argv );
 void	handler( int sig );
 void	my_perror_and_throw( const char *str, const std::exception &e );
 void	my_perror_and_throw( const char *str, const StatusCode &e );
+void	listen_loop( Gateway &gateway, char **env );	// ! throw possible
 
 #endif

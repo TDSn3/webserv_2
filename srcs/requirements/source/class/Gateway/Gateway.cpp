@@ -6,17 +6,19 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:30:24 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/13 22:05:47 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/17 10:38:13 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
+typedef std::vector< Server >::iterator	server_iter_type;
+
 Gateway::Gateway( std::string config_file ) : _fatal_error(false)
 {
 	std::vector< std::string > content = read_file(config_file);
 	create_servers(content);
-	
+
 	create_origin_sockets_mapping();
 	print_origin_sockets_mapping();
 }
@@ -107,22 +109,6 @@ struct addrinfo* Gateway::resolve_name( const Origin& origin )
 	return res;
 }
 
-void	Gateway::check_new_connections( void )
-{
-	socket_iter_type	socket_iter = _map_origin_socket.begin();
-	size_t				i;
-
-	i = 0;
-	while (i < poll_struct.size() && i < _map_origin_socket.size() )
-	{
-		if ( poll_struct[i].revents & POLLIN )
-			open_connection( socket_iter->first, poll_struct[i] );
-
-		i++;
-	}
-}
-
-
 void	Gateway::open_connection( Origin origin, pollfd pfd )
 {
 	// todo: dup() and do not add to _connections if initialization failed
@@ -138,20 +124,7 @@ void	Gateway::open_connection( Origin origin, pollfd pfd )
 	}
 }
 
-void	Gateway::receive_on_connections( void )
-{
-	size_t	i = _map_origin_socket.size();
-
-	while ( i < poll_struct.size() )
-	{
-		if ( poll_struct[i].revents & (POLLIN | POLLERR | POLLHUP) )
-			_connections[i - _map_origin_socket.size() ].receive();
-		i++;
-	}
-}
-
-typename Gateway::server_iter_type
-Gateway::decide_server( Connection& connection )
+server_iter_type Gateway::decide_server( Connection& connection )
 {
 	server_iter_type	it = _servers.begin();
 	server_iter_type	end = _servers.end();
@@ -177,56 +150,6 @@ Gateway::decide_server( Connection& connection )
 		}
 	}
 	return res;
-}
-
-static ssize_t	give_index_fd_in_poll_struct(std::vector<pollfd> &poll_struct, int fd)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < poll_struct.size() )
-	{
-		if (poll_struct[i].fd == fd)
-			return (static_cast<ssize_t>(i) );
-		i++;
-	}
-	return (-1);
-}
-
-static bool	give_and_check_index(std::vector<pollfd> &poll_struct, int fd, size_t &index)
-{
-	ssize_t	index_check;
-	
-	index_check = give_index_fd_in_poll_struct(poll_struct, fd);
-	if (index_check == -1)
-	{
-		std::cout << COLOR_BOLD_MAGENTA << "STRANGE !" << COLOR_RESET << std::endl;	// TODO: à supprimer à la fin
-		return (false);
-	}
-	index = static_cast<size_t>(index_check);
-	return (true);
-}
-
-void	Gateway::close_connections( void )
-{
-	connection_iter_type	connection_iter = _connections.begin();
-	size_t					index;
-
-	while ( connection_iter != _connections.end() )
-	{
-		connection_iter->update_close();
-		if ( connection_iter->get_close() )
-		{
-			if (give_and_check_index(poll_struct, connection_iter->get_socket(), index) == false)
-				continue ;
-
-			connection_iter->close_connection();
-			connection_iter = _connections.erase( connection_iter );
-			poll_struct.erase( poll_struct.begin() + static_cast<long>( index ) );
-		}
-		else
-			++connection_iter;
-	}
 }
 
 // void	Gateway::process_request( int socket, Origin origin )

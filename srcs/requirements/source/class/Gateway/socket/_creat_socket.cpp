@@ -22,7 +22,7 @@ int	Gateway::_creat_socket(void)
 {
 	int	fd;
 	
-	fd = socket(AF_INET, SOCK_STREAM | SOCK_CLOEXEC, 0);
+	fd = socket(AF_INET, SOCK_STREAM /*| SOCK_CLOEXEC*/, 0); // TODO: erreur MacOS remettre plus tard
 	if (fd < 0) 
 	{
 		// TODO: err plus tard

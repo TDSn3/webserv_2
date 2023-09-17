@@ -1,38 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   check_new_connections.cpp                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/11 15:58:01 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/17 10:41:55 by tda-silv         ###   ########.fr       */
+/*   Created: 2023/09/17 10:30:53 by tda-silv          #+#    #+#             */
+/*   Updated: 2023/09/17 10:31:49 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
-volatile sig_atomic_t	siginit_status = 0;
-
-int	main( int argc, char **argv, char **env )
+void	Gateway::check_new_connections( void )
 {
-	// LogFile		log_file;					// redirige cout et cerr vers le fichier log
+	socket_iter_type	socket_iter = _map_origin_socket.begin();
+	size_t				i;
 
-	if (check_arg(argc, argv) == false)
-		return (1);
-
-	signal( SIGINT, handler );
-
-	try
+	i = 0;
+	while ( i < poll_struct.size() && i < _map_origin_socket.size() )
 	{
-		Gateway gateway( argc == 1 ? DEFAULT_CONF_FILE : argv[1] );
+		if ( poll_struct[i].revents & POLLIN )
+			open_connection( socket_iter->first, poll_struct[i] );
 
-		listen_loop( gateway, env );	// ! throw possible
+		i++;
 	}
-	catch( const std::exception &e )
-	{
-		return (1);
-	}
-
-	return (0);
 }

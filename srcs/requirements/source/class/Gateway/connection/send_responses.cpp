@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   _send_responses.cpp                                :+:      :+:    :+:   */
+/*   send_responses.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 20:58:07 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/13 21:06:05 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/17 10:29:51 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
-void	Gateway::_send_responses( char **env )
+void	Gateway::send_responses( char **env )
 {
 	size_t							i = _map_origin_socket.size();
 	server_iter_type				server_iter;
