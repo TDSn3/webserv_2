@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:00:08 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/17 14:15:39 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/17 15:18:48 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	HttpResponse::build( Request &request, char **env )	// ! throw possible
 	}
 	else if (request.request_line.method == "POST")
 	{
-		_set_status_line( 200, "OK" );
+		_post_method( request );
 	}
 	else if (request.request_line.method == "DELETE")
 		_delete_method( request );

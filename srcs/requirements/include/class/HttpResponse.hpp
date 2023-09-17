@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 15:43:46 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/17 14:08:31 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/17 14:58:33 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ class HttpResponse
 		void			_add_body(std::string path);
 		void			_set_status_line( int code, std::string reason_phrase);
 		void			_delete_method( Request &request );							// ! throw possible
+		void			_post_method( Request &request );
 
 };
 
