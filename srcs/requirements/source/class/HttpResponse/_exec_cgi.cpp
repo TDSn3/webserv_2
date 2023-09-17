@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/13 11:52:14 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/17 12:02:37 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ std::string	HttpResponse::_exec_cgi(std::string path, Request &request, char **e
 		new_path = std::string(ROOT) + "/" + path;
 
 	if (stat(new_path.c_str(), &stat_buffer) != 0)		// Vérifie si le fichier existe
-		/*my_perror_and_throw("cgi file does not exist", StatusCode(404) )*/ {}
+		my_perror_and_throw( "cgi file does not exist", StatusCode(404) );
 	if (access(new_path.c_str(), R_OK | X_OK) != 0)		// Vérifie si le fichier est accessible en lecture et en exécution
 		/*my_perror_and_throw("cgi file is not readable or executable", StatusCode(403) )*/ {}
 

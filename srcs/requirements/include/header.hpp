@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:58:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/17 11:34:26 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/17 12:26:41 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@
 # include <algorithm>
 # include <climits>
 # include <cstdlib>
+# include <cstdio>
 
 # include "colors.hpp"
 # include "utils.hpp"
