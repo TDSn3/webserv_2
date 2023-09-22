@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Gateway.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:30:24 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/13 11:59:59 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/18 11:44:43 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,19 +200,28 @@ Gateway::decide_server( Connection& connection )
 
 void	Gateway::close_connections( void )
 {
-	connection_iter_type connection_iter = _connections.begin();
-	connection_iter_type end = _connections.end();
+	connection_iter_type connection_iter;
+	std::vector< pollfd >::iterator poll_struct_iter;
 
-	while ( connection_iter != end )
+	connection_iter = _connections.begin();
+	poll_struct_iter = poll_struct.begin() + _map_origin_socket.size();
+	
+	while ( connection_iter != _connections.end() )
 	{
 		connection_iter->update_close();
 		if ( connection_iter->get_close() )
 		{
-			connection_iter->close_connection();
+			connection_iter->close_connection(); // potential close routine
+			// erase connection and corresponding poll_struct
+			// TODO: remove fd from sockets we listen to ?
 			connection_iter = _connections.erase(connection_iter);
+			poll_struct_iter = poll_struct.erase(poll_struct_iter);
 		}
 		else
+		{
 			++connection_iter;
+			++poll_struct_iter;
+		}
 	}
 }
 
