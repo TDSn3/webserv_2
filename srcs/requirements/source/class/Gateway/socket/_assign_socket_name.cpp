@@ -20,20 +20,17 @@
 /*				  en une représentation réseau.								  */
 /*                                                                            */
 /* ************************************************************************** */
-void	Gateway::_assign_socket_name(const Origin& origin, int &fd, struct sockaddr_in &address)
+void	Gateway::_assign_socket_name( const Origin& origin, int &fd, struct sockaddr_in &address )
 {
-	std::stringstream	ss(origin.get_port() );
+	std::stringstream	ss( origin.get_port() );
 	int					port;
 
 	ss >> port;
-	memset( (char *) &address, 0, sizeof(address) );
+	memset( ( char * ) &address, 0, sizeof( address ) );
 	address.sin_family = AF_INET;
 	address.sin_addr.s_addr = INADDR_ANY; 
-	address.sin_port = htons(static_cast<uint16_t>(port) );
+	address.sin_port = htons( static_cast< uint16_t >( port ) );
 
-	if (bind(fd, (struct sockaddr *) &address, sizeof(address) ) < 0) 
-	{
-		perror("bind");
-		// TODO: err plus tard
-	}
+	if ( bind( fd, ( struct sockaddr * ) &address, sizeof( address ) ) < 0 ) 
+		my_perror( "bind failed" );
 }

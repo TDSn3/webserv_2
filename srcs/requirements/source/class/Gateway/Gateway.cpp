@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:30:24 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/17 10:38:13 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/22 16:44:46 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void	Gateway::open_connection( Origin origin, pollfd pfd )
 	{
 		std::cout << "Accepted new connection on ";
 		std::cout << origin.get_host() << ":" << COLOR_BOLD_BLUE << origin.get_port() << COLOR_RESET << ". ";
-		std::cout << "new socket on fd: " << COLOR_GREEN << new_socket << COLOR_RESET << "\n\n";
+		std::cout << "new socket on fd: " << COLOR_GREEN << new_socket << COLOR_RESET << "\n";
 		_connections.push_back( Connection(origin, new_socket) );
 		_add_fd_poll_struct(new_socket, (POLLIN | POLLOUT) );
 	}
@@ -130,7 +130,7 @@ server_iter_type Gateway::decide_server( Connection& connection )
 	server_iter_type	end = _servers.end();
 	server_iter_type	res = end;
 
-	std::cout << "\n" << "decide_server: host = " << connection.get_request().get_host_value() << std::endl;
+	std::cout << "decide_server: host = " << connection.get_request().get_host_value() << std::endl;
 	for ( ; it != end; ++it )
 	{
 		// if origin mismatch, continue

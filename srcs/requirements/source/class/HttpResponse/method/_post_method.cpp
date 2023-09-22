@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 14:57:55 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/17 15:23:47 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/22 15:32:08 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ void	HttpResponse::_post_method( Request &request )	// ! throw possible
 	out_file.open( new_path.c_str() , std::ios::out | std::ios::binary );
 
 	if ( out_file.fail() )
-		my_perror_and_throw( "POST: internal server error", StatusCode(500) );
+		my_perror_and_throw( "HttpResponse::_post_method: internal server error", StatusCode(500) );
 
 	out_file.write( request.get_body().c_str(), request.get_body().size() );
 
 	if ( out_file.good() == false )
-		my_perror_and_throw( "POST: internal server error", StatusCode(500) );
+		my_perror_and_throw( "HttpResponse::_post_method: internal server error", StatusCode(500) );
 
 	out_file.close();
 	_set_status_line( 201, "Created" );

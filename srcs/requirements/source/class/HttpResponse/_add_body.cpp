@@ -6,33 +6,33 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 19:34:49 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/13 21:18:40 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/22 16:53:14 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
-void	HttpResponse::_add_body(Request &request, char **env)
+void	HttpResponse::_add_body( Request &request, char **env )
 {
 	std::ostringstream	oss;
 
 	str_response += "Content-Length: ";
 
-	if (request.request_line.method == "GET")
+	if ( request.request_line.method == "GET" )
 	{
-		if (request.request_line.parsed_url.path == "/")
-			str_body = _read_file_in_str(INDEX_FILE_NAME);									// ! throw possible
-		else if (request.request_line.parsed_url.path == "/favicon.ico")
-			str_body = _read_file_in_str(FAVICON_FILE_NAME);								// ! throw possible
+		if ( request.request_line.parsed_url.path == "/" )
+			str_body = _read_file_in_str( INDEX_FILE_NAME );								// ! throw possible
+		else if ( request.request_line.parsed_url.path == "/favicon.ico" )
+			str_body = _read_file_in_str( FAVICON_FILE_NAME );								// ! throw possible
 		else
 		{
-			if (request.request_line.parsed_url.path.find("cgi-bin/") != std::string::npos)
+			if ( request.request_line.parsed_url.path.find( "cgi-bin/" ) != std::string::npos )
 			{
 				std::cout << COLOR_BOLD_CYAN << "CGI detected" << COLOR_RESET << std::endl;
-				str_body = _exec_cgi(request.request_line.parsed_url.path, request, env);	// ! throw possible
+				str_body = _exec_cgi( request.request_line.parsed_url.path, request, env );	// ! throw possible
 			}
 			else
-				str_body = _read_file_in_str(request.request_line.parsed_url.path);			// ! throw possible
+				str_body = _read_file_in_str( request.request_line.parsed_url.path );			// ! throw possible
 		}
 	}
 
@@ -46,17 +46,17 @@ void	HttpResponse::_add_body(Request &request, char **env)
 	str_response += str_body;
 }
 
-void	HttpResponse::_add_body(std::string path)
+void	HttpResponse::_add_body( std::string path )	// Utilisé pendant une erreur
 {
 	std::ostringstream	oss;
 
 	str_response += "Content-Length: ";
 
-	try			// TODO: update StatusCode
+	try
 	{
-		str_body = _read_file_in_str(path);
+		str_body = _read_file_in_str( path );
 	}
-	catch (const StatusCode &e)
+	catch ( const StatusCode &e )
 	{
 		str_body.clear();
 		str_body += "<!DOCTYPE html>\r\n";

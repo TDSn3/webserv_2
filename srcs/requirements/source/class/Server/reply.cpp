@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 21:00:45 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/17 10:55:41 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/22 15:50:38 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	Server::reply( Connection &connection, char **env )
 {
 	try
 	{
-		connection.response.build( connection.get_request(), env );							// Si le build throw, build une réponse d'erreur
+		connection.get_request().print_request();
+		connection.response.build( connection.get_request(), env );							// Si build throw, build une réponse d'erreur
 	}
 	catch( const StatusCode &e )
 	{

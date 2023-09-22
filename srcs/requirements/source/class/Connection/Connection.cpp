@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:11:02 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/13 10:53:58 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/22 12:00:26 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void Connection::close_connection( void )
 	if ( _socket == -1 )
 		return ;
 	shutdown(_socket, SHUT_RDWR);
+	close( _socket );
 	_socket = -1;
 }
 

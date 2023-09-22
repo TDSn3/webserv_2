@@ -1,26 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   receive_on_connections.cpp                         :+:      :+:    :+:   */
+/*   get_final_status.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/17 10:33:10 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/22 15:46:33 by tda-silv         ###   ########.fr       */
+/*   Created: 2023/09/22 15:59:46 by tda-silv          #+#    #+#             */
+/*   Updated: 2023/09/22 16:01:03 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
-void	Gateway::receive_on_connections( void )
+e_final_status	Request::get_final_status( void )
 {
-	size_t	i = _map_origin_socket.size();
-
-	while ( i < poll_struct.size() )
-	{
-		if ( poll_struct[i].revents & (POLLIN | POLLERR | POLLHUP) )
-			_connections[ i - _map_origin_socket.size() ].receive();
-		i++;
-	}
+	return _final_status;
 }
- 

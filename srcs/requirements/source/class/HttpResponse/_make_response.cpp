@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 09:52:55 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/17 14:12:13 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/22 16:41:26 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,13 @@ void	HttpResponse::_make_response( Request &request, char **env )	// ! throw pos
 
 static void	_read_body( Request &request )
 {
-	if ( request.get_content_length_status() == true )
-		std::cout << COLOR_YELLOW << "content_length OK\n" << COLOR_RESET;
-	else
-		std::cout << COLOR_YELLOW << "content_length ERROR\n" << COLOR_RESET;
+	std::cout << COLOR_MAGENTA;
+
+	std::cout << "content_length " << COLOR_BOLD_MAGENTA;
+	
+	request.get_content_length_status() == true ? ( std::cout << "YES" ) : ( std::cout << "NO" );
+
+	std::cout << "\n" << COLOR_RESET;
+
+	std::cout << "\n";
 }

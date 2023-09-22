@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 11:54:40 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/17 15:16:03 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/22 15:59:25 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,12 @@ class Request
 		bool						get_parsing_error( void );
 		bool						has_close_option( void );
 		e_parsing_status			get_parsing_status( void );
+		e_final_status				get_final_status( void );
 		void						set_status_after_continue( void );
 		std::string					get_host_value( void );
 		bool						get_content_length_status( void);
 		std::string					&get_body( void );
+		void						print_request( void );
 
 	private:
 	

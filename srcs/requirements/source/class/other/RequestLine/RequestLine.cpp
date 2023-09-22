@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 11:25:27 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/13 11:32:18 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/22 16:34:01 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,14 +143,20 @@ RequestLine::extract_version( std::string::const_iterator first, std::string::co
 	return last;
 }
 
-void
-RequestLine::print_request_line( std::string before, std::string after )
+void	RequestLine::print_request_line( std::string before, std::string after )
 {
 	std::cout << before << (before.size() ? "\n" : "");
 	std::cout << "Method: " << method;
 	std::cout << ", target: " << _request_target;
 	std::cout << ", version: " << _http_version << std::endl;
 	std::cout << after << (after.size() ? "\n" : "");
+}
+
+void	RequestLine::print_request_line_two( void )
+{
+	std::cout << method 			<< " ";
+	std::cout << _request_target	<< " ";
+	std::cout << _http_version		<< "\n";
 }
 
 int RequestLine::get_major_version( void )

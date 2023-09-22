@@ -6,13 +6,11 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 10:05:59 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/17 10:16:34 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/22 16:05:54 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
-
-static bool	my_perror( const char *str );
 
 bool	check_arg( const int argc, const char * const *argv )
 {
@@ -34,10 +32,4 @@ bool	check_arg( const int argc, const char * const *argv )
 		return ( my_perror( "file is not readable" ) );
 
 	return ( true );
-}
-
-static bool	my_perror( const char *str )
-{
-	std::cerr << COLOR_BOLD_RED << str << COLOR_RESET << std::endl;
-	return ( false );
 }
