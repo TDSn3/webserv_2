@@ -6,45 +6,11 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 19:34:49 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/22 16:53:14 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/22 17:50:00 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
-
-void	HttpResponse::_add_body( Request &request, char **env )
-{
-	std::ostringstream	oss;
-
-	str_response += "Content-Length: ";
-
-	if ( request.request_line.method == "GET" )
-	{
-		if ( request.request_line.parsed_url.path == "/" )
-			str_body = _read_file_in_str( INDEX_FILE_NAME );								// ! throw possible
-		else if ( request.request_line.parsed_url.path == "/favicon.ico" )
-			str_body = _read_file_in_str( FAVICON_FILE_NAME );								// ! throw possible
-		else
-		{
-			if ( request.request_line.parsed_url.path.find( "cgi-bin/" ) != std::string::npos )
-			{
-				std::cout << COLOR_BOLD_CYAN << "CGI detected" << COLOR_RESET << std::endl;
-				str_body = _exec_cgi( request.request_line.parsed_url.path, request, env );	// ! throw possible
-			}
-			else
-				str_body = _read_file_in_str( request.request_line.parsed_url.path );			// ! throw possible
-		}
-	}
-
-	oss << str_body.size();
-
-	str_response += oss.str();
-	str_response += "\r\n";
-
-	str_response += "\r\n";
-
-	str_response += str_body;
-}
 
 void	HttpResponse::_add_body( std::string path )	// Utilisé pendant une erreur
 {
@@ -73,11 +39,9 @@ void	HttpResponse::_add_body( std::string path )	// Utilisé pendant une erreur
 	}
 
 	oss << str_body.size();
-
 	str_response += oss.str();
-	str_response += "\r\n";
 
 	str_response += "\r\n";
-
+	str_response += "\r\n";
 	str_response += str_body;
 }

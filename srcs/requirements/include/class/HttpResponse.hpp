@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 15:43:46 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/17 14:58:33 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/22 18:52:19 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,16 +64,16 @@ class HttpResponse
 
 		std::string		_read_file_in_str(std::string path);						// ! throw possible
 		std::string		_exec_cgi(std::string path, Request &request, char **env);	// ! throw possible
-		void			_make_response(Request &request, char **env);				// ! throw possible
-		void			_give_content_type(Request &request);
+		void			_make_response(Request &request);							// ! throw possible
+		void			_add_content_type(Request &request);
 		void			_make_reason_phrase(void);
 		void			_add_status_line(void);
 		void			_add_field_line(std::string field_name, std::string field_value);
-		void			_add_body(Request &request, char **env);
 		void			_add_body(std::string path);
 		void			_set_status_line( int code, std::string reason_phrase);
+		bool			_get_method( Request &request, char **env );				// ! throw possible
+		bool			_post_method( Request &request, char **env );				// ! throw possible
 		void			_delete_method( Request &request );							// ! throw possible
-		void			_post_method( Request &request );
 
 };
 

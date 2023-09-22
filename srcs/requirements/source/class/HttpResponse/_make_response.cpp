@@ -6,45 +6,52 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 09:52:55 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/22 16:41:26 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/22 18:15:07 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
-static void	_read_body( Request &request );
-
-void	HttpResponse::_make_response( Request &request, char **env )	// ! throw possible
+void	HttpResponse::_make_response( Request &request )	// ! throw possible
 {
-	_read_body( request );
 
+/* ************************************************************************** */
+/*                                                                            */
+/*   status line															  */
+/*                                                                            */
 /* ************************************************************************** */
 
 	std::ostringstream	oss;
 
 	oss << status_line.code;
 
-	str_response += status_line.version;
+	str_response += status_line.version;		// HTTP version
 	str_response += " ";
-	str_response += oss.str();
+	str_response += oss.str();					// status code
 	str_response += " ";
-	str_response += status_line.reason_phrase;
+	str_response += status_line.reason_phrase;	// reason_phrase
 	str_response += "\r\n";
 
-	_give_content_type(request);
+/* ************************************************************************** */
+/*                                                                            */
+/*   header																	  */
+/*                                                                            */
+/* ************************************************************************** */
 
-	_add_body(request, env);		// ! throw possible
-}
+	oss.str("");
+	oss.clear();
+	oss << str_body.size();
 
-static void	_read_body( Request &request )
-{
-	std::cout << COLOR_MAGENTA;
+	_add_content_type( request );
+	_add_field_line( "content-length", oss.str() );
+	str_response += "\r\n";
 
-	std::cout << "content_length " << COLOR_BOLD_MAGENTA;
-	
-	request.get_content_length_status() == true ? ( std::cout << "YES" ) : ( std::cout << "NO" );
+/* ************************************************************************** */
+/*                                                                            */
+/*   body																	  */
+/*                                                                            */
+/* ************************************************************************** */
 
-	std::cout << "\n" << COLOR_RESET;
-
-	std::cout << "\n";
+	str_response += "\r\n";
+	str_response += str_body;
 }

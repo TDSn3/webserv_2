@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:10:10 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/17 11:10:32 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/22 17:44:50 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static std::string	give_uri_path_extension_name(std::string uri);
 
-void	HttpResponse::_give_content_type(Request &request)
+void	HttpResponse::_add_content_type(Request &request)
 {
 	if (request.request_line.method == "GET")	// TODO: gérer POST et DELETE // TOOD:verifier la casse
 	{
