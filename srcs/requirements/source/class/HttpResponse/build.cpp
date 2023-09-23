@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:00:08 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/22 18:51:59 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/22 19:03:54 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	HttpResponse::build( Request &request, char **env )	// ! throw possible
 	else if ( request.request_line.method == "POST" )
 	{
 		if ( _post_method( request, env ) == true )			// ! throw possible
-			return ;
+			return ;										// TODO: add parsing on body
 	}
 	else if ( request.request_line.method == "DELETE" )
 		_delete_method( request );							// ! throw possible

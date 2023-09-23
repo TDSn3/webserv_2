@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 09:52:55 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/22 18:15:07 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/23 18:46:51 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,5 @@ void	HttpResponse::_make_response( Request &request )	// ! throw possible
 /*                                                                            */
 /* ************************************************************************** */
 
-	str_response += "\r\n";
 	str_response += str_body;
 }
