@@ -6,11 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 19:41:02 by yfoucade          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/09/15 17:03:24 by yfoucade         ###   ########.fr       */
-=======
-/*   Updated: 2023/09/13 21:35:08 by tda-silv         ###   ########.fr       */
->>>>>>> yf-test-merge-thomas
+/*   Updated: 2023/09/25 15:47:51 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +75,10 @@ void Server::print_config( void )
 	for ( unsigned long i=0; i < _names.size(); ++i )
 		std::cout << " " << _names[i];
 	std::cout << std::endl;
-<<<<<<< HEAD
 	std::cout << "Default Error Pages\n";
 	print_map(_default_error_pages);
 	std::cout << "Max client body size: " << _max_client_body_size << std::endl;
-	std::cout << "Locations:" << std::endl;
-=======
 	std::cout << COLOR_DIM_BLUE<< "Locations:" << COLOR_RESET << std::endl;
->>>>>>> yf-test-merge-thomas
 	for ( location_map::iterator it = _locations.begin(); it != _locations.end(); ++it)
 	{
 		it->second.print_location();
