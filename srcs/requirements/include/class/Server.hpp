@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 17:47:51 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/14 22:42:12 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/09/25 15:42:42 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 #include <string>
 
 #include "Connection.hpp"
-#include "exceptions.hpp"
-#include "Location.hpp"
+#include "other/exceptions.hpp"
+#include "other/Location.hpp"
 #include "Origin.hpp"
 
 class Server
@@ -36,7 +36,7 @@ class Server
 		const std::set< Origin >				&get_origins( void ) const;	// used
 		bool									listens_to_origin( const Origin& );
 		bool									has_server_name( const std::string& );
-		void									reply( Connection& );
+		void									reply( Connection &connection, char **env );
 
 	private :
 

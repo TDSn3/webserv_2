@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:58:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/13 11:03:20 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/09/22 16:05:36 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,24 +44,32 @@
 # include <algorithm>
 # include <climits>
 # include <cstdlib>
+# include <cstdio>
 
 # include "colors.hpp"
 # include "utils.hpp"
 
+# include "class/other/exceptions.hpp"
+# include "class/other/file_io.hpp"
+# include "class/other/Location.hpp"
+# include "class/other/LogFile.hpp"
+# include "class/other/print_utils.hpp"
+# include "class/other/parsing_utils.hpp"
+# include "class/other/RequestLine.hpp"
+# include "class/other/StatusCode.hpp"
+
 # include "class/Connection.hpp"
-# include "class/exceptions.hpp"
-# include "class/file_io.hpp"
 # include "class/Gateway.hpp"
 # include "class/HttpResponse.hpp"
-# include "class/Location.hpp"
-# include "class/LogFile.hpp"
 # include "class/Origin.hpp"
-# include "class/print_utils.hpp"
-# include "class/parsing_utils.hpp"
 # include "class/Request.hpp"
-# include "class/RequestLine.hpp"
 # include "class/Server.hpp"
 
-void	listen_loop(char **env);
+bool	check_arg( const int argc, const char * const *argv );
+void	handler( int sig );
+bool	my_perror( const char *str );
+void	my_perror_and_throw( const char *str, const std::exception &e );
+void	my_perror_and_throw( const char *str, const StatusCode &e );
+void	listen_loop( Gateway &gateway, char **env );	// ! throw possible
 
 #endif

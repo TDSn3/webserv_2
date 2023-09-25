@@ -6,7 +6,11 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 19:41:02 by yfoucade          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/09/15 17:03:24 by yfoucade         ###   ########.fr       */
+=======
+/*   Updated: 2023/09/13 21:35:08 by tda-silv         ###   ########.fr       */
+>>>>>>> yf-test-merge-thomas
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,20 +70,23 @@ Server::~Server(){}
 
 void Server::print_config( void )
 {
-	std::cout << COLOR_DIM_BLUE << "Config of Server #" << _id << COLOR_RESET << std::endl;
-	std::cout << "Origins:\n";
+	std::cout << COLOR_DIM_BLUE << "Origins:\n" << COLOR_RESET;
 	for (std::set< Origin >::iterator it = _origins.begin(); it != _origins.end(); ++it)
 	{
 		std::cout << "\t" << it->get_host() << ":" << COLOR_BOLD_BLUE << it->get_port() << COLOR_RESET << std::endl;
 	}
-	std::cout << "Names:";
+	std::cout << COLOR_DIM_BLUE << "Names:" << COLOR_RESET;
 	for ( unsigned long i=0; i < _names.size(); ++i )
 		std::cout << " " << _names[i];
 	std::cout << std::endl;
+<<<<<<< HEAD
 	std::cout << "Default Error Pages\n";
 	print_map(_default_error_pages);
 	std::cout << "Max client body size: " << _max_client_body_size << std::endl;
 	std::cout << "Locations:" << std::endl;
+=======
+	std::cout << COLOR_DIM_BLUE<< "Locations:" << COLOR_RESET << std::endl;
+>>>>>>> yf-test-merge-thomas
 	for ( location_map::iterator it = _locations.begin(); it != _locations.end(); ++it)
 	{
 		it->second.print_location();
@@ -264,27 +271,4 @@ bool Server::has_server_name( const std::string& name )
 			return true;
 	}
 	return false;
-}
-
-void	Server::reply( Connection& connection )
-{
-	connection.response.build(connection.get_request(), NULL);	// TODO: ajouter l'env;
-	
-	size_t	to_send =  connection.response.str_response.size();
-	ssize_t	sended;
-
-	std::cout << "Server #" << _id << " responds to connection.\n";			
-	std::cout << "[" << COLOR_BOLD_GREEN << "RESPONSE" << COLOR_RESET << "]\n" << connection.response.str_response << std::endl;
-	std::cout << "[" << COLOR_BOLD_RED << "END OF RESPONSE" << COLOR_RESET << "]\n" << std::endl;
-
-	std::cout << COLOR_MAGENTA << connection.get_socket() << COLOR_RESET << "\n";
-	std::cout << COLOR_MAGENTA << to_send << COLOR_RESET << "\n";
-	sended = send(connection.get_socket() , connection.response.str_response.c_str() , to_send, 0);
-	std::cout << COLOR_MAGENTA << "3: " << sended << COLOR_RESET << "\n";
-	if (sended < static_cast<ssize_t>(to_send) )
-	{
-		std::cout << COLOR_BOLD_RED << "RESPONSE WAS NOT COMPLETELY SEND !" << std::endl;	// TODO: gerer cela
-	}
-	connection.response.clear();	
-	connection.flush_request();
 }

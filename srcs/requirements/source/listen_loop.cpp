@@ -5,33 +5,32 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/12 14:42:00 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/13 10:54:06 by tda-silv         ###   ########.fr       */
+/*   Created: 2023/09/17 10:24:15 by tda-silv          #+#    #+#             */
+/*   Updated: 2023/09/17 10:36:42 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
-void Gateway::listen_loop( char **env )
+void	listen_loop( Gateway &gateway, char **env )	// ! throw possible
 {
-	(void) env;
+	int					ret;
+	std::vector<pollfd>	&poll_struct = gateway.poll_struct;
 
-	while (true)
-	{	
-		int	ret;
-				
-		// reset_fds();
+	std::cout << COLOR_GREEN << "\n+++++++ Waiting for new connection ++++++++\n" << COLOR_RESET << std::endl;
 
-		ret = poll(poll_struct.data(), static_cast<nfds_t>(poll_struct.size() ), 0);	// poll() vérifie l'état de chaque socket
+	while (1)
+	{
+		ret = poll(poll_struct.data(), static_cast<nfds_t>(poll_struct.size() ), 0);
 		if (ret == -1)
-			perror("poll error");	// TODO: a gerer plus tard
-		
-		// select(get_max_socket_fd() + 1, &_readfds, &_writefds, NULL, NULL);
+			my_perror_and_throw("poll error", std::exception() );
 
+		gateway.check_new_connections();
+		gateway.receive_on_connections();
+		gateway.send_responses( env );
+		gateway.close_connections();
 
-		check_new_connections();
-		receive_on_connections();
-		send_responses();
-		close_connections();
+		if (siginit_status)
+			break ;
 	}
 }

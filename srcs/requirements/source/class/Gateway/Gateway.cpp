@@ -6,17 +6,19 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:30:24 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/18 11:44:43 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/09/25 15:43:23 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
+typedef std::vector< Server >::iterator	server_iter_type;
+
 Gateway::Gateway( std::string config_file ) : _fatal_error(false)
 {
 	std::vector< std::string > content = read_file(config_file);
 	create_servers(content);
-	
+
 	create_origin_sockets_mapping();
 	print_origin_sockets_mapping();
 }
@@ -107,22 +109,6 @@ struct addrinfo* Gateway::resolve_name( const Origin& origin )
 	return res;
 }
 
-void	Gateway::check_new_connections( void )
-{
-	socket_iter_type	socket_iter = _map_origin_socket.begin();
-	size_t				i;
-
-	i = 0;
-	while (i < poll_struct.size() && i < _map_origin_socket.size() )
-	{
-		if ( poll_struct[i].revents & POLLIN )
-			open_connection( socket_iter->first, poll_struct[i] );
-
-		i++;
-	}
-}
-
-
 void	Gateway::open_connection( Origin origin, pollfd pfd )
 {
 	// todo: dup() and do not add to _connections if initialization failed
@@ -131,46 +117,14 @@ void	Gateway::open_connection( Origin origin, pollfd pfd )
 	if (new_socket > -1)	// si une nouvelle connexion est arrivée et donc qu'il y a un client à créer
 	{
 		std::cout << "Accepted new connection on ";
-		std::cout << origin.get_host() << ":" << origin.get_port() << ". ";
-		std::cout << "new socket on fd: " << new_socket << std::endl;
+		std::cout << origin.get_host() << ":" << COLOR_BOLD_BLUE << origin.get_port() << COLOR_RESET << ". ";
+		std::cout << "new socket on fd: " << COLOR_GREEN << new_socket << COLOR_RESET << "\n";
 		_connections.push_back( Connection(origin, new_socket) );
 		_add_fd_poll_struct(new_socket, (POLLIN | POLLOUT) );
 	}
 }
 
-void	Gateway::receive_on_connections( void )
-{
-	size_t							i = _map_origin_socket.size();
-
-	while (i < poll_struct.size() )
-	{
-		if (poll_struct[i].revents & (POLLIN | POLLERR | POLLHUP) )
-		{
-			_connections[i - _map_origin_socket.size() ].receive();
-		}
-		i++;
-	}
-}
-
-void	Gateway::send_responses( void )
-{
-	size_t							i = _map_origin_socket.size();
-	server_iter_type				server_iter;
-
-	while (i < poll_struct.size() )
-	{
-		if (poll_struct[i].revents & POLLOUT && _connections[i - _map_origin_socket.size() ].is_ready_for_reply() == true )
-		{
-			// TODO: send data
-			server_iter = decide_server(  _connections[i - _map_origin_socket.size() ] );
-			server_iter->reply( _connections[i - _map_origin_socket.size() ] );
-		}
-		i++;
-	}
-}
-
-typename Gateway::server_iter_type
-Gateway::decide_server( Connection& connection )
+server_iter_type Gateway::decide_server( Connection& connection )
 {
 	server_iter_type	it = _servers.begin();
 	server_iter_type	end = _servers.end();
@@ -192,7 +146,7 @@ Gateway::decide_server( Connection& connection )
 		if ( res == end )
 		{
 			res = it;
-			std::cout << "decide_server: Server #" << res->get_id() << " is default\n";
+			std::cout << "decide_server: Server #" << res->get_id() << " is default\n\n";
 		}
 	}
 	return res;
@@ -255,12 +209,4 @@ void 	Gateway::print_origin_sockets_mapping( void )
 		std::cout << " has socket number " << COLOR_GREEN << it->second.fd << COLOR_RESET;
 		std::cout << std::endl;
 	}
-}
-
-void	Gateway::reply( Connection& connection )
-{
-	(void)connection;
-	// Origin origin = connection.get_origin();
-	// std::cout << "Replying on origin: " << origin.get_host();
-	// std::cout << ":" << origin.get_port() << std::endl;
 }

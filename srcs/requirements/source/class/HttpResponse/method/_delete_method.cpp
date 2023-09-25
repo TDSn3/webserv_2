@@ -1,40 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   _read_file_in_str.cpp                              :+:      :+:    :+:   */
+/*   _delete_method.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/31 11:12:26 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/23 18:45:57 by tda-silv         ###   ########.fr       */
+/*   Created: 2023/09/17 14:08:02 by tda-silv          #+#    #+#             */
+/*   Updated: 2023/09/22 15:31:35 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
-std::string	HttpResponse::_read_file_in_str( std::string path )	// ! throw possible
+void	HttpResponse::_delete_method( Request &request )	// ! throw possible
 {
-	std::string			new_path;
-	std::ifstream		file;
-	std::ostringstream	oss;
-	std::string			str;
+	std::string	path;
+	std::string	new_path;
 
+	path = request.request_line.parsed_url.path;
 	if ( !path.empty() && path[0] == '/' )
 		new_path = std::string( ROOT ) + path;
 	else if ( !path.empty() && path[0] != '/' )
 		new_path = std::string( ROOT ) + "/" + path;
 
-	file.open( new_path.c_str() );
-	if ( !file.good() || !file.is_open() )
-	{
-		file.close();
-		my_perror_and_throw( "Error: could not open file", StatusCode( 404 ) );
-	}
-
-    oss << file.rdbuf();
-	str = oss.str();
-
-	file.close();
-
-	return (str);
+	if ( std::remove( new_path.c_str() ) == 0 )
+		_set_status_line( 200, "OK" );
+	else
+		my_perror_and_throw( "HttpResponse::_delete_method: internal server error", StatusCode(500) );
 }

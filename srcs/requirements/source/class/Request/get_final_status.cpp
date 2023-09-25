@@ -1,23 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   _set_non_blocking_fd.cpp                           :+:      :+:    :+:   */
+/*   get_final_status.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/12 13:20:00 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/12 13:21:18 by tda-silv         ###   ########.fr       */
+/*   Created: 2023/09/22 15:59:46 by tda-silv          #+#    #+#             */
+/*   Updated: 2023/09/22 16:01:03 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
-int	Gateway::_set_non_blocking_fd(int fd)
+e_final_status	Request::get_final_status( void )
 {
-	if (fcntl(fd, F_SETFL, O_NONBLOCK) )	// unique utilisation autorisé par le sujet
-	{
-		close(fd);
-		// my_perror_and_throw("fcntl", std::exception() );
-	}
-	return (0);
+	return _final_status;
 }

@@ -1,3 +1,2 @@
-GET test.com:43/card HTTP/1.1
-Host: localhost:8181
-
+DELETE delete.http HTTP/1.1
+Host: localhost:8080

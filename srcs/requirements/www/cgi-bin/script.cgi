@@ -3,7 +3,19 @@
 import cgi
 import sys
 
-print("Script CGI en Python :")
+content = "Script CGI en Python :"
 
 for arg in sys.argv:
-	print(arg)
+	content += "\n" + arg
+
+content_length = len(content.encode('utf-8'))
+
+
+
+print("HTTP/1.1 200 OK")
+
+print("content-type: text/html")
+print(f"Content-Length: {content_length}")
+print()
+
+print(content)

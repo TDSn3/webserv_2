@@ -1,38 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   _set_non_blocking_fd.cpp                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/11 15:58:01 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/22 17:31:59 by tda-silv         ###   ########.fr       */
+/*   Created: 2023/09/12 13:20:00 by tda-silv          #+#    #+#             */
+/*   Updated: 2023/09/22 16:06:27 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
-volatile sig_atomic_t	siginit_status = 0;
-
-int	main( int argc, char **argv, char **env )
+int	Gateway::_set_non_blocking_fd(int fd)
 {
-	// LogFile		log_file;				// redirige cout et cerr vers le fichier log
-
-	if ( check_arg( argc, argv ) == false )
-		return ( 1 );
-
-	signal( SIGINT, handler );
-
-	try
+	if ( fcntl(fd, F_SETFL, O_NONBLOCK) )	// unique utilisation autorisé par le sujet
 	{
-		Gateway gateway( argc == 1 ? DEFAULT_CONF_FILE : argv[1] );
-
-		listen_loop( gateway, env );	// ! throw possible
+		close(fd);
+		// my_perror_and_throw("fcntl", std::exception() );
 	}
-	catch( const std::exception &e )
-	{
-		return ( 1 );
-	}
-
-	return ( 0 );
+	return (0);
 }

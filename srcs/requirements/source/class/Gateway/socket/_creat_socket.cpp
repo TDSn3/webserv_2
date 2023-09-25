@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   _assign_socket_name.cpp                               :+:      :+:    :+:   */
+/*   _creat_socket.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/01 15:03:33 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/08/23 12:56:18 by tda-silv         ###   ########.fr       */
+/*   Created: 2023/08/01 14:48:34 by tda-silv          #+#    #+#             */
+/*   Updated: 2023/08/23 12:56:34 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,18 @@
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   htonl()	: convertit un entier  non  signé (par exemple une adresse)	  */
-/*				  en une représentation réseau.								  */
-/*   htons()	: convertit un entier court non  signé (par exemple port)	  */
-/*				  en une représentation réseau.								  */
+/*   AF_INET		: IPv4.													  */
+/*   SOCK_STREAM	: flux d'octets full-duplex.							  */
 /*                                                                            */
 /* ************************************************************************** */
-void	Gateway::_assign_socket_name(const Origin& origin, int &fd, struct sockaddr_in &address)
+int	Gateway::_creat_socket(void)
 {
-	std::stringstream	ss(origin.get_port() );
-	int					port;
-
-	ss >> port;
-	memset( (char *) &address, 0, sizeof(address) );
-	address.sin_family = AF_INET;
-	address.sin_addr.s_addr = INADDR_ANY; 
-	address.sin_port = htons(static_cast<uint16_t>(port) );
-
-	if (bind(fd, (struct sockaddr *) &address, sizeof(address) ) < 0) 
+	int	fd;
+	
+	fd = socket(AF_INET, SOCK_STREAM /*| SOCK_CLOEXEC*/, 0); // TODO: erreur MacOS remettre plus tard
+	if (fd < 0) 
 	{
 		// TODO: err plus tard
 	}
+	return (fd);
 }

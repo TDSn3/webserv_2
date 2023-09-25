@@ -1,38 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   receive_on_connections.cpp                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/11 15:58:01 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/22 17:31:59 by tda-silv         ###   ########.fr       */
+/*   Created: 2023/09/17 10:33:10 by tda-silv          #+#    #+#             */
+/*   Updated: 2023/09/22 15:46:33 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
-volatile sig_atomic_t	siginit_status = 0;
-
-int	main( int argc, char **argv, char **env )
+void	Gateway::receive_on_connections( void )
 {
-	// LogFile		log_file;				// redirige cout et cerr vers le fichier log
+	size_t	i = _map_origin_socket.size();
 
-	if ( check_arg( argc, argv ) == false )
-		return ( 1 );
-
-	signal( SIGINT, handler );
-
-	try
+	while ( i < poll_struct.size() )
 	{
-		Gateway gateway( argc == 1 ? DEFAULT_CONF_FILE : argv[1] );
-
-		listen_loop( gateway, env );	// ! throw possible
+		if ( poll_struct[i].revents & (POLLIN | POLLERR | POLLHUP) )
+			_connections[ i - _map_origin_socket.size() ].receive();
+		i++;
 	}
-	catch( const std::exception &e )
-	{
-		return ( 1 );
-	}
-
-	return ( 0 );
 }
+ 
