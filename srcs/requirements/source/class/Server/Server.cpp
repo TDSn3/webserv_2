@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 19:41:02 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/25 15:47:51 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/09/26 15:25:16 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void Server::print_config( void )
 	std::cout << std::endl;
 	std::cout << "Default Error Pages\n";
 	print_map(_default_error_pages);
-	std::cout << "Max client body size: " << _max_client_body_size << std::endl;
+	// std::cout << "Max client body size: " << _max_client_body_size << std::endl;	// TODO: error valgrind
 	std::cout << COLOR_DIM_BLUE<< "Locations:" << COLOR_RESET << std::endl;
 	for ( location_map::iterator it = _locations.begin(); it != _locations.end(); ++it)
 	{
