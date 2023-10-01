@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Location.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:45:48 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/10/01 13:34:18 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/01 14:51:15 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 class Location
 {
 	public:
-		typedef std::map< std::string, std::vector< std::string > > parameters_map;
+		typedef std::map< std::string, std::vector< std::string > >	parameters_map;
+
 		std::map< std::string, std::vector< std::string > > _parameters;
 		std::string _uri;
 		Location();
