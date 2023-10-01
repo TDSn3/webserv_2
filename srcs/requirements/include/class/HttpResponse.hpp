@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 15:43:46 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/01 12:46:40 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/01 13:00:36 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 # define HTTPRESPONSE_HPP
 
 # include <iostream>
-
 # include "../utils.hpp"
 
 class Request;
+class Server;
 
 struct s_status_line
 {
@@ -41,9 +41,6 @@ struct s_status_line
 /*   **	RFC 2616 - 6.1 Status-Line											  */
 /*                                                                            */
 /* ************************************************************************** */
-
-#pragma once
-#include "Server.hpp"
 
 class HttpResponse
 {

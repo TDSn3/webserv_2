@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 17:47:51 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/10/01 12:18:21 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/01 12:57:47 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <vector>
 #include <string>
 
+#include "HttpResponse.hpp"
 #include "Connection.hpp"
 #include "other/exceptions.hpp"
 #include "other/Location.hpp"

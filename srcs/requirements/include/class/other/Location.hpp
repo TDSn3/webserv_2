@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:45:48 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/10/01 12:31:04 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/01 13:34:18 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,5 @@ class Location
 		void	parse_index( std::string, std::vector< std::string > );
 		void	parse_cgi( std::string, std::vector< std::string > );
 		void	parse_upload_store( std::string, std::vector< std::string > );
+		void	parse_client_max_body_size( std::string , std::vector< std::string > );
 };

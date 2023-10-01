@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 19:41:02 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/26 15:25:16 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/01 13:23:08 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ Server::Server( const Server& other ):
 _id(other._id),
 _parsing_error(other._parsing_error),
 _origins(other._origins),
-_names(other._names){}
+_names(other._names),
+_locations(other._locations){}
 
 Server::~Server(){}
 

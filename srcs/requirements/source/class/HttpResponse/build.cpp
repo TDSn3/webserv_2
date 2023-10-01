@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:00:08 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/01 12:44:15 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/01 13:34:50 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@ void	HttpResponse::build( Request &request, char **env, Server& server )	// ! th
 	Location* location = server.select_location( request.request_line.parsed_url.path );
 	if ( location )
 		location->print_location();
+	else
+	{
+		std::cout << "No matching location\n";
+	}
 	if ( request.request_line.method == "GET" )
 	{
 		if ( _get_method( request, env ) == true )			// ! throw possible

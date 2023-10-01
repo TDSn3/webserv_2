@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:55:13 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/15 23:30:53 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/01 13:34:13 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	Location::init_allowed_methods( void )
 }
 
 Location::Location( const Location& other ):
-_uri(other._uri), _parameters(other._parameters)
+_parameters(other._parameters), _uri(other._uri)
 {}
 
 
@@ -87,6 +87,8 @@ void	Location::parse_location_line(
 		parse_cgi(line, tokens);
 	if ( tokens[0] == "upload_store" )
 		parse_upload_store(line, tokens);
+	if ( tokens[0] == "client_max_body_size" )
+		parse_client_max_body_size(line, tokens);
 }
 
 void	Location::set_root( std::string line, std::vector< std::string > tokens )
@@ -137,6 +139,13 @@ void	Location::parse_upload_store( std::string line, std::vector< std::string > 
 	if ( tokens.size() < 3 )
 		throw ParsingError(line, "Missing arguments for 'upload_store' directive.");
 	_parameters["upload_store"] = std::vector< std::string >(tokens.begin() + 1, tokens.end() - 1);
+}
+
+void	Location::parse_client_max_body_size( std::string line, std::vector< std::string > tokens )
+{
+	if ( tokens.size() < 3 )
+		throw ParsingError(line, "Missing arguments for 'client_max_body_size' directive.");
+	_parameters["client_max_body_size"] = std::vector< std::string >(tokens.begin() + 1, tokens.end() - 1);
 }
 
 void Location::print_location( void )

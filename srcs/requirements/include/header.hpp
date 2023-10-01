@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:58:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/22 16:05:36 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/01 12:58:27 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@
 # include "class/other/print_utils.hpp"
 # include "class/other/parsing_utils.hpp"
 # include "class/other/RequestLine.hpp"
+# include "class/HttpResponse.hpp"
 # include "class/other/StatusCode.hpp"
 
 # include "class/Connection.hpp"
 # include "class/Gateway.hpp"
-# include "class/HttpResponse.hpp"
 # include "class/Origin.hpp"
 # include "class/Request.hpp"
 # include "class/Server.hpp"
