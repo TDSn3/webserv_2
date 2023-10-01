@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:45:48 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/15 23:29:10 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/01 12:31:04 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,10 @@
 
 class Location
 {
-	private:
-		typedef std::map< std::string, std::vector< std::string > > parameters_map;
-		std::string _uri;
-		std::map< std::string, std::vector< std::string > > _parameters;
-
 	public:
+		typedef std::map< std::string, std::vector< std::string > > parameters_map;
+		std::map< std::string, std::vector< std::string > > _parameters;
+		std::string _uri;
 		Location();
 		Location(
 			std::vector< std::string >::iterator first,

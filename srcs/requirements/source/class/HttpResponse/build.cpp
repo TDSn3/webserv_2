@@ -3,20 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   build.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:00:08 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/22 19:03:54 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/01 12:44:15 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
-void	HttpResponse::build( Request &request, char **env )	// ! throw possible
-{	
+void	HttpResponse::build( Request &request, char **env, Server& server )	// ! throw possible
+{
 	if ( request.get_final_status() == bad_request )
 		my_perror_and_throw( "bad request", StatusCode( 400 ) );
 
+	Location* location = server.select_location( request.request_line.parsed_url.path );
+	if ( location )
+		location->print_location();
 	if ( request.request_line.method == "GET" )
 	{
 		if ( _get_method( request, env ) == true )			// ! throw possible

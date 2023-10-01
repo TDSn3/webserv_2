@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpResponse.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 15:43:46 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/22 18:52:19 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/01 12:46:40 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@ struct s_status_line
 /*   **	RFC 2616 - 6.1 Status-Line											  */
 /*                                                                            */
 /* ************************************************************************** */
+
+#pragma once
+#include "Server.hpp"
+
 class HttpResponse
 {
 	public:
@@ -53,7 +57,7 @@ class HttpResponse
 
 		std::string		str_response;
 
-		void			build(Request &request, char **env);						// ! throw possible
+		void			build(Request &request, char **env, Server& server);						// ! throw possible
 		void			build_error(Request &request, const int status_code);
 		bool			status(void);
 		void			clear(void);
