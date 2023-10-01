@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   _read_file_in_str.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:12:26 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/23 18:45:57 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/01 17:54:57 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,11 @@
 
 std::string	HttpResponse::_read_file_in_str( std::string path )	// ! throw possible
 {
-	std::string			new_path;
 	std::ifstream		file;
 	std::ostringstream	oss;
 	std::string			str;
 
-	if ( !path.empty() && path[0] == '/' )
-		new_path = std::string( ROOT ) + path;
-	else if ( !path.empty() && path[0] != '/' )
-		new_path = std::string( ROOT ) + "/" + path;
-
-	file.open( new_path.c_str() );
+	file.open( path.c_str() );
 	if ( !file.good() || !file.is_open() )
 	{
 		file.close();
