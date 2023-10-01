@@ -6,24 +6,15 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 14:08:02 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/22 15:31:35 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/01 16:33:28 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
-void	HttpResponse::_delete_method( Request &request )	// ! throw possible
+void	HttpResponse::_delete_method( std::string &path )	// ! throw possible
 {
-	std::string	path;
-	std::string	new_path;
-
-	path = request.request_line.parsed_url.path;
-	if ( !path.empty() && path[0] == '/' )
-		new_path = std::string( ROOT ) + path;
-	else if ( !path.empty() && path[0] != '/' )
-		new_path = std::string( ROOT ) + "/" + path;
-
-	if ( std::remove( new_path.c_str() ) == 0 )
+	if ( std::remove( path.c_str() ) == 0 )
 		_set_status_line( 200, "OK" );
 	else
 		my_perror_and_throw( "HttpResponse::_delete_method: internal server error", StatusCode(500) );

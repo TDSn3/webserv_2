@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 14:57:55 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/22 18:56:04 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/01 16:20:11 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,8 @@
 /*   std::ios::binary	Ouvre le fichier en mode binaire,					  */
 /*                                                                            */
 /* ************************************************************************** */
-bool	HttpResponse::_post_method( Request &request, char **env )	// ! throw possible
+bool	HttpResponse::_post_method( Request &request, char **env, std::string &path )	// ! throw possible
 {
-	std::string		path;
-	std::string		new_path;
 	std::ofstream	out_file;
 
 	if ( path.find( "cgi-bin/" ) != std::string::npos )
@@ -34,13 +32,7 @@ bool	HttpResponse::_post_method( Request &request, char **env )	// ! throw possi
 		return ( true );	
 	}
 
-	path = request.request_line.parsed_url.path;
-	if ( !path.empty() && path[0] == '/' )
-		new_path = std::string( ROOT ) + path;
-	else if ( !path.empty() && path[0] != '/' )
-		new_path = std::string( ROOT ) + "/" + path;
-
-	out_file.open( new_path.c_str() , std::ios::out | std::ios::binary );
+	out_file.open( path.c_str() , std::ios::out | std::ios::binary );
 
 	if ( out_file.fail() )
 		my_perror_and_throw( "HttpResponse::_post_method: internal server error", StatusCode( 500 ) );

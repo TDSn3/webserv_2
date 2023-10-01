@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpResponse.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 15:43:46 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/01 13:00:36 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/01 16:38:17 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,18 +63,18 @@ class HttpResponse
 
 	private:
 
-		std::string		_read_file_in_str(std::string path);						// ! throw possible
-		std::string		_exec_cgi(std::string path, Request &request, char **env);	// ! throw possible
-		void			_make_response(Request &request);							// ! throw possible
-		void			_add_content_type(Request &request);
+		std::string		_read_file_in_str(std::string path);							// ! throw possible
+		std::string		_exec_cgi(std::string path, Request &request, char **env);		// ! throw possible
+		void			_make_response( std::string &path );			// ! throw possible
+		void			_add_content_type( std::string &path );
 		void			_make_reason_phrase(void);
 		void			_add_status_line(void);
 		void			_add_field_line(std::string field_name, std::string field_value);
 		void			_add_body(std::string path);
 		void			_set_status_line( int code, std::string reason_phrase);
-		bool			_get_method( Request &request, char **env );				// ! throw possible
-		bool			_post_method( Request &request, char **env );				// ! throw possible
-		void			_delete_method( Request &request );							// ! throw possible
+		bool			_get_method( Request &request, char **env, std::string &path );		// ! throw possible
+		bool			_post_method( Request &request, char **env, std::string &path );	// ! throw possible
+		void			_delete_method( std::string &path );								// ! throw possible
 
 };
 

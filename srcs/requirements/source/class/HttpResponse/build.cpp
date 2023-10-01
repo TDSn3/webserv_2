@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:00:08 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/01 15:57:58 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/01 16:51:04 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,29 +33,29 @@ void	HttpResponse::build( Request &request, char **env, Server& server )	// ! th
 	
 	
 	rewrite_path( new_path, location, request.request_line.parsed_url.path );
-	//std::cout << COLOR_BOLD_GREEN << "============> " << new_path << COLOR_RESET << "\n";
+	std::cout << COLOR_BOLD_GREEN << "path : " << new_path << COLOR_RESET << "\n";
 
 	if ( is_allowed_methods( location, request.request_line.method ) == true )
 	{
 		if ( request.request_line.method == "GET" )
 		{
-			if ( _get_method( request, env ) == true )			// ! throw possible
-				return ;										// Le CGI a rempli la réponse
+			if ( _get_method( request, env, new_path ) == true )	// ! throw possible
+				return ;											// Le CGI a rempli la réponse
 		}
 		else if ( request.request_line.method == "POST" )
 		{
-			if ( _post_method( request, env ) == true )			// ! throw possible
-				return ;										// TODO: add parsing on body
+			if ( _post_method( request, env, new_path ) == true )	// ! throw possible
+				return ;											// TODO: add parsing on body
 		}
 		else if ( request.request_line.method == "DELETE" )
-			_delete_method( request );
+			_delete_method( new_path );
 		else
 			my_perror_and_throw( "method not allowed", StatusCode( 405 ) );
 	}
 	else
 		my_perror_and_throw( "method not allowed", StatusCode( 405 ) );
 
-	_make_response( request );								// ! throw possible
+	_make_response( new_path );							// ! throw possible
 };
 
 static bool	is_allowed_methods( Location *location, std::string method )
