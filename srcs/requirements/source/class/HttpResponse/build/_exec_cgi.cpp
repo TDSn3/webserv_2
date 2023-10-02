@@ -6,14 +6,15 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/02 13:21:08 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/02 15:55:02 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
 static void	new_char_for_execve( Request &request, std::vector<char *> &arg_for_execve, std::string &path );
-static void	new_char_for_env_update( std::vector<char *> &env_update, char **env );
+static void	new_char_for_env_update( std::vector<char *> &env_update, char **env, Request &request );
+static void	env_update_push_back( std::vector<char *> &env_update, const char *str_to_add );
 
 std::string	HttpResponse::_exec_cgi( std::string path, Request &request, char **env )	// ! throw possible
 {
@@ -31,7 +32,7 @@ std::string	HttpResponse::_exec_cgi( std::string path, Request &request, char **
 		my_perror_and_throw( "cgi file is not readable or executable", StatusCode( 403 ) );
 
 	new_char_for_execve( request, arg_for_execve, path );
-	new_char_for_env_update( env_update, env );
+	new_char_for_env_update( env_update, env, request );
 
 	pipe( pipefd );							// pipefd[0] en lecture, pipefd[1] en écriture
 
@@ -41,7 +42,7 @@ std::string	HttpResponse::_exec_cgi( std::string path, Request &request, char **
 	{
 		close( pipefd[0] ); 				// ferme l'extrémité en lecture
 		dup2( pipefd[1], STDOUT_FILENO );	// redirige stdout vers pipefd[1]
-		execve( path.c_str(), arg_for_execve.data(), env );
+		execve( path.c_str(), arg_for_execve.data(), env_update.data() );
 	}
 	else if (pid > 0)						// parent
 	{
@@ -86,17 +87,23 @@ static void	new_char_for_execve( Request &request, std::vector<char *> &arg_for_
 	arg_for_execve.push_back( NULL );
 }
 
-static void	new_char_for_env_update( std::vector<char *> &env_update, char **env )
+static void	new_char_for_env_update( std::vector<char *> &env_update, char **env, Request &request )
+{
+	for ( size_t i = 0; env[i]; i++ )
+		env_update_push_back( env_update, env[i] );
+
+	env_update_push_back( env_update, ( "REQUEST_METHOD=" + request.request_line.method ).c_str() );
+	env_update_push_back( env_update, ( "SERVER_PROTOCOL=" + request.request_line.get_version() ).c_str() );
+	env_update_push_back( env_update,  "PATH_INFO=/" );
+
+	env_update.push_back( NULL );
+}
+
+static void	env_update_push_back( std::vector<char *> &env_update, const char *str_to_add )
 {
 	char	*str;
-
-	std::cout << COLOR_GREEN << "COUCOU" << COLOR_RESET << "\n";
-	for ( size_t i = 0; env[i]; i++ )
-	{
-		std::cout << COLOR_GREEN << env[i] << COLOR_RESET << "\n";
-		str = new char[ std::string( env[i] ).size() + 1 ];
-		std::strcpy( str, env[i] );
-		env_update.push_back( str );
-	}
-	env_update.push_back( NULL );
+		
+	str = new char[ std::string( str_to_add ).size() + 1 ];
+	std::strcpy( str, str_to_add );
+	env_update.push_back( str );
 }

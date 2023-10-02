@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 11:25:27 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/22 16:34:01 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/02 15:23:23 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,11 @@ int RequestLine::get_major_version( void )
 int RequestLine::get_minor_version( void )
 {
 	return _minor_version;
+}
+
+std::string RequestLine::get_version( void )
+{
+	return _http_version;
 }
 
 bool RequestLine::has_syntax_error( void )

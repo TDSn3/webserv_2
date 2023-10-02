@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 22:51:53 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/22 16:34:13 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/02 15:23:53 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ class RequestLine
 		void			print_request_line_two( void );
 		int				get_major_version( void );
 		int				get_minor_version( void );
+		std::string		get_version( void );
 		bool			has_syntax_error( void );
 
 	private:

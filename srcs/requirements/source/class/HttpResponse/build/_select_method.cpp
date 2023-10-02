@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:58:54 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/02 13:23:12 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/02 14:54:00 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 bool	HttpResponse::_select_method( Request &request, char **env, Location *location, std::string path )	// ! throw possible
 {
 	if ( is_allowed_methods( location, request.request_line.method ) == true )
-	{	
-		location == NULL ? std::cout << "OUI\n" : std::cout << "NON\n";
-		
+	{			
 		if ( location && location->_parameters.find( "cgi" ) != location->_parameters.end() )
 		{
 			std::cout << COLOR_BOLD_CYAN << "CGI detected" << COLOR_RESET << std::endl;
