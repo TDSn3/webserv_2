@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/02 22:08:51 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/02 22:12:20 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	new_char_for_execve( Request &request, std::vector<char *> &arg_for_execve, std::string &path );
 static void	new_char_for_env_update( std::vector<char *> &env_update, char **env, Request &request );
 static void	env_update_push_back( std::vector<char *> &env_update, const char *str_to_add );
-static void	write_all_body( std::string &body, int *stdin_pipefd );
+static void	write_all_body( std::string &body, int stdin_pipefd[2] );
 
 std::string	HttpResponse::_exec_cgi( std::string path, Request &request, char **env )	// ! throw possible
 {
@@ -56,7 +56,7 @@ std::string	HttpResponse::_exec_cgi( std::string path, Request &request, char **
 
 		close( pipefd[1] );  				// ferme l'extrémité en écriture
 		close( stdin_pipefd[0] );
-		write_all_body( request.get_body(), &stdin_pipefd );	// envois le body au CGI
+		write_all_body( request.get_body(), stdin_pipefd );	// envois le body au CGI
 		close( stdin_pipefd[1] );
 		while ( ret > 0 )
 		{
@@ -116,7 +116,7 @@ static void	env_update_push_back( std::vector<char *> &env_update, const char *s
 	env_update.push_back( str );
 }
 
-static void	write_all_body( std::string &body, int *stdin_pipefd )
+static void	write_all_body( std::string &body, int stdin_pipefd[2] )
 {
 	ssize_t written;
 	ssize_t	total_written;
@@ -126,7 +126,7 @@ static void	write_all_body( std::string &body, int *stdin_pipefd )
 	size_body = body.size();
 	while ( total_written < size_body )
 	{
-		written = write( stdin_pipefd[1], body.c_str(), rbody.size() );
+		written = write( stdin_pipefd[1], body.c_str(), body.size() );
 		total_written += written;
 		body.erase( 0, written );
 	}
