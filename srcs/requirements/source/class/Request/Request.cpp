@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 11:59:07 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/10/02 11:34:21 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/02 12:24:41 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -357,7 +357,6 @@ void	Request::parse_chunk_size( const std::string & line)
 {
 	
 	// TODO: check that whole line's syntax is correct
-	std::cout << "parse_chunk_line: got: " << line << std::endl;
 	std::string::const_iterator size_end = line.begin();
 	
 	while ( (size_end != line.end()) && is_hexdigit(*size_end) )
@@ -380,7 +379,6 @@ void	Request::parse_chunk_size( const std::string & line)
 	// 	_final_status = bad_request;
 	// 	return;
 	// }
-	std::cout << "parse_chunk_line: decimal value: " << size << std::endl;
 	_nchars_remaining = static_cast< std::string::size_type >(size);
 	if ( _nchars_remaining == 0 )
 	{
@@ -393,7 +391,6 @@ void	Request::parse_chunk_size( const std::string & line)
 
 void	Request::parse_chunk_content( const std::string & line)
 {
-	std::cout << "parse_chunk_content: got: " << line << std::endl;
 	
 	if ( line.size() != _nchars_remaining + 2 ) // at least 1 char + CRLF
 	{
