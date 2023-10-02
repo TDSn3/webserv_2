@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 15:49:59 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/23 18:32:44 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/02 11:24:02 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@
 
 #ifndef DEFAULT_PORT
 # define DEFAULT_PORT "8080"
+#endif
+
+#ifndef DEFAULT_MAX_BODY
+# define DEFAULT_MAX_BODY 1048576 // 1 048 576
 #endif
 
 #ifndef BUFF_SIZE

@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 11:54:40 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/22 15:59:25 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/02 11:14:57 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ class Request
 		void						set_status_after_continue( void );
 		std::string					get_host_value( void );
 		bool						get_content_length_status( void);
+		long						get_content_length_value( void);
 		std::string					&get_body( void );
 		void						print_request( void );
 

@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:00:08 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/02 11:07:08 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/02 11:19:23 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,16 @@ void	HttpResponse::build( Request &request, char **env, Server& server )	// ! th
 	if ( request.get_final_status() == bad_request )
 		my_perror_and_throw( "bad request", StatusCode( 400 ) );
 
+	if ( request.get_content_length_status() && request.get_content_length_value() > server._max_client_body_size )
+		my_perror_and_throw( "bad request", StatusCode( 413 ) );
+
 	location = server.select_location( request.request_line.parsed_url.path );
 
 	if ( location )
 		location->print_location();
 	else
 		std::cout << COLOR_BOLD_RED << "No matching location\n" << COLOR_RESET;
-		
+
 	new_path = server.root;
 	_rewrite_path( new_path, location, request.request_line.parsed_url.path );
 
