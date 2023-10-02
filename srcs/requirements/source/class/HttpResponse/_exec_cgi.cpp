@@ -6,13 +6,14 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/02 11:55:45 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/02 13:21:08 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
 static void	new_char_for_execve( Request &request, std::vector<char *> &arg_for_execve, std::string &path );
+static void	new_char_for_env_update( std::vector<char *> &env_update, char **env );
 
 std::string	HttpResponse::_exec_cgi( std::string path, Request &request, char **env )	// ! throw possible
 {
@@ -21,13 +22,16 @@ std::string	HttpResponse::_exec_cgi( std::string path, Request &request, char **
 	pid_t				pid;
 	std::string			str;
 	std::vector<char *>	arg_for_execve;
+	std::vector<char *>	env_update;
 
+	std::cout << COLOR_GREEN << path << COLOR_RESET << "\n";
 	if ( stat( path.c_str(), &stat_buffer ) != 0 )		// Vérifie si le fichier existe
 		my_perror_and_throw( "cgi file does not exist", StatusCode( 404 ) );
 	if ( access( path.c_str(), R_OK | X_OK ) != 0 )		// Vérifie si le fichier est accessible en lecture et en exécution
 		my_perror_and_throw( "cgi file is not readable or executable", StatusCode( 403 ) );
 
 	new_char_for_execve( request, arg_for_execve, path );
+	new_char_for_env_update( env_update, env );
 
 	pipe( pipefd );							// pipefd[0] en lecture, pipefd[1] en écriture
 
@@ -56,6 +60,9 @@ std::string	HttpResponse::_exec_cgi( std::string path, Request &request, char **
 
 	for ( size_t i = 0; i < arg_for_execve.size() -1 ; i++ )
 		delete [] arg_for_execve[i];
+
+	for ( size_t i = 0; i < env_update.size() -1 ; i++ )
+		delete [] env_update[i];
 	
 	return ( str );
 }
@@ -77,4 +84,19 @@ static void	new_char_for_execve( Request &request, std::vector<char *> &arg_for_
 		arg_for_execve.push_back( str );
 	}
 	arg_for_execve.push_back( NULL );
+}
+
+static void	new_char_for_env_update( std::vector<char *> &env_update, char **env )
+{
+	char	*str;
+
+	std::cout << COLOR_GREEN << "COUCOU" << COLOR_RESET << "\n";
+	for ( size_t i = 0; env[i]; i++ )
+	{
+		std::cout << COLOR_GREEN << env[i] << COLOR_RESET << "\n";
+		str = new char[ std::string( env[i] ).size() + 1 ];
+		std::strcpy( str, env[i] );
+		env_update.push_back( str );
+	}
+	env_update.push_back( NULL );
 }
