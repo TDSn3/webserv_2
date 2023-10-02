@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:00:08 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/02 11:19:23 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/02 11:45:11 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	HttpResponse::build( Request &request, char **env, Server& server )	// ! th
 {
 	Location	*location;
 	std::string	new_path;
+
+	// TODO: add 100 continue
 
 	if ( request.get_final_status() == bad_request )
 		my_perror_and_throw( "bad request", StatusCode( 400 ) );
