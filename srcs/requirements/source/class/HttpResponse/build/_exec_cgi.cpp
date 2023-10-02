@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/02 15:55:02 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/02 20:48:18 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ std::string	HttpResponse::_exec_cgi( std::string path, Request &request, char **
 {
 	struct stat			stat_buffer;
 	int					pipefd[2];
+	int					stdin_pipefd[2];
 	pid_t				pid;
 	std::string			str;
 	std::vector<char *>	arg_for_execve;
@@ -35,13 +36,16 @@ std::string	HttpResponse::_exec_cgi( std::string path, Request &request, char **
 	new_char_for_env_update( env_update, env, request );
 
 	pipe( pipefd );							// pipefd[0] en lecture, pipefd[1] en écriture
+	pipe( stdin_pipefd );
 
 	pid = fork();
 
 	if ( pid == 0 )							// enfant
 	{
 		close( pipefd[0] ); 				// ferme l'extrémité en lecture
+		close( stdin_pipefd[1] );
 		dup2( pipefd[1], STDOUT_FILENO );	// redirige stdout vers pipefd[1]
+		dup2( stdin_pipefd[0], STDIN_FILENO );
 		execve( path.c_str(), arg_for_execve.data(), env_update.data() );
 	}
 	else if (pid > 0)						// parent
@@ -49,7 +53,10 @@ std::string	HttpResponse::_exec_cgi( std::string path, Request &request, char **
 		ssize_t	ret = 1;
 		char	buffer[4096];
 
-		close( pipefd[1] );  				// Ferme l'extrémité en écriture
+		close( pipefd[1] );  				// ferme l'extrémité en écriture
+		close( stdin_pipefd[0] );
+		write( stdin_pipefd[1], request.get_body().c_str(), request.get_body().size() );	// envois le body au CGI
+		close( stdin_pipefd[1] );
 		while ( ret > 0 )
 		{
 			memset( buffer, 0, sizeof( buffer ) );
