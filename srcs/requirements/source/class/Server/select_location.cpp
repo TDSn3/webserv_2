@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 12:08:32 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/10/02 12:01:18 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/02 13:32:08 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ Location*	Server::select_location( std::string path, std::string method )
 		}
 		if ( !path.compare(0, location_it->first.size(), location_it->first) )
 		{
-			if ( path.size() == location_it->first.size() || path[location_it->first.size()] == '/' )
+			if ( location_it->first.size() == 1 ||  path.size() == location_it->first.size() || path[location_it->first.size()] == '/' )
 			{
 				if ( location_it->first.size() > longest_match )
 				{
