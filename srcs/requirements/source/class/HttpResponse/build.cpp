@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:00:08 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/01 17:53:31 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/02 05:10:56 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,11 @@ void	HttpResponse::build( Request &request, char **env, Server& server )	// ! th
 		if ( !autoindex_is_on(location) )
 			my_perror_and_throw( "Page not found", StatusCode( 404 ) );
 		else
+		{
+			
 			// TODO: directory listing
 			;
+		}
 	}
 
 	if ( is_allowed_methods( location, request.request_line.method ) == true )
