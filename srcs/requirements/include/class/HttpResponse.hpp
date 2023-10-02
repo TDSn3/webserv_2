@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpResponse.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 15:43:46 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/02 11:04:40 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/02 12:08:05 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ class HttpResponse
 /* ************************************************************************** */
 
 		bool			_select_method( Request &request, char **env, Location *location, std::string path );	// ! throw possible
-		bool			_is_allowed_methods( Location *location, std::string method );
 		void			_rewrite_path( std::string &new_path, Location *location, std::string path );
 		bool			_autoindex_is_on( Location *location );
 
