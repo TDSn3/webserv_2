@@ -6,13 +6,13 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 12:08:32 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/10/01 13:21:20 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/02 12:01:18 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
-Location*	Server::select_location( std::string path )
+Location*	Server::select_location( std::string path, std::string method )
 {
 	location_map::iterator	location_it = _locations.begin();
 	Location				*res = NULL;
@@ -29,8 +29,8 @@ Location*	Server::select_location( std::string path )
 		dot_pos = path.rfind('.');
 		if (dot_pos != std::string::npos)
 		{
-			extension_name = path.substr(dot_pos + 1);
-			if ( extension_name == location_it->first )
+			extension_name = path.substr(dot_pos);
+			if ( extension_name == location_it->first && is_allowed_methods(&location_it->second, method) )
 				return &location_it->second;
 		}
 		if ( !path.compare(0, location_it->first.size(), location_it->first) )
