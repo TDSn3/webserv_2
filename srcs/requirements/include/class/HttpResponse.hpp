@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 15:43:46 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/01 16:38:17 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/02 11:04:40 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,17 @@ class HttpResponse
 		bool			_get_method( Request &request, char **env, std::string &path );		// ! throw possible
 		bool			_post_method( Request &request, char **env, std::string &path );	// ! throw possible
 		void			_delete_method( std::string &path );								// ! throw possible
+
+/* ************************************************************************** */
+/*                                                                            */
+/*   build																	  */
+/*                                                                            */
+/* ************************************************************************** */
+
+		bool			_select_method( Request &request, char **env, Location *location, std::string path );	// ! throw possible
+		bool			_is_allowed_methods( Location *location, std::string method );
+		void			_rewrite_path( std::string &new_path, Location *location, std::string path );
+		bool			_autoindex_is_on( Location *location );
 
 };
 
