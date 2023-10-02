@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:00:08 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/02 11:19:23 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/02 12:03:10 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ void	HttpResponse::build( Request &request, char **env, Server& server )	// ! th
 	if ( request.get_final_status() == bad_request )
 		my_perror_and_throw( "bad request", StatusCode( 400 ) );
 
-	if ( request.get_content_length_status() && request.get_content_length_value() > server._max_client_body_size )
-		my_perror_and_throw( "bad request", StatusCode( 413 ) );
+	// if ( request.get_content_length_status() && request.get_content_length_value() > server._max_client_body_size )
+	// 	my_perror_and_throw( "bad request", StatusCode( 200 ) );
 
-	location = server.select_location( request.request_line.parsed_url.path );
+	location = server.select_location( request.request_line.parsed_url.path, request.request_line.method );
 
 	if ( location )
 		location->print_location();
