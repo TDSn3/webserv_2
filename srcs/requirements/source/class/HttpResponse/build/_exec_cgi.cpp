@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/03 17:26:52 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/04 21:14:23 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,58 @@ std::string	HttpResponse::_exec_cgi( std::string &path, Request &request, char *
 
 
 
-	std::size_t pos = str.find("\n");
-	if (pos != std::string::npos) { // Si \n a été trouvé
-	    str.erase(0, pos + 1); // Supprimer la première ligne
-	}
+
+
+
+	// std::size_t pos = str.find("\n");
+	// if (pos != std::string::npos) { // Si \n a été trouvé
+	//     str.erase(0, pos + 1); // Supprimer la première ligne
+	// }
+
+
+
+
+
+
+// size_t i = 0;
+// size_t size = 0;
+// 	while (str[i])
+// 	{
+// 		size++;
+
+// 		if (str[i] == '\n')
+// 			size = 0;
+
+// 		i++;
+// 	}
+
+// 	std::ostringstream oss;
+// 	oss << size;
+
+	// str = "HTTP/1.1 200 OK\nContent-Length: " + oss.str() + "\n" + str;
+
+
+
+
+
+
+
+	// pos = str.find("\n");
+	// if (pos != std::string::npos) { // Si \n a été trouvé
+	//     str.erase(0, pos + 1); // Supprimer la première ligne
+	// }
+	// pos = str.find("\n");
+	// if (pos != std::string::npos) { // Si \n a été trouvé
+	//     str.erase(0, pos + 1); // Supprimer la première ligne
+	// }
+
+	// std::ostringstream oss;
+	// oss << str.size();
+
 	std::string sstr = std::string("HTTP/1.1 200 OK") + std::string("\nContent-Type: text/html; charset=utf-8\nContent-Length: 100000000\n\n");
 	for (size_t i = 0; i < 100000000 ; i++)
 		sstr += str.back();
-
+	// sstr = sstr + str;
 
 	return ( sstr );
 }
@@ -97,8 +141,11 @@ static void fork_parent( Request &request, int pid, std::string &str,  int stdou
 	{
 		memset( buffer, 0, sizeof( buffer ) );
 		ret = read( stdout_pipefd[0], buffer, sizeof( buffer ) );
+		std::cout << COLOR_MAGENTA << ret << COLOR_RESET << "\n";
 		str += buffer;
 	}
+	std::cout << COLOR_MAGENTA << str.size() << COLOR_RESET << "\n";
+	std::cout << COLOR_MAGENTA << str << COLOR_RESET << "\n";
 
 	waitpid( pid, NULL, 0 );					// TODO: ajouter une limite
 }
@@ -142,7 +189,7 @@ static void	new_char_for_env_update( std::vector<char *> &env_update, char **env
 	env_update_push_back( env_update,  "PATH_INFO=/" );
 	// env_update_push_back( env_update,  "PATH_INFO=/Users/thomas/Desktop/42/webserv_2/srcs/requirements/cgi_tester" );
 	
-	env_update_push_back( env_update,  "CONTENT_TYPE=test/file" );
+	env_update_push_back( env_update,  "CONTENT_TYPE=text/plain" );
 	
 	env_update_push_back( env_update,  "QUERY_STRING=" );
 
@@ -195,19 +242,20 @@ static void	write_all_body( std::string &body, int stdin_pipefd[2] )
 	std::cout << COLOR_BOLD_YELLOW << "written : " << written << std::endl;
 	std::cout << COLOR_BOLD_YELLOW << "total_written : " << total_written << std::endl;
 	std::cout << COLOR_BOLD_YELLOW << "to_write : " << to_write << "\n" << std::endl;
-	
+
 	while ( to_write != 0 )
 	{
-		std::cout << COLOR_BOLD_YELLOW << "___" << std::endl;
 		fcntl(stdin_pipefd[1], F_SETFL, O_NONBLOCK);
 		written = write( stdin_pipefd[1], body.c_str() + total_written , to_write );
-		std::cout << COLOR_BOLD_YELLOW << "+++" << std::endl;
+		exit_now++;
 		if (written == -1)
 		{
-			std::cout << COLOR_BOLD_YELLOW << "-1" << std::endl;
 			i++;
 			if (i == 100)
-				exit(1) ;
+			{
+				close (stdin_pipefd[1]);
+				return ;
+			}
 			continue ;
 		}
 
@@ -218,7 +266,10 @@ static void	write_all_body( std::string &body, int stdin_pipefd[2] )
 		std::cout << COLOR_BOLD_YELLOW << "total_written : " << total_written << std::endl;
 		std::cout << COLOR_BOLD_YELLOW << "to_write : " << to_write << "\n" << std::endl;
 		if (i == 100)
-			exit(1) ;
+		{
+			close (stdin_pipefd[1]);
+			return ;
+		}
 		i++;
 	}
 }
