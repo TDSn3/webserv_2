@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:00:08 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/02 12:17:22 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/04 15:47:03 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,6 @@ void	HttpResponse::build( Request &request, char **env, Server& server )	// ! th
 
 	if ( request.get_final_status() == bad_request )
 		my_perror_and_throw( "bad request", StatusCode( 400 ) );
-
-	// if ( request.get_content_length_status() && request.get_content_length_value() > server._max_client_body_size )
-	// 	my_perror_and_throw( "bad request", StatusCode( 200 ) );
 
 	location = server.select_location( request.request_line.parsed_url.path, request.request_line.method );
 
@@ -43,15 +40,24 @@ void	HttpResponse::build( Request &request, char **env, Server& server )	// ! th
 			my_perror_and_throw( "Page not found", StatusCode( 404 ) );
 		else
 		{
-			
 			// TODO: directory listing
 			;
 		}
 	}
 
 	if ( _select_method( request, env, location, new_path ) == true )	// ! throw possible
+	{
+		to_send =  str_response.size();
+		sent = 0;
+		total_sent = 0;
+
 		return ;
+	}
 
 	_make_response( new_path );											// ! throw possible
+
+	to_send =  str_response.size();
+	sent = 0;
+	total_sent = 0;
 };
 

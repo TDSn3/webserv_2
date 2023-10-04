@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_error.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:01:25 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/02 05:32:04 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/04 15:47:03 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,8 @@ void	HttpResponse::build_error(Request &request, const int status_code)
 
 	oss << status_code;
 	_add_body("www/error_page/" + oss.str() + ".html");
+
+	to_send =  str_response.size();
+	sent = 0;
+	total_sent = 0;
 };

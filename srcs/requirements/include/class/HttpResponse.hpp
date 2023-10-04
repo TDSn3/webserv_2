@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpResponse.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 15:43:46 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/02 12:08:05 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/04 15:47:03 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,9 @@ class HttpResponse
 		s_status_line	status_line;
 		std::string		str_header;
 		std::string		str_body;
+		size_t			to_send;
+		ssize_t			sent;
+		size_t			total_sent;
 
 		std::string		str_response;
 
@@ -64,7 +67,7 @@ class HttpResponse
 	private:
 
 		std::string		_read_file_in_str(std::string path);							// ! throw possible
-		std::string		_exec_cgi(std::string path, Request &request, char **env);		// ! throw possible
+		std::string		_exec_cgi(std::string &path, Request &request, char **env);		// ! throw possible
 		void			_make_response( std::string &path );			// ! throw possible
 		void			_add_content_type( std::string &path );
 		void			_make_reason_phrase(void);
