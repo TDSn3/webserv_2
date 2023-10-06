@@ -6,14 +6,13 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:58:01 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/04 16:26:36 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/05 09:32:59 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
 volatile sig_atomic_t	siginit_status = 0;
-volatile sig_atomic_t	exit_now = 0;
 
 int	main( int argc, char **argv, char **env )
 {

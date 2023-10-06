@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 15:49:59 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/04 16:26:22 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/05 09:33:02 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,5 @@ bool						is_whitespace( char c );
 std::vector< std::string >	tokenize( std::string str );
 
 extern volatile sig_atomic_t	siginit_status;
-extern volatile sig_atomic_t	exit_now;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 21:00:45 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/04 21:07:10 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/05 09:32:45 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,4 @@ void	Server::reply( Connection &connection, char **env )
 		connection.flush_request();
 		connection.response_status = false;
 	}
-	if ( exit_now == 2)
-		exit (1);
 }

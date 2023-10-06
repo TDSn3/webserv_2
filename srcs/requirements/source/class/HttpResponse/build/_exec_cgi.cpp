@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/04 21:14:23 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/05 10:00:16 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ static void fork_parent( Request &request, int pid, std::string &str,  int stdou
 		std::cout << COLOR_MAGENTA << ret << COLOR_RESET << "\n";
 		str += buffer;
 	}
-	std::cout << COLOR_MAGENTA << str.size() << COLOR_RESET << "\n";
+	std::cout << COLOR_MAGENTA << "size : " << str.size() << COLOR_RESET << "\n\n";
 	std::cout << COLOR_MAGENTA << str << COLOR_RESET << "\n";
 
 	waitpid( pid, NULL, 0 );					// TODO: ajouter une limite
@@ -179,7 +179,7 @@ static void	new_char_for_env_update( std::vector<char *> &env_update, char **env
 	env_update_push_back( env_update, "GATEWAY_INTERFACE=CGI/1.1" );
 	env_update_push_back( env_update, "SERVER_PROTOCOL=HTTP/1.1" );
 	env_update_push_back( env_update, "SERVER_PORT=8080" );
-	// env_update_push_back( env_update, "SCRIPT_NAME=cgi_exec" );
+	// env_update_push_back( env_update, "SCRIPT_NAME=/directory/youpi.bla" );
 	// env_update_push_back( env_update, "SCRIPT_FILENAME=/Users/thomas/Desktop/42/webserv_2/srcs/requirements/cgi_tester" );
 	env_update_push_back( env_update, "REDIRECT_STATUS=200" );
 
@@ -189,7 +189,7 @@ static void	new_char_for_env_update( std::vector<char *> &env_update, char **env
 	env_update_push_back( env_update,  "PATH_INFO=/" );
 	// env_update_push_back( env_update,  "PATH_INFO=/Users/thomas/Desktop/42/webserv_2/srcs/requirements/cgi_tester" );
 	
-	env_update_push_back( env_update,  "CONTENT_TYPE=text/plain" );
+	env_update_push_back( env_update,  "CONTENT_TYPE=application/x-www-form-urlencoded" );
 	
 	env_update_push_back( env_update,  "QUERY_STRING=" );
 
@@ -236,7 +236,6 @@ static void	write_all_body( std::string &body, int stdin_pipefd[2] )
 	to_write = body.size();
 	written = 0;
 	total_written = 0;
-	int i = 0;
 
 	std::cout << COLOR_BOLD_YELLOW << "body size : " << body.size() << std::endl;
 	std::cout << COLOR_BOLD_YELLOW << "written : " << written << std::endl;
@@ -245,19 +244,10 @@ static void	write_all_body( std::string &body, int stdin_pipefd[2] )
 
 	while ( to_write != 0 )
 	{
-		fcntl(stdin_pipefd[1], F_SETFL, O_NONBLOCK);
+		fcntl( stdin_pipefd[1], F_SETFL, O_NONBLOCK );
 		written = write( stdin_pipefd[1], body.c_str() + total_written , to_write );
-		exit_now++;
 		if (written == -1)
-		{
-			i++;
-			if (i == 100)
-			{
-				close (stdin_pipefd[1]);
-				return ;
-			}
-			continue ;
-		}
+			return ;
 
 		total_written += written;
    		to_write -= written;
@@ -265,11 +255,5 @@ static void	write_all_body( std::string &body, int stdin_pipefd[2] )
 		std::cout << COLOR_BOLD_YELLOW << "written : " << written << std::endl;
 		std::cout << COLOR_BOLD_YELLOW << "total_written : " << total_written << std::endl;
 		std::cout << COLOR_BOLD_YELLOW << "to_write : " << to_write << "\n" << std::endl;
-		if (i == 100)
-		{
-			close (stdin_pipefd[1]);
-			return ;
-		}
-		i++;
 	}
 }
