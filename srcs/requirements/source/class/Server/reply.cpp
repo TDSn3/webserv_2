@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 21:00:45 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/05 09:32:45 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/06 10:15:51 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	Server::reply( Connection &connection, char **env )
 {
+	std::cout << COLOR_BOLD_RED << "ICI" << std::endl;
 	try
 	{
 		connection.get_request().print_request();
@@ -33,7 +34,7 @@ void	Server::reply( Connection &connection, char **env )
 	size_t	&total_sent = connection.response.total_sent;
 
 	std::cout << "[" << COLOR_BOLD_GREEN << "RESPONSE" << COLOR_RESET << "]\n" << std::endl;
-	// std::cout << connection.response.str_response << std::endl;
+	 std::cout << connection.response.str_response << std::endl;
 	std::cout << "[" << COLOR_BOLD_RED << "END OF RESPONSE" << COLOR_RESET << "]\n" << std::endl;
 
 	if ( to_send )

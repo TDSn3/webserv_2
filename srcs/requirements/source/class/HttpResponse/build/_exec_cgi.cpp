@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/05 10:00:16 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/06 10:04:29 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ std::string	HttpResponse::_exec_cgi( std::string &path, Request &request, char *
 	std::string			str;
 	std::vector<char *>	arg_for_execve;
 	std::vector<char *>	env_update;
+
+	std::cout << COLOR_BOLD_YELLOW << "ICI" << COLOR_RESET << std::endl;
 
 	if ( stat( path.c_str(), &stat_buffer ) != 0 )		// Vérifie si le fichier existe
 		my_perror_and_throw( "cgi file does not exist", StatusCode( 404 ) );
@@ -106,7 +108,7 @@ std::string	HttpResponse::_exec_cgi( std::string &path, Request &request, char *
 
 	std::string sstr = std::string("HTTP/1.1 200 OK") + std::string("\nContent-Type: text/html; charset=utf-8\nContent-Length: 100000000\n\n");
 	for (size_t i = 0; i < 100000000 ; i++)
-		sstr += str.back();
+		sstr += *( str.end() - 1 );
 	// sstr = sstr + str;
 
 	return ( sstr );
