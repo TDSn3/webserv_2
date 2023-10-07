@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/07 12:29:17 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/07 13:29:23 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,21 @@ static void	env_update_push_back( std::vector<char *> &env_update, const char *s
 static void	new_char_for_env_update( std::vector<char *> &env_update, char **env, Request &request );
 static void	fork_child( int stdin_pipefd[2], int file_stock_output_fd, std::vector<char *> &arg_for_execve, std::vector<char *> &env_update );
 static void	fork_parent( int stdin_pipefd[2], std::string &str, int pid );
+static void	read_file_stock_output( int file_stock_output_fd, std::string &str );
 
 std::string	HttpResponse::_exec_cgi( std::string &path, Request &request, char **env )	// ! throw possible
 {
 	int					file_stock_output_fd;
 	int					stdin_pipefd[2];
 	pid_t				pid;
-	std::string			file_stock_output_path(".stock.temp");
+	std::string			file_stock_output_path(".TEMP");
 	std::string			ret;
 	std::vector<char *>	arg_for_execve;
 	std::vector<char *>	env_update;
 
 	check_file( path );	// ! throw possible
 
-	file_stock_output_fd = open( path.c_str(), O_RDWR | O_CREAT | O_TRUNC, 0666 );
+	file_stock_output_fd = open( file_stock_output_path.c_str(), O_RDWR | O_CREAT | O_TRUNC, 0666 );
 
 	new_char_for_execve( request, arg_for_execve, path );
 	new_char_for_env_update( env_update, env, request );
@@ -45,6 +46,8 @@ std::string	HttpResponse::_exec_cgi( std::string &path, Request &request, char *
 	else if (pid > 0)
 		fork_parent( stdin_pipefd, request.get_body(), pid );
 
+	(void)read_file_stock_output;
+	// read_file_stock_output( file_stock_output_fd, ret );
 	close( file_stock_output_fd );
 
 	for ( size_t i = 0; i < arg_for_execve.size() -1 ; i++ )
@@ -55,6 +58,21 @@ std::string	HttpResponse::_exec_cgi( std::string &path, Request &request, char *
 
 	return ( ret );
 
+}
+
+static void	read_file_stock_output( int file_stock_output_fd, std::string &str )
+{
+	char	buffer[4096];
+	ssize_t	ret;
+
+	ret = 1;
+	while ( ret > 0  )
+	{
+		ret = read( file_stock_output_fd, buffer, sizeof( buffer ) );
+		str.append( buffer, ret );
+	}
+
+	close( file_stock_output_fd );
 }
 
 static void	check_file( std::string &path )				// ! throw possible
@@ -123,7 +141,6 @@ static void	new_char_for_env_update( std::vector<char *> &env_update, char **env
 
 	env_update.push_back( NULL );
 }
-
 
 static void fork_child( int stdin_pipefd[2], int file_stock_output_fd, std::vector<char *> &arg_for_execve, std::vector<char *> &env_update )
 {
