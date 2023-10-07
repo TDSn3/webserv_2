@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/07 16:01:02 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/07 19:57:04 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,13 @@
 static void			check_file( std::string &path );
 static void			new_char_for_execve( Request &request, std::vector<char *> &arg_for_execve, std::string &path );
 static void			env_update_push_back( std::vector<char *> &env_update, const char *str_to_add );
-static void			new_char_for_env_update( std::vector<char *> &env_update, char **env, Request &request );
+static void			new_char_for_env_update( std::vector<char *> &env_update, char **env, Request &request, std::string &path );
 static void			fork_child( int stdin_pipefd[2], int file_stock_output_fd, std::vector<char *> &arg_for_execve, std::vector<char *> &env_update );
 static void			fork_parent( int stdin_pipefd[2], std::string &str, int pid );
 static void			read_file_stock_output( int file_stock_output_fd, std::string &str );
 static std::string	to_lower_str( std::string str );
+static std::string	to_upper_str( std::string str );
+static std::string	dash_to_underscore( std::string str );
 static void			parse_cgi_output( std::string &str, std::string &body );
 
 std::string	HttpResponse::_exec_cgi( std::string &path, Request &request, char **env )	// ! throw possible
@@ -37,7 +39,7 @@ std::string	HttpResponse::_exec_cgi( std::string &path, Request &request, char *
 	check_file( path );	// ! throw possible
 
 	new_char_for_execve( request, arg_for_execve, path );
-	new_char_for_env_update( env_update, env, request );
+	new_char_for_env_update( env_update, env, request, path );
 
 	pipe( stdin_pipefd );
 
@@ -101,30 +103,48 @@ static void	env_update_push_back( std::vector<char *> &env_update, const char *s
 	env_update.push_back( str );
 }
 
-static void	new_char_for_env_update( std::vector<char *> &env_update, char **env, Request &request )
+static void	new_char_for_env_update( std::vector<char *> &env_update, char **env, Request &request, std::string &path )
 {
-	(void) request;
-
+	std::map< std::string, std::vector< std::string > > :: iterator	it = request._header_section.begin();
+	std::string														str;
+	std::ostringstream												oss;
+	
 	for ( size_t i = 0; env[i]; i++ )
 		env_update_push_back( env_update, env[i] );
 
-	env_update_push_back( env_update, "AUTH_TYPE=None" );
-	env_update_push_back( env_update, "CONTENT_LENGTH=100000000" );
-	env_update_push_back( env_update, "CONTENT_TYPE=test/file" );
-	env_update_push_back( env_update, "GATEWAY_INTERFACE=None" );
-	env_update_push_back( env_update, "PATH_INFO=YoupiBanane/youpi.bla" );
-	env_update_push_back( env_update, "PATH_TRANSLATED=YoupiBanane/youpi.bla" );
-	env_update_push_back( env_update, "QUERY_STRING=" );
-	env_update_push_back( env_update, "REMOTE_ADDR=16777343" );
-	env_update_push_back( env_update, "REMOTE_INDENT=None" );
-	env_update_push_back( env_update, "REMOTE_USER=localhost:8080" );
-	env_update_push_back( env_update, "REQUEST_METHOD=POST" );
-	env_update_push_back( env_update, "REQUEST_URI=YoupiBanane/youpi.bla" );
-	env_update_push_back( env_update, "SCRIPT_NAME=cgi/cgi_tester" );
-	env_update_push_back( env_update, "SERVER_NAME=127.0.0.1" );
-	env_update_push_back( env_update, "SERVER_PORT=8080" );
+	while ( it != request._header_section.end() )
+	{
+		str = "HTTP_" + to_upper_str( dash_to_underscore( it->first ) ) + "=";
+		for ( std::vector< std::string > :: iterator it2 = it->second.begin(); it2 != it->second.end(); it2++ )
+				str += *it2;
+		if ( it->first != "host" )
+			env_update_push_back( env_update, str.c_str() );
+		it++;
+	}
+
+	oss << request.get_body().size();
+	env_update_push_back( env_update, ( "CONTENT_LENGTH=" + oss.str() ).c_str() );
+
+	env_update_push_back( env_update, ( "REQUEST_METHOD=" + request.request_line.method ).c_str() );
+
+	env_update_push_back( env_update, ( "SCRIPT_NAME=" + path ).c_str() );
+
+	str = "QUERY_STRING=";
+	for ( std::map<std::string, std::string> :: iterator it2 = request.request_line.parsed_url.query_parameters.begin();
+		it2 != request.request_line.parsed_url.query_parameters.end();
+		it2++ )
+	{
+		str += it2->first + "=" + it2->second;
+	}
+	env_update_push_back( env_update, str.c_str() );
+
+	env_update_push_back( env_update, "GATEWAY_INTERFACE=CGI/1.1" );
+	env_update_push_back( env_update, "PATH_INFO=YoupiBanane/youpi.bla" );			// TODO : ajouter spécification
+	env_update_push_back( env_update, "PATH_TRANSLATED=YoupiBanane/youpi.bla" );	//
+	env_update_push_back( env_update, "REQUEST_URI=YoupiBanane/youpi.bla" );		//
+	env_update_push_back( env_update, "SERVER_NAME=127.0.0.1" );					// 
+	env_update_push_back( env_update, "SERVER_PORT=8080" );							//
 	env_update_push_back( env_update, "SERVER_PROTOCOL=HTTP/1.1" );
-	env_update_push_back( env_update, "SERVER_SOFTWARE=None" );
 
 	env_update.push_back( NULL );
 }
@@ -151,7 +171,7 @@ static void	read_file_stock_output( int file_stock_output_fd, std::string &str )
 	ssize_t	ret;
 
 	ret = 1;
-	lseek( file_stock_output_fd, 0, SEEK_SET );			// Réinitialise le pointeur du fd
+	lseek( file_stock_output_fd, 0, SEEK_SET );	// Réinitialise le pointeur du fd
 	while ( ret > 0 )
 	{
 		ret = read( file_stock_output_fd, buffer, sizeof( buffer ) );
@@ -167,6 +187,24 @@ static std::string to_lower_str( std::string str )
 
 	for ( size_t i = 0; str[i]; i++ )
 		ret += std::tolower( static_cast<unsigned char> ( str[i] ) ) ;
+	return ( ret );
+}
+
+static std::string to_upper_str( std::string str )
+{
+	std::string	ret;
+
+	for ( size_t i = 0; str[i]; i++ )
+		ret += std::toupper( static_cast<unsigned char> ( str[i] ) ) ;
+	return ( ret );
+}
+
+static std::string dash_to_underscore( std::string str )
+{
+	std::string	ret;
+
+	for ( size_t i = 0; str[i]; i++ )
+		str[i] == '-' ? ( ret += "_" ) : ( ret += str[i] );
 	return ( ret );
 }
 
