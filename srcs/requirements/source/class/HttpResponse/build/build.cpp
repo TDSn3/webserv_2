@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:00:08 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/04 15:47:03 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/07 20:52:49 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,23 @@ void	HttpResponse::build( Request &request, char **env, Server& server )	// ! th
 	location = server.select_location( request.request_line.parsed_url.path, request.request_line.method );
 
 	if ( location )
+	{
+		if ( location->_parameters.find( "client_max_body_size" ) != location->_parameters.end() )
+		{
+			std::istringstream	iss( location->_parameters[ "client_max_body_size" ][0] );
+			size_t				client_max_body_size;
+			
+			iss >> client_max_body_size ;
+			if ( request.get_body().size() > client_max_body_size )
+				my_perror_and_throw( "Content Too Large", StatusCode( 413 ) );
+		}
 		location->print_location();
+	}
 	else
 		std::cout << COLOR_BOLD_RED << "No matching location\n" << COLOR_RESET;
 
 	new_path = server.root;
 	_rewrite_path( new_path, location, request.request_line.parsed_url.path );
-
-	std::cout << COLOR_BOLD_GREEN << "new_path : " << new_path << COLOR_RESET << "\n";
 
 	if ( is_directory(new_path) )
 	{
