@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/07 12:17:28 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/07 12:29:17 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@ std::string	HttpResponse::_exec_cgi( std::string &path, Request &request, char *
 	std::vector<char *>	arg_for_execve;
 	std::vector<char *>	env_update;
 
+	check_file( path );	// ! throw possible
+
+	file_stock_output_fd = open( path.c_str(), O_RDWR | O_CREAT | O_TRUNC, 0666 );
+
 	new_char_for_execve( request, arg_for_execve, path );
 	new_char_for_env_update( env_update, env, request );
 
@@ -49,6 +53,18 @@ std::string	HttpResponse::_exec_cgi( std::string &path, Request &request, char *
 	for ( size_t i = 0; i < env_update.size() -1 ; i++ )
 		delete [] env_update[i];
 
+	return ( ret );
+
+}
+
+static void	check_file( std::string &path )				// ! throw possible
+{
+	struct stat			stat_buffer;
+
+	if ( stat( path.c_str(), &stat_buffer ) != 0 )		// Vérifie si le fichier existe
+		my_perror_and_throw( "cgi file does not exist", StatusCode( 404 ) );
+	if ( access( path.c_str(), R_OK | X_OK ) != 0 )		// Vérifie si le fichier est accessible en lecture et en exécution
+		my_perror_and_throw( "cgi file is not readable or executable", StatusCode( 403 ) );
 }
 
 static void	new_char_for_execve( Request &request, std::vector<char *> &arg_for_execve, std::string &path )
@@ -80,7 +96,7 @@ static void	env_update_push_back( std::vector<char *> &env_update, const char *s
 	env_update.push_back( str );
 }
 
-static void	new_char_for_env_update( std::vector<char *> &env_update, char **env, Request &request )
+static void	new_char_for_env_update( std::vector<char *> &env_update, char **env, Request &request )	// TODO: rendre dynamique
 {
 	(void) request;
 
