@@ -6,19 +6,21 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/07 14:33:47 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/07 16:01:02 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
-static void	check_file( std::string &path );
-static void	new_char_for_execve( Request &request, std::vector<char *> &arg_for_execve, std::string &path );
-static void	env_update_push_back( std::vector<char *> &env_update, const char *str_to_add );
-static void	new_char_for_env_update( std::vector<char *> &env_update, char **env, Request &request );
-static void	fork_child( int stdin_pipefd[2], int file_stock_output_fd, std::vector<char *> &arg_for_execve, std::vector<char *> &env_update );
-static void	fork_parent( int stdin_pipefd[2], std::string &str, int pid );
-static void	read_file_stock_output( int file_stock_output_fd, std::string &str );
+static void			check_file( std::string &path );
+static void			new_char_for_execve( Request &request, std::vector<char *> &arg_for_execve, std::string &path );
+static void			env_update_push_back( std::vector<char *> &env_update, const char *str_to_add );
+static void			new_char_for_env_update( std::vector<char *> &env_update, char **env, Request &request );
+static void			fork_child( int stdin_pipefd[2], int file_stock_output_fd, std::vector<char *> &arg_for_execve, std::vector<char *> &env_update );
+static void			fork_parent( int stdin_pipefd[2], std::string &str, int pid );
+static void			read_file_stock_output( int file_stock_output_fd, std::string &str );
+static std::string	to_lower_str( std::string str );
+static void			parse_cgi_output( std::string &str, std::string &body );
 
 std::string	HttpResponse::_exec_cgi( std::string &path, Request &request, char **env )	// ! throw possible
 {
@@ -54,24 +56,10 @@ std::string	HttpResponse::_exec_cgi( std::string &path, Request &request, char *
 	for ( size_t i = 0; i < env_update.size() -1 ; i++ )
 		delete [] env_update[i];
 
+	parse_cgi_output( ret, request.get_body() );
+
 	return ( ret );
 
-}
-
-static void	read_file_stock_output( int file_stock_output_fd, std::string &str )
-{
-	char	buffer[4096];
-	ssize_t	ret;
-
-	ret = 1;
-	lseek( file_stock_output_fd, 0, SEEK_SET );			// Réinitialise le pointeur du fd
-	while ( ret > 0 )
-	{
-		ret = read( file_stock_output_fd, buffer, sizeof( buffer ) );
-		str.append( buffer, ret );
-	}
-
-	close( file_stock_output_fd );
 }
 
 static void	check_file( std::string &path )				// ! throw possible
@@ -155,4 +143,56 @@ static void fork_parent( int stdin_pipefd[2], std::string &str, int pid )
 	write( stdin_pipefd[1], str.c_str(), str.size() );
 	close( stdin_pipefd[1] );
 	waitpid(pid, 0, 0);
+}
+
+static void	read_file_stock_output( int file_stock_output_fd, std::string &str )
+{
+	char	buffer[4096];
+	ssize_t	ret;
+
+	ret = 1;
+	lseek( file_stock_output_fd, 0, SEEK_SET );			// Réinitialise le pointeur du fd
+	while ( ret > 0 )
+	{
+		ret = read( file_stock_output_fd, buffer, sizeof( buffer ) );
+		str.append( buffer, ret );
+	}
+
+	close( file_stock_output_fd );
+}
+
+static std::string to_lower_str( std::string str )
+{
+	std::string	ret;
+
+	for ( size_t i = 0; str[i]; i++ )
+		ret += std::tolower( static_cast<unsigned char> ( str[i] ) ) ;
+	return ( ret );
+}
+
+static void	parse_cgi_output( std::string &str, std::string &body )
+{
+	std::string			header_update;
+	std::ostringstream	oss;
+
+	size_t	start = 0;
+	for ( size_t i = 0; str[i]; i++ )
+	{
+		if ( str[i] == '\n' && str[i + 1] && ( str[i + 1] == '\n' || ( str[i + 1] == '\r' && str[i + 2] && str[i + 2] == '\n' ) ) )
+		{
+			oss << body.size();
+			str.insert( i + 1, "Content-Length: " + oss.str() + "\r\n" );
+			return ;
+		}
+		if ( i > 0 && str[i - 1] == '\n' )
+			start = i;
+		if ( str[i] == '\n' && i != start )	// Si je suis à la fin de la ligne et que le début de la ligne n'est pas un '\n'
+		{
+			if ( to_lower_str( str.substr( start, start + 7) ) == "status:" )
+			{
+				str.replace( start, start + 7, "HTTP/1.1" );
+				i++;
+			}
+		}
+	}
 }
