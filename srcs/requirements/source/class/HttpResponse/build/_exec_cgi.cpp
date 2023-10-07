@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/07 13:29:23 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/07 14:33:47 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ std::string	HttpResponse::_exec_cgi( std::string &path, Request &request, char *
 	std::vector<char *>	arg_for_execve;
 	std::vector<char *>	env_update;
 
-	check_file( path );	// ! throw possible
-
 	file_stock_output_fd = open( file_stock_output_path.c_str(), O_RDWR | O_CREAT | O_TRUNC, 0666 );
+
+	check_file( path );	// ! throw possible
 
 	new_char_for_execve( request, arg_for_execve, path );
 	new_char_for_env_update( env_update, env, request );
@@ -46,9 +46,7 @@ std::string	HttpResponse::_exec_cgi( std::string &path, Request &request, char *
 	else if (pid > 0)
 		fork_parent( stdin_pipefd, request.get_body(), pid );
 
-	(void)read_file_stock_output;
-	// read_file_stock_output( file_stock_output_fd, ret );
-	close( file_stock_output_fd );
+	read_file_stock_output( file_stock_output_fd, ret );
 
 	for ( size_t i = 0; i < arg_for_execve.size() -1 ; i++ )
 		delete [] arg_for_execve[i];
@@ -66,7 +64,8 @@ static void	read_file_stock_output( int file_stock_output_fd, std::string &str )
 	ssize_t	ret;
 
 	ret = 1;
-	while ( ret > 0  )
+	lseek( file_stock_output_fd, 0, SEEK_SET );			// Réinitialise le pointeur du fd
+	while ( ret > 0 )
 	{
 		ret = read( file_stock_output_fd, buffer, sizeof( buffer ) );
 		str.append( buffer, ret );
@@ -78,7 +77,7 @@ static void	read_file_stock_output( int file_stock_output_fd, std::string &str )
 static void	check_file( std::string &path )				// ! throw possible
 {
 	struct stat			stat_buffer;
-
+	
 	if ( stat( path.c_str(), &stat_buffer ) != 0 )		// Vérifie si le fichier existe
 		my_perror_and_throw( "cgi file does not exist", StatusCode( 404 ) );
 	if ( access( path.c_str(), R_OK | X_OK ) != 0 )		// Vérifie si le fichier est accessible en lecture et en exécution
@@ -114,7 +113,7 @@ static void	env_update_push_back( std::vector<char *> &env_update, const char *s
 	env_update.push_back( str );
 }
 
-static void	new_char_for_env_update( std::vector<char *> &env_update, char **env, Request &request )	// TODO: rendre dynamique
+static void	new_char_for_env_update( std::vector<char *> &env_update, char **env, Request &request )
 {
 	(void) request;
 

@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:58:54 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/02 14:54:00 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/07 14:43:17 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,15 @@ bool	HttpResponse::_select_method( Request &request, char **env, Location *locat
 	{			
 		if ( location && location->_parameters.find( "cgi" ) != location->_parameters.end() )
 		{
-			std::cout << COLOR_BOLD_CYAN << "CGI detected" << COLOR_RESET << std::endl;
+			std::cout << COLOR_BOLD_CYAN << "CGI" << COLOR_RESET;
 			if ( location->_parameters[ "cgi" ].empty() == false )
 			{
-				std::cout << COLOR_BOLD_CYAN << location->_parameters[ "cgi" ][0] << COLOR_RESET << std::endl;
+				std::cout << COLOR_BOLD_CYAN << " : " << location->_parameters[ "cgi" ][0] << COLOR_RESET << std::endl;
 				str_response = _exec_cgi( location->_parameters[ "cgi" ][0], request, env );			// ! throw possible
 				return ( true );
 			}
+			else
+				std::cout << std::endl;;
 		}
 
 		if ( request.request_line.method == "GET" )
