@@ -27,5 +27,7 @@ int	Gateway::_creat_socket(void)
 	{
 		// TODO: err plus tard
 	}
+	int value = 1;
+	setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &value, sizeof(value));
 	return (fd);
 }

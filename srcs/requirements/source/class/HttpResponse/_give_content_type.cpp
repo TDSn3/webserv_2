@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:10:10 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/22 17:44:50 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/01 16:37:05 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,19 @@
 
 static std::string	give_uri_path_extension_name(std::string uri);
 
-void	HttpResponse::_add_content_type(Request &request)
+void	HttpResponse::_add_content_type( std::string &path )
 {
-	if (request.request_line.method == "GET")	// TODO: gérer POST et DELETE // TOOD:verifier la casse
-	{
-		if (request.request_line.parsed_url.path == "/")
-		{
-			str_response += "content-type: text/html; charset=UTF-8\r\n";
-		}
-		else if (request.request_line.parsed_url.path == "/favicon.ico")
-		{
-			str_response += "content-type: image/png; charset=UTF-8\r\n";
-		}
-		else
-		{
-			std::string	extension_name;
-			
-			str_response += "content-type: ";
-			extension_name = give_uri_path_extension_name(request.request_line.parsed_url.path);
-			if (extension_name == "html" || extension_name == "css")
-				str_response += "text/" + extension_name;
-			else if (extension_name == "javascript" || extension_name == "js")
-				str_response += "application/javascript";
-/////////// ajouter d'autres types ici si besoin
-			str_response += "; charset=UTF-8\r\n";
-		}
-	}
+	std::string	extension_name;
+
+	str_response += "content-type: ";
+	extension_name = give_uri_path_extension_name( path );
+	if (extension_name == "html" || extension_name == "css")
+		str_response += "text/" + extension_name;
+	else if (extension_name == "javascript" || extension_name == "js")
+		str_response += "application/javascript";
+	else if (extension_name == "png")
+		str_response += "image/png";
+	str_response += "; charset=UTF-8\r\n";
 }
 
 static std::string	give_uri_path_extension_name(std::string uri)

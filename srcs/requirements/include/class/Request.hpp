@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 11:54:40 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/22 15:59:25 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/07 18:17:32 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ class Request
 		Request &operator = ( const Request &other );
 		~Request( void );
 
+		typedef std::map< std::string, std::vector< std::string > >	field_section_type;
+
 		RequestLine					request_line;
+		field_section_type 			_header_section;
 
 		bool						is_complete( void );
 		std::string::size_type		get_required_size( void );
@@ -39,12 +42,11 @@ class Request
 		void						set_status_after_continue( void );
 		std::string					get_host_value( void );
 		bool						get_content_length_status( void);
+		long						get_content_length_value( void);
 		std::string					&get_body( void );
 		void						print_request( void );
 
 	private:
-	
-		typedef std::map< std::string, std::vector< std::string > >	field_section_type;
 
 		e_parsing_status			_parsing_status;
 		e_final_status				_final_status;
@@ -53,7 +55,6 @@ class Request
 		std::string::size_type		_chunk_size_cumsum;
 		std::vector< std::string >	_raw_header_section;
 		std::vector< std::string >	_raw_trailer_section;
-		field_section_type 			_header_section;
 		field_section_type 			_trailer_section;
 		bool						_has_host;
 		std::string 				_host_value;

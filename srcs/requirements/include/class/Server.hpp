@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 17:47:51 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/25 15:42:42 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/02 12:01:55 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <vector>
 #include <string>
 
+#include "HttpResponse.hpp"
 #include "Connection.hpp"
 #include "other/exceptions.hpp"
 #include "other/Location.hpp"
@@ -25,6 +26,15 @@
 class Server
 {
 	public:
+		int										_id;
+		static int								_n_servers;
+		bool									_parsing_error;
+		std::set< Origin >						_origins;
+		std::vector< std::string >				_names;
+		long									_max_client_body_size;
+		std::map< int, std::string >			_default_error_pages;
+		std::map< std::string, Location >		_locations;
+		std::string								root;
 
 		Server( std::vector< std::string >::iterator first, std::vector< std::string >::iterator last);
 		Server( const Server& );	// attention pendant la fusion
@@ -37,20 +47,13 @@ class Server
 		bool									listens_to_origin( const Origin& );
 		bool									has_server_name( const std::string& );
 		void									reply( Connection &connection, char **env );
+		Location*								select_location( std::string path, std::string method );
 
 	private :
 
 		typedef std::vector< std::string >			string_vector;
 		typedef std::map< std::string, Location >	location_map;
 
-		static int								_n_servers;
-		int										_id;
-		bool									_parsing_error;
-		std::set< Origin >						_origins;
-		std::vector< std::string >				_names;
-		std::map< std::string, Location >		_locations;
-		long									_max_client_body_size;
-		std::map< int, std::string >			_default_error_pages;
 
 		bool									is_simple_directive( std::vector< std::string > tokens ) const;
 		bool									is_location_directive( std::string& line, std::vector< std::string > tokens ) const;
@@ -61,4 +64,5 @@ class Server
 		void									parse_server_name( std::vector<std::string> );
 		void									parse_client_max_body_size( std::string line, std::vector<std::string> );
 		void									parse_error_page( std::string line, std::vector< std::string > tokens );
+		void									parse_root( std::string, std::vector<std::string> );
 };

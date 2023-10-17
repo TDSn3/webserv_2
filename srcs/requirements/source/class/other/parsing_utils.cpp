@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:27:30 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/12 11:18:50 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/01 13:05:34 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ std::vector< std::string >::iterator skip_whitespaces_tokens(
 
 bool is_uri( std::string str )
 {
-	return str[0] == '/';
+	return str[0] == '/' || str[0] == '.';
 }
 
 bool	is_simple_directive( std::vector< std::string > tokens )

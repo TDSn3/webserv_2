@@ -42,3 +42,7 @@ Use ` client_test/http_request.txt ` to customise your HTTP request.
 - [x] Execute CGI based on certain file extension  
 - [x] Make it work with POST and GET methods  
 - [x] Make the route able to accept uploaded files and configure where they should be saved  
+
+curl -v -H "Transfer-Encoding: chunked" -d @Makefile http://127.0.0.1:8080/post_body
+curl -v -T Makefile http://127.0.0.1:8080/post_body
+curl -v -H "Transfer-Encoding: chunked" -T Makefile http://127.0.0.1:8080/post_body

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:58:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/22 16:05:36 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/02 11:59:38 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@
 # include "class/other/print_utils.hpp"
 # include "class/other/parsing_utils.hpp"
 # include "class/other/RequestLine.hpp"
+# include "class/HttpResponse.hpp"
 # include "class/other/StatusCode.hpp"
 
 # include "class/Connection.hpp"
 # include "class/Gateway.hpp"
-# include "class/HttpResponse.hpp"
 # include "class/Origin.hpp"
 # include "class/Request.hpp"
 # include "class/Server.hpp"
@@ -70,6 +70,9 @@ void	handler( int sig );
 bool	my_perror( const char *str );
 void	my_perror_and_throw( const char *str, const std::exception &e );
 void	my_perror_and_throw( const char *str, const StatusCode &e );
+bool	is_in_directory( std::string dir, std::string file );
+bool	is_directory( std::string name );
 void	listen_loop( Gateway &gateway, char **env );	// ! throw possible
+bool	is_allowed_methods( Location *location, std::string method );
 
 #endif

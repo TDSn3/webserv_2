@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 19:41:02 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/26 15:25:16 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/02 11:27:06 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ int Server::_n_servers = 0;
 Server::Server( std::vector< std::string >::iterator first,
 				std::vector< std::string >::iterator last ):
 _id(_n_servers++),
-_parsing_error(false)
+_parsing_error(false),
+_max_client_body_size( DEFAULT_MAX_BODY ),
+root("/")
 {
 	std::cout << COLOR_BLUE << "Server #" << _id << " constructor :\n" << COLOR_RESET;
 	while (++first != last)
@@ -60,7 +62,10 @@ Server::Server( const Server& other ):
 _id(other._id),
 _parsing_error(other._parsing_error),
 _origins(other._origins),
-_names(other._names){}
+_names(other._names),
+_max_client_body_size( other._max_client_body_size ),
+_locations(other._locations),
+root(other.root){}
 
 Server::~Server(){}
 
@@ -71,6 +76,7 @@ void Server::print_config( void )
 	{
 		std::cout << "\t" << it->get_host() << ":" << COLOR_BOLD_BLUE << it->get_port() << COLOR_RESET << std::endl;
 	}
+	std::cout << COLOR_DIM_BLUE << "Root: " << root << COLOR_RESET;
 	std::cout << COLOR_DIM_BLUE << "Names:" << COLOR_RESET;
 	for ( unsigned long i=0; i < _names.size(); ++i )
 		std::cout << " " << _names[i];
@@ -149,6 +155,13 @@ void	Server::parse_error_page( std::string line, std::vector< std::string > toke
 	_default_error_pages[status_code] = tokens[2];
 }
 
+void	Server::parse_root( std::string line, std::vector<std::string> tokens )
+{
+	if ( tokens.size() < 3 )
+		throw ParsingError(line, "Not enough arguments for directive.");
+	root = tokens[1];
+}
+
 const std::set< Origin >& Server::get_origins( void ) const
 {
 	return _origins;
@@ -209,6 +222,8 @@ void	Server::process_simple_directive(
 		parse_client_max_body_size(line, tokens);
 	else if ( tokens[0] == "error_page" )
 		parse_error_page(line, tokens);
+	else if ( tokens[0] == "root" )
+		parse_root(line, tokens);
 	else
 		throw ParsingError(line, "Unknown directive name.");
 }

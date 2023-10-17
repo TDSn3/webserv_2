@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:05:04 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/17 11:33:00 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/03 14:24:25 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ class Connection
 		Connection( const Connection& other );
 		Connection& operator=( const Connection& other );
 
+		bool					response_status;
 		HttpResponse			response;
 
 		Origin&					get_origin( void );

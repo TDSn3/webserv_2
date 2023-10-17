@@ -6,13 +6,14 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:11:02 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/22 12:00:26 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/03 14:25:29 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
 Connection::Connection( void ):
+response_status(false),
 _origin(Origin(DEFAULT_HOST, DEFAULT_PORT)),
 _socket(-1),
 _close(false),
@@ -20,6 +21,7 @@ _continue_reading(true)
 {}
 	
 Connection::Connection( Origin origin, int socket ):
+response_status(false),
 _origin(origin),
 _socket(socket),
 _close(false),
@@ -35,6 +37,7 @@ Connection& Connection::operator=( const Connection& other )
 {
 	if ( this != &other )
 	{
+		response_status = other.response_status;
 		_origin = other._origin;
 		_socket = other._socket;
 		_request = other._request;
