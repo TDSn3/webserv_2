@@ -5,3 +5,5 @@
 *.o
 *.a
 webserv
+**/post_body
+**/.TEMP
