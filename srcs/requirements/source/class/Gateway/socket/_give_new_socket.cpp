@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   _give_new_socket.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 13:44:42 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/17 10:27:17 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/18 06:26:02 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	Gateway::_give_new_socket( const Origin& origin, short events )
 	new_socket = _creat_socket();						// Crée un socket pour ce connecter au serveur	// ! throw possible
 	_assign_socket_name(origin, new_socket, address);	// Affecte un "nom" au socket crée				// ! throw possible
 
-	if (listen(new_socket, 3) < 0)						// Prépare le socket pour la connexion
+	if (listen(new_socket, 256) < 0)						// Prépare le socket pour la connexion
 	{
 		perror("listen");
 		// TODO: err plus tard
