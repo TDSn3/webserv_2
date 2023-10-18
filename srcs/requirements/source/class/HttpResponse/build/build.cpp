@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:00:08 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/07 20:52:49 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/18 07:18:36 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	HttpResponse::build( Request &request, char **env, Server& server )	// ! th
 
 	if ( is_directory(new_path) )
 	{
-		if ( !_autoindex_is_on (location ) )
+		if ( !_autoindex_is_on (location ) ) // TODO: search default file
 			my_perror_and_throw( "Page not found", StatusCode( 404 ) );
 		else
 		{
