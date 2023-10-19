@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 19:41:02 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/10/02 11:27:06 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/19 08:59:00 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ Server::Server( std::vector< std::string >::iterator first,
 _id(_n_servers++),
 _parsing_error(false),
 _max_client_body_size( DEFAULT_MAX_BODY ),
-root("/")
+root("")
 {
 	std::cout << COLOR_BLUE << "Server #" << _id << " constructor :\n" << COLOR_RESET;
 	while (++first != last)
