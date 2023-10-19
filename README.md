@@ -44,6 +44,7 @@ Use ` client_test/http_request.txt ` to customise your HTTP request.
 - [x] Make the route able to accept uploaded files and configure where they should be saved  
 
 curl -v -H "Transfer-Encoding: chunked" -d @Makefile http://127.0.0.1:8080/post_body
+curl -v -H "Transfer-Encoding: chunked" --data-binary @Makefile http://127.0.0.1:8080/post_body
 curl -v -T Makefile http://127.0.0.1:8080/post_body
 curl -v -H "Transfer-Encoding: chunked" -T Makefile http://127.0.0.1:8080/post_body
 curl -v -X POST -F "file=@Makefile" http://localhost:8080/test_POST.mk
