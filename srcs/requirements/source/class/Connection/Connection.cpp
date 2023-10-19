@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Connection.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:11:02 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/10/03 14:25:29 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/19 09:53:48 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ void Connection::receive( void )
 
 bool Connection::is_ready_for_reply( void )
 {
-	if ( _request.get_parsing_status() == done )
+	if ( _request.get_parsing_status() == done || _request.get_parsing_status() == expect_100_continue )
 		return true;
 	return false;
 }

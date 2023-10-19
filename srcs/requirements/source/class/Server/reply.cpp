@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reply.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 21:00:45 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/07 14:39:32 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/19 15:34:02 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ void	Server::reply( Connection &connection, char **env )
 		connection.get_request().print_request();
 		if ( connection.response_status == false )
 		{
-			connection.response.build( connection.get_request(), env, *this );	// Si build throw, build une réponse d'erreur
+			if ( connection.get_request().get_parsing_status() == expect_100_continue )
+				connection.response.build_100_continue( connection.get_request(), *this );
+			else
+				connection.response.build( connection.get_request(), env, *this );	// Si build throw, build une réponse d'erreur
 			connection.response_status = true;
 		}
 	}
@@ -60,7 +63,18 @@ void	Server::reply( Connection &connection, char **env )
 	{
 		std::cout << COLOR_DIM << COLOR_BOLD_GREEN << "THE RESPONSE WAS COMPLETELY SEND" << COLOR_RESET;
 		connection.response.clear();
-		connection.flush_request();
+		/*
+		The line named "line A" was there before we handled the 100 Continue status code
+		Now we do not want to systematically flush the request.
+		We want to call flush_request() only if a final response has been sent.
+		( (complete request) or (100-continue and error) )
+		Otherwise, we let the request decide on its next status (body or chunk).
+		*/
+		if ( connection.get_request().get_parsing_status() == expect_100_continue )
+			connection.get_request().set_status_after_continue();
+		else
+			connection.flush_request(); // line A
+			
 		connection.response_status = false;
 	}
 	std::cout << COLOR_RESET << std::endl;

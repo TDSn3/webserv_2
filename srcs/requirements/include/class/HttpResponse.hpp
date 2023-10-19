@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpResponse.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 15:43:46 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/04 15:47:03 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/19 15:34:18 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ class HttpResponse
 		std::string		str_response;
 
 		void			build(Request &request, char **env, Server& server);						// ! throw possible
+		void			build_100_continue(Request &request, Server& server);
 		void			build_error(Request &request, const int status_code);
 		bool			status(void);
 		void			clear(void);
