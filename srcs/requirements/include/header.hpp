@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:58:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/02 11:59:38 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/21 00:35:23 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,11 @@ void	my_perror_and_throw( const char *str, const std::exception &e );
 void	my_perror_and_throw( const char *str, const StatusCode &e );
 bool	is_in_directory( std::string dir, std::string file );
 bool	is_directory( std::string name );
+std::vector< struct dirent >
+		get_entries( std::string dirname );
 void	listen_loop( Gateway &gateway, char **env );	// ! throw possible
 bool	is_allowed_methods( Location *location, std::string method );
+std::vector< std::string >
+		get_html_lines( std::string dirname, std::vector< struct dirent > entries, std::string target_resource );
 
 #endif

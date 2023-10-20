@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:00:08 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/18 07:18:36 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/20 23:07:05 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,24 +37,27 @@ void	HttpResponse::build( Request &request, char **env, Server& server )	// ! th
 		}
 		location->print_location();
 	}
-	else
-		std::cout << COLOR_BOLD_RED << "No matching location\n" << COLOR_RESET;
+	else // TODO: return 404 ?
+		std::cout << COLOR_BOLD_RED << "No matching location\n" << COLOR_RESET; // TODO: reply with error
 
 	new_path = server.root;
+	// also appends default_file
 	_rewrite_path( new_path, location, request.request_line.parsed_url.path );
 
-	if ( is_directory(new_path) )
+	// TODO: nginx considers that the initially requested resource is a directory iff
+	// it ends with the character '/'.
+	// Question: are POST and DELETE requests allowed on directories ?
+	if ( is_directory(new_path) ) // no default_file found
 	{
-		if ( !_autoindex_is_on (location ) ) // TODO: search default file
+		if ( !_autoindex_is_on( location ) )
 			my_perror_and_throw( "Page not found", StatusCode( 404 ) );
 		else
 		{
-			// TODO: directory listing
-			;
+			_build_directory_listing( new_path, request.request_line.parsed_url.path );
 		}
 	}
 
-	if ( _select_method( request, env, location, new_path ) == true )	// ! throw possible
+	else if ( _select_method( request, env, location, new_path ) == true )	// ! throw possible
 	{
 		to_send =  str_response.size();
 		sent = 0;

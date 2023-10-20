@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 15:43:46 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/19 15:34:18 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/20 23:07:28 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ class HttpResponse
 		bool			_get_method( Request &request, char **env, std::string &path );		// ! throw possible
 		bool			_post_method( Request &request, char **env, std::string &path );	// ! throw possible
 		void			_delete_method( std::string &path );								// ! throw possible
+		void			_build_directory_listing( std::string dirname, std::string target_resource );
 
 /* ************************************************************************** */
 /*                                                                            */

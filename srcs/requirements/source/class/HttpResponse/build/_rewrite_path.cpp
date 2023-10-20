@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   _rewrite_path.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:52:02 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/02 10:52:54 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/21 00:09:22 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	HttpResponse::_rewrite_path( std::string &new_path, Location *location, std::string path )
 {
-	if ( !location)
+	if ( !location )
 		new_path += path;
 	else
 	{
@@ -26,6 +26,7 @@ void	HttpResponse::_rewrite_path( std::string &new_path, Location *location, std
 				
 				new_path += location->_parameters[ "root" ][0];
 				str = path.substr( location->_uri.size() );
+				std::cout << "_rewrite_path: str = " << str << std::endl;
 				if (str.size() > 0 )
 					new_path += "/" + str;
 			}
