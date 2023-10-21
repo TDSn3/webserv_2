@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:00:08 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/20 23:07:05 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/21 10:33:20 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,13 @@ void	HttpResponse::build( Request &request, char **env, Server& server )	// ! th
 	// Question: are POST and DELETE requests allowed on directories ?
 	if ( is_directory(new_path) ) // no default_file found
 	{
+		std::cout << "is_directory\n";
 		if ( !_autoindex_is_on( location ) )
 			my_perror_and_throw( "Page not found", StatusCode( 404 ) );
 		else
 		{
-			_build_directory_listing( new_path, request.request_line.parsed_url.path );
+			str_body = DirectoryListing( new_path, request.request_line.parsed_url.path ).get_html();
+			_set_status_line( 200, "OK" );
 		}
 	}
 

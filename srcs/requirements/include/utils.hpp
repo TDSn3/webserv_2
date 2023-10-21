@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 15:49:59 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/05 09:33:02 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/21 10:00:45 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,14 @@
 
 #ifndef ROOT
 # define ROOT "www"
+#endif
+
+#ifndef DIR_LISTING_NAME_TIME_SPLIT
+# define DIR_LISTING_NAME_TIME_SPLIT 5
+#endif
+
+#ifndef DIR_LISTING_TIME_SIZE_SPLIT
+# define DIR_LISTING_TIME_SIZE_SPLIT 5
 #endif
 
 enum e_parsing_status
