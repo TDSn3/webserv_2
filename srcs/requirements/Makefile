@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+         #
+#    By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/30 09:01:22 by tda-silv          #+#    #+#              #
-#    Updated: 2023/10/07 00:34:31 by tda-silv         ###   ########.fr        #
+#    Updated: 2023/10/21 12:50:48 by yfoucade         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ INC_DIR		= include/
 
 CC			= c++
 
+# TODO: compile with -Werror
 CFLAGS		= -Wall -Wextra -Wshadow -std=c++98
 
 # **************************************************************************** #
