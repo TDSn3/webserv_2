@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   _get_method.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 17:32:47 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/01 16:14:52 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/27 13:42:28 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 bool	HttpResponse::_get_method( Request &request, char **env, std::string &path )	// ! throw possible
 {
+	// TODO: beware hard-coded cgi path
 	if ( path.find( "cgi-bin/" ) != std::string::npos )
 	{
 		std::cout << COLOR_BOLD_CYAN << "CGI detected" << COLOR_RESET << std::endl;
