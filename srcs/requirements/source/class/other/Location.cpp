@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:55:13 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/10/01 13:34:13 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/27 15:00:36 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ void	Location::parse_location_line(
 		parse_allowed_methods(line, tokens);
 	if ( tokens[0] == "return" )
 		parse_return(line, tokens);
+	if ( tokens[0] == "rewrite" )
+		parse_rewrite(line, tokens);
 	if ( tokens[0] == "autoindex" )
 		parse_autoindex(line, tokens);
 	if ( tokens[0] == "index" )
@@ -112,6 +114,13 @@ void	Location::parse_return( std::string line, std::vector< std::string > tokens
 	if ( tokens.size() < 3 )
 		throw ParsingError(line, "Missing arguments for 'return' directive.");
 	_parameters["return"] = std::vector< std::string >(tokens.begin() + 1, tokens.begin() + 2);
+}
+
+void	Location::parse_rewrite( std::string line, std::vector< std::string > tokens )
+{
+	if ( tokens.size() < 3 )
+		throw ParsingError(line, "Missing arguments for 'rewrite' directive.");
+	_parameters["rewrite"] = std::vector< std::string >(tokens.begin() + 1, tokens.begin() + 2);
 }
 
 void	Location::parse_autoindex( std::string line, std::vector< std::string > tokens )
