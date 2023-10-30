@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 15:43:46 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/20 23:07:28 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/31 00:20:11 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ class HttpResponse
 		void			build_error(Request &request, const int status_code);
 		bool			status(void);
 		void			clear(void);
+		void			_rewrite_path( std::string &new_path, Location *location, std::string path );
 
 	protected:
 
@@ -88,7 +89,6 @@ class HttpResponse
 /* ************************************************************************** */
 
 		bool			_select_method( Request &request, char **env, Location *location, std::string path );	// ! throw possible
-		void			_rewrite_path( std::string &new_path, Location *location, std::string path );
 		bool			_autoindex_is_on( Location *location );
 
 };
