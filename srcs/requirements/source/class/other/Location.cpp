@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:55:13 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/10/27 15:00:36 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/31 00:57:56 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,4 +165,14 @@ void Location::print_location( void )
 		std::cout << it->first << ": ";
 		print_string_vector(it->second);
 	}
+}
+
+bool	Location::autoindex_is_on( void )
+{
+	if (	_parameters.find("autoindex") ==_parameters.end()
+			|| _parameters["autoindex"][0] != "on" )
+	{
+		return false;
+	}
+	return true;
 }

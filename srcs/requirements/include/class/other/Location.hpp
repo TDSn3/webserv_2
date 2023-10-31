@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:45:48 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/10/27 15:01:18 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/31 01:03:13 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,10 @@ class Location
 			std::vector< std::string >::iterator first,
 			std::vector< std::string >::iterator last );
 		Location( const Location& other );
-		Location& operator=( const Location& other );
 		~Location( void );
-		void print_location( void );
+		Location&	operator=( const Location& other );
+		void		print_location( void );
+		bool		autoindex_is_on( void );
 
 	private:
 		void	parse_location_line( std::string line, std::vector< std::string > tokens );
