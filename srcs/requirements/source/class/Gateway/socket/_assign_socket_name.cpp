@@ -20,6 +20,7 @@
 /*				  en une représentation réseau.								  */
 /*                                                                            */
 /* ************************************************************************** */
+
 void	Gateway::_assign_socket_name( const Origin& origin, int &fd, struct sockaddr_in &address )
 {
 	std::stringstream	ss( origin.get_port() );
@@ -31,6 +32,10 @@ void	Gateway::_assign_socket_name( const Origin& origin, int &fd, struct sockadd
 	address.sin_addr.s_addr = INADDR_ANY; 
 	address.sin_port = htons( static_cast< uint16_t >( port ) );
 
-	if ( bind( fd, ( struct sockaddr * ) &address, sizeof( address ) ) < 0 ) 
+	if ( bind( fd, ( struct sockaddr * ) &address, sizeof( address ) ) < 0 )
+	{
+		close(fd);
 		my_perror( "bind failed" );
+		throw std::exception();
+	}
 }
