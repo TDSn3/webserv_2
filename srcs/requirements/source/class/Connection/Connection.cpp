@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:11:02 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/10/19 09:53:48 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/31 11:59:17 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,10 @@ void Connection::receive( void )
 	}
 
 	if ( _continue_reading)
-		_parse_buffer += _read_buffer;
+	{
+		std::string tmp(_read_buffer, ret);
+		_parse_buffer += tmp;
+	}
 
 	while ( !_request.is_complete() && _parse_buffer.size() )
 	{
