@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 21:00:45 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/19 15:34:02 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/31 13:56:23 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ void	Server::reply( Connection &connection, char **env )
 			connection.flush_request(); // line A
 			
 		connection.response_status = false;
+		if ( connection.response.status_line.code == 400 )
+			connection.set_close(true);
 	}
 	std::cout << COLOR_RESET << std::endl;
 }
