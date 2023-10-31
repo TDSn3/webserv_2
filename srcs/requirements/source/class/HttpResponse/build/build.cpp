@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:00:08 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/28 12:49:52 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/31 10:38:18 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	HttpResponse::build( Request &request, char **env, Server& server )	// ! th
 		if ( location->_parameters.find("return") != location->_parameters.end() )
 		{
 			str_response = "HTTP/1.1 308 Permanent Redirect\r\n";
-			_add_field_line( "Location", request.request_line.parsed_url.path.replace(0, location->_uri.size(), location->_parameters["rewrite"][0]) );
+			_add_field_line( "Location", request.request_line.parsed_url.path.replace(0, location->_uri.size(), location->_parameters["return"][0]) );
 			str_response += "\r\n";
 			to_send =  str_response.size();
 			sent = 0;
