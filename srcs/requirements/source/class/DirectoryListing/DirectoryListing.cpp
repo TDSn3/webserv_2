@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 09:07:41 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/10/21 12:56:26 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/31 13:03:54 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	DirectoryListing::_set_entries( void )
 	std::string		size;
 	struct stat		statbuf;
 	int				stat_ret;
-	size_t			strftime_ret;
 	char			timebuf[256];
 	std::ostringstream	convert;
 	webserv_dirent_t	tmp;
@@ -44,6 +43,8 @@ void	DirectoryListing::_set_entries( void )
 			continue;
 		name = std::string(dir_entry->d_name);
 		stat_ret = stat( (_dirname + "/" + name).c_str(), &statbuf ); // TODO: handle error
+		if ( stat_ret == -1 )
+			continue;
 		if ( is_directory( _dirname + "/" + name ))
 		{
 			name += "/";
@@ -55,7 +56,8 @@ void	DirectoryListing::_set_entries( void )
 			convert << statbuf.st_size;
 			size = convert.str();
 		}
-		strftime_ret = strftime( timebuf, 256, "%d-%b-%Y %H:%M", gmtime( &statbuf.st_mtim.tv_sec ) );
+		strftime( timebuf, 256, "%d-%b-%Y %H:%M", gmtime( &statbuf.st_mtim.tv_sec ) );
+		
 		_max_name_length = std::max( _max_name_length, name.size() );
 		_max_size_length = std::max( _max_size_length, size.size() );
 		// std::cout << "_set_entries: " << name << " " << timebuf << " " << size << std::endl;
