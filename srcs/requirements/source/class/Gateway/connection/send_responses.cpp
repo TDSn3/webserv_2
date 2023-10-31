@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   send_responses.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 20:58:07 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/07 14:01:33 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/30 20:19:04 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	Gateway::send_responses( char **env )
 		{	
 			server_iter = decide_server( _connections[ i - _map_origin_socket.size() ] );
 			server_iter->reply( _connections[ i - _map_origin_socket.size() ], env );
+			server_iter->reply2( _connections[ i - _map_origin_socket.size() ], env );
 		}
 		i++;
 	}

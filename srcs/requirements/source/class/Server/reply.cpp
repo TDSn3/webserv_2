@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 21:00:45 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/19 15:34:02 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/31 01:09:37 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,67 @@ void	Server::reply( Connection &connection, char **env )
 		connection.response_status = false;
 	}
 	std::cout << COLOR_RESET << std::endl;
+}
+
+void	Server::reply2( Connection &connection, char **env )
+{
+	Request		&request = connection.get_request();
+	Location	*location = NULL;
+	std::string	rewritten_path;
+
+	if ( connection.response_status == true )
+	{
+		connection.send_and_update();
+		return;
+	}
+
+	if ( request.get_final_status() == bad_request )
+	{
+		connection.response.build_bad_request();
+		connection.send_and_update();
+		return;
+	}
+
+	request.print_request();
+	
+	if ( request.get_parsing_status() == expect_100_continue )
+	{
+		connection.response.build_100_continue( request, *this );
+		connection.send_and_update();
+		return;
+	}
+	
+	location = select_location(	request.request_line.parsed_url.path,
+								request.request_line.method );
+
+	if ( !location )
+	{
+		connection.response.build_error( request, 404 );
+		connection.send_and_update();
+		return;
+	}
+
+	if ( location->has_redirection() )
+	{
+		connection.response.build_redirection( request, location );
+		connection.send_and_update();
+		return;
+	}
+
+	rewritten_path = root;
+	connection.response._rewrite_path( rewritten_path, location, request.request_line.parsed_url.path );
+	
+	if ( is_directory(rewritten_path) )
+	{
+		if ( !location->autoindex_is_on() )
+			build_404( DEFAULT_404 );
+		else
+			connection.response.build_directory_listing( rewritten_path, request );
+		connection.send_and_update();
+		return;
+	}
+
+	
+	connection.response.build( request, env, *this );	// Si build throw, build une réponse d'erreur
+
 }

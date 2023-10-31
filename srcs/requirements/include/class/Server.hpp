@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 17:47:51 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/10/02 12:01:55 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/30 20:19:58 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ class Server
 		bool									listens_to_origin( const Origin& );
 		bool									has_server_name( const std::string& );
 		void									reply( Connection &connection, char **env );
+		void									reply2( Connection &connection, char **env );
 		Location*								select_location( std::string path, std::string method );
 
 	private :
