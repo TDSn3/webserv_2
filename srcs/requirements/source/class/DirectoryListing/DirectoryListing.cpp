@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   DirectoryListing.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 09:07:41 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/11/01 11:32:36 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 12:38:59 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	DirectoryListing::_set_entries( void )
 			convert << statbuf.st_size;
 			size = convert.str();
 		}
-		strftime( timebuf, 256, "%d-%b-%Y %H:%M", gmtime( &statbuf.st_mtim.tv_sec ) );
+		strftime( timebuf, 256, "%d-%b-%Y %H:%M", gmtime( &statbuf.st_mtimespec.tv_sec ) ); // Mac: st_mtimespec ; Linux: st_mtim
 		
 		_max_name_length = std::max( _max_name_length, name.size() );
 		_max_size_length = std::max( _max_size_length, size.size() );

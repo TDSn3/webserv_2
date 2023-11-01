@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   _select_method.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:58:54 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/01 01:59:06 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 13:01:27 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ bool	HttpResponse::_select_method( Request &request, char **env, Location *locat
 			if ( location->_parameters[ "cgi" ].empty() == false )
 			{
 				std::cout << COLOR_BOLD_CYAN << " : " << location->_parameters[ "cgi" ][0] << COLOR_RESET << std::endl;
-				str_response = _exec_cgi( location->_parameters[ "cgi" ][0], request, env );			// ! throw possible
+				str_response = _exec_cgi( location->_parameters[ "cgi" ][0], path, request, env, server );			// ! throw possible
 				return ( true );
 			}
 			else
@@ -31,7 +31,7 @@ bool	HttpResponse::_select_method( Request &request, char **env, Location *locat
 
 		if ( request.request_line.method == "GET" )
 		{
-			if ( _get_method( request, env, path ) == true )	// ! throw possible
+			if ( _get_method( request, env, path, server ) == true )	// ! throw possible
 				return ( true );								// Le CGI a rempli la réponse
 		}
 		else if ( request.request_line.method == "POST" )

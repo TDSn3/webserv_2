@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpResponse.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 15:43:46 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/01 11:30:06 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 13:06:51 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ class HttpResponse
 	private:
 
 		std::string		_read_file_in_str(std::string path);							// ! throw possible
-		std::string		_exec_cgi(std::string &path, Request &request, char **env);		// ! throw possible
+		std::string		_exec_cgi(std::string &path, std::string &path_target, Request &request, char **env, Server &server);		// ! throw possible
 		void			_make_response( Request &request, std::string &path );			// ! throw possible
 		void			_add_content_type( std::string &path );
 		void			_make_reason_phrase(void);
@@ -77,7 +77,7 @@ class HttpResponse
 		void			_add_field_line(std::string field_name, std::string field_value);
 		void			_add_body(std::string path);
 		void			_set_status_line( int code, std::string reason_phrase);
-		bool			_get_method( Request &request, char **env, std::string &path );		// ! throw possible
+		bool			_get_method( Request &request, char **env, std::string &path, Server &server );		// ! throw possible
 		bool			_post_method( Request &request, char **env, std::string &path, Location &location, Server &server );	// ! throw possible
 		void			_delete_method( std::string &path );								// ! throw possible
 		void			_build_directory_listing( std::string dirname, std::string target_resource );

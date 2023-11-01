@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   _post_method.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 14:57:55 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/01 01:53:41 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 13:09:37 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,7 @@ bool	HttpResponse::_post_method( Request &request, char **env, std::string &path
 	std::ofstream	out_file;
 	std::string		out_path;
 
-	if ( path.find( "cgi-bin/" ) != std::string::npos )
-	{
-		std::cout << COLOR_BOLD_CYAN << "CGI detected" << COLOR_RESET << std::endl;
-		str_response = _exec_cgi( path, request, env );				// ! throw possible
-		return ( true );	
-	}
-
+	(void) env;
 	out_path = _resolve_out_path( location, path, server );
 	out_file.open( out_path.c_str() , std::ios::out | std::ios::binary );
 

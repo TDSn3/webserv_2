@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/01 11:18:07 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/11/01 13:21:43 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void			check_file( std::string &path );
 static void			new_char_for_execve( Request &request, std::vector<char *> &arg_for_execve, std::string &path );
 static void			env_update_push_back( std::vector<char *> &env_update, const char *str_to_add );
-static void			new_char_for_env_update( std::vector<char *> &env_update, char **env, Request &request, std::string &path );
+static void			new_char_for_env_update( std::vector<char *> &env_update, char **env, Request &request, std::string &path, std::string &path_target, Server &server );
 static void			fork_child( int stdin_pipefd[2], int file_stock_output_fd, std::vector<char *> &arg_for_execve, std::vector<char *> &env_update );
 static void			fork_parent( int stdin_pipefd[2], std::string &str, int pid );
 static void			read_file_stock_output( int file_stock_output_fd, std::string &str );
@@ -24,7 +24,7 @@ static std::string	to_upper_str( std::string str );
 static std::string	dash_to_underscore( std::string str );
 static void			parse_cgi_output( std::string &str, std::string &body );
 
-std::string	HttpResponse::_exec_cgi( std::string &path, Request &request, char **env )	// ! throw possible
+std::string	HttpResponse::_exec_cgi( std::string &path, std::string &path_target, Request &request, char **env, Server &server )	// ! throw possible
 {
 	int					file_stock_output_fd;
 	int					stdin_pipefd[2];
@@ -34,12 +34,17 @@ std::string	HttpResponse::_exec_cgi( std::string &path, Request &request, char *
 	std::vector<char *>	arg_for_execve;
 	std::vector<char *>	env_update;
 
+	std::cout << "++++++++++++> " << path << "\n";
+	std::cout << "++++++++++++> " << path_target << "\n";
+	// path_target = path_target.substr( server.root.size() + 1 );
+	// std::cout << "============> " << path_target << "\n";
+
 	file_stock_output_fd = open( file_stock_output_path.c_str(), O_RDWR | O_CREAT | O_TRUNC, 0666 );
 
 	check_file( path );	// ! throw possible
 
 	new_char_for_execve( request, arg_for_execve, path );
-	new_char_for_env_update( env_update, env, request, path );
+	new_char_for_env_update( env_update, env, request, path, path_target, server );
 
 	pipe( stdin_pipefd );
 
@@ -103,7 +108,7 @@ static void	env_update_push_back( std::vector<char *> &env_update, const char *s
 	env_update.push_back( str );
 }
 
-static void	new_char_for_env_update( std::vector<char *> &env_update, char **env, Request &request, std::string &path )
+static void	new_char_for_env_update( std::vector<char *> &env_update, char **env, Request &request, std::string &path, std::string &path_target, Server &server )
 {
 	std::map< std::string, std::vector< std::string > > :: iterator	it = request._header_section.begin();
 	std::string														str;
@@ -127,6 +132,8 @@ static void	new_char_for_env_update( std::vector<char *> &env_update, char **env
 
 	env_update_push_back( env_update, ( "REQUEST_METHOD=" + request.request_line.method ).c_str() );
 
+	path = path.substr( server.root.size() + 1 );
+
 	env_update_push_back( env_update, ( "SCRIPT_NAME=" + path ).c_str() );
 
 	str = "QUERY_STRING=";
@@ -142,7 +149,8 @@ static void	new_char_for_env_update( std::vector<char *> &env_update, char **env
 
 	// env_update_push_back( env_update, "GATEWAY_INTERFACE=CGI/1.1" );				// optionnel
 	
-	// env_update_push_back( env_update, ( "PATH_INFO=" + path ).c_str() );
+	(void) path_target;
+	// env_update_push_back( env_update, ( "PATH_INFO=" + path_target ).c_str() );
 	env_update_push_back( env_update, "PATH_INFO=YoupiBanane/youpi.bla" );			// TODO : ajouter spécification
 
 	// env_update_push_back( env_update, "PATH_TRANSLATED=YoupiBanane/youpi.bla" );	// optionnel
