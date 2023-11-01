@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/01 13:21:43 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/11/01 13:44:01 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void			check_file( std::string &path );
 static void			new_char_for_execve( Request &request, std::vector<char *> &arg_for_execve, std::string &path );
 static void			env_update_push_back( std::vector<char *> &env_update, const char *str_to_add );
-static void			new_char_for_env_update( std::vector<char *> &env_update, char **env, Request &request, std::string &path, std::string &path_target, Server &server );
+static void			new_char_for_env_update( std::vector<char *> &env_update, char **env, Request &request, std::string path, std::string path_target, Server &server );
 static void			fork_child( int stdin_pipefd[2], int file_stock_output_fd, std::vector<char *> &arg_for_execve, std::vector<char *> &env_update );
 static void			fork_parent( int stdin_pipefd[2], std::string &str, int pid );
 static void			read_file_stock_output( int file_stock_output_fd, std::string &str );
@@ -108,7 +108,7 @@ static void	env_update_push_back( std::vector<char *> &env_update, const char *s
 	env_update.push_back( str );
 }
 
-static void	new_char_for_env_update( std::vector<char *> &env_update, char **env, Request &request, std::string &path, std::string &path_target, Server &server )
+static void	new_char_for_env_update( std::vector<char *> &env_update, char **env, Request &request, std::string path, std::string path_target, Server &server )
 {
 	std::map< std::string, std::vector< std::string > > :: iterator	it = request._header_section.begin();
 	std::string														str;
@@ -132,7 +132,7 @@ static void	new_char_for_env_update( std::vector<char *> &env_update, char **env
 
 	env_update_push_back( env_update, ( "REQUEST_METHOD=" + request.request_line.method ).c_str() );
 
-	path = path.substr( server.root.size() + 1 );
+	path_target = path_target.substr( server.root.size() + 1 );
 
 	env_update_push_back( env_update, ( "SCRIPT_NAME=" + path ).c_str() );
 
