@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:30:24 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/11/01 20:25:48 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 20:42:32 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,7 @@ void	Gateway::create_origin_sockets_mapping( void )
 
 void	Gateway::open_connection( Origin origin, pollfd pfd )
 {
-	// todo: dup() and do not add to _connections if initialization failed
-	int new_socket = accept( pfd.fd, NULL, NULL );	// TODO: peut etre ajouter address
+	int new_socket = accept( pfd.fd, NULL, NULL );
 
 	if (new_socket > -1)	// si une nouvelle connexion est arrivée et donc qu'il y a un client à créer
 	{
@@ -144,52 +143,6 @@ server_iter_type Gateway::decide_server( Connection& connection )
 	}
 	return res;
 }
-
-// void	Gateway::close_connections( void )
-// {
-// 	connection_iter_type connection_iter;
-// 	std::vector< pollfd >::iterator poll_struct_iter;
-
-// 	connection_iter = _connections.begin();
-// 	poll_struct_iter = poll_struct.begin() + _map_origin_socket.size();
-	
-// 	while ( connection_iter != _connections.end() )
-// 	{
-// 		connection_iter->update_close();
-// 		if ( connection_iter->get_close() )
-// 		{
-// 			connection_iter->close_connection(); // potential close routine
-// 			// erase connection and corresponding poll_struct
-// 			// TODO: remove fd from sockets we listen to ?
-// 			connection_iter = _connections.erase(connection_iter);
-// 			poll_struct_iter = poll_struct.erase(poll_struct_iter);
-// 		}
-// 		else
-// 		{
-// 			++connection_iter;
-// 			++poll_struct_iter;
-// 		}
-// 	}
-// }
-
-// void	Gateway::process_request( int socket, Origin origin )
-// {
-// 	char buff[1024];
-// 	int ret;
-// 	std::vector< std::string > request;
-
-// 	std::cout << "Processing request on origin: ";
-// 	std::cout << origin.get_host() << ":" << origin.get_port();
-// 	std::cout << std::endl;
-// 	while ( (ret = recv(socket, buff, 1023, MSG_DONTWAIT)) != -1)
-// 	{
-// 		buff[ret] = '\0';
-// 		request.push_back(buff);
-// 		std::cout << request.size() << std::endl;
-// 		send(socket, buff, ret, 0);
-// 	}
-// 	std::cout << request[1] << std::endl;
-// }
 
 void 	Gateway::print_origin_sockets_mapping( void )
 {
