@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:52:02 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/21 00:09:22 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 13:31:40 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,18 @@ void	HttpResponse::_rewrite_path( std::string &new_path, Location *location, std
 			}
 		}
 	}
+	new_path = remove_double_slash( new_path );
+}
+
+std::string	remove_double_slash( std::string &new_path )
+{
+	std::string ret;
+
+	for ( size_t i = 0; i < new_path.size(); ++i )
+	{
+		if ( new_path[i] == '/' && new_path[i + 1] == '/')
+			continue;
+		ret.push_back(new_path[i]);
+	}
+	return ret;
 }
