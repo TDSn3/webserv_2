@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   _make_response.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 09:52:55 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/01 16:38:00 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/11/01 01:12:53 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	HttpResponse::_make_response( std::string &path )	// ! throw possible
 
 	_add_content_type( path );
 	_add_field_line( "content-length", oss.str() );
+	str_response += str_header;
 	str_response += "\r\n";
 
 /* ************************************************************************** */
