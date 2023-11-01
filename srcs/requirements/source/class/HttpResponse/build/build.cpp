@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:00:08 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/01 11:33:21 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 12:21:12 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	HttpResponse::build( Request &request, char **env, Server& server )	// ! throw possible
 {
 	Location	*location;
+	Location	*cgi_location;
 	std::string	new_path;
 
 	// TODO: add 100 continue
@@ -22,7 +23,8 @@ void	HttpResponse::build( Request &request, char **env, Server& server )	// ! th
 	if ( request.get_final_status() == bad_request )
 		my_perror_and_throw( "bad request", StatusCode( 400 ) );
 
-	location = server.select_location( request.request_line.parsed_url.path, request.request_line.method );
+	location = server.select_non_cgi_location( request.request_line.parsed_url.path );
+	cgi_location = server.select_cgi_location( request.request_line.parsed_url.path, request.request_line.method );
 
 	if ( location )
 	{
@@ -56,13 +58,20 @@ void	HttpResponse::build( Request &request, char **env, Server& server )	// ! th
 				my_perror_and_throw( "Content Too Large", StatusCode( 413 ) );
 		}
 		location->print_location();
+		new_path = server.root;
+		// also appends default_file
+		_rewrite_path( new_path, location, request.request_line.parsed_url.path );
 	}
-	else // TODO: return 404 ?
+	if ( cgi_location )
+	{
+		location = cgi_location;
+	}
+	if ( !location )
+	{
 		std::cout << COLOR_BOLD_RED << "No matching location\n" << COLOR_RESET; // TODO: reply with error
+		my_perror_and_throw( "Not Found", StatusCode( 404 ) );
+	}
 
-	new_path = server.root;
-	// also appends default_file
-	_rewrite_path( new_path, location, request.request_line.parsed_url.path );
 
 	std::cout << COLOR_BOLD_YELLOW << new_path << "\n" << COLOR_RESET;
 	std::cout << COLOR_BOLD_YELLOW << request.request_line.parsed_url.path << "\n" << COLOR_RESET;
