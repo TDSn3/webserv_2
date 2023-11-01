@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   close_connections.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 10:34:21 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/09/22 12:00:15 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/11/01 21:22:54 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static bool	give_and_check_index(std::vector<pollfd> &poll_struct, int fd, size_
 	index_check = give_index_fd_in_poll_struct(poll_struct, fd);
 	if (index_check == -1)
 	{
-		std::cout << COLOR_BOLD_MAGENTA << "STRANGE !" << COLOR_RESET << std::endl;	// TODO: à supprimer à la fin
+		// std::cout << COLOR_BOLD_MAGENTA << "STRANGE !" << COLOR_RESET << std::endl;	// TODO: à supprimer à la fin
 		return (false);
 	}
 	index = static_cast<size_t>(index_check);
