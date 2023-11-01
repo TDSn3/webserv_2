@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 11:59:07 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/10/31 22:08:09 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 21:19:19 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,6 @@ std::string::size_type Request::get_required_size( void )
 
 void	Request::add_data( const std::string & line )
 {
-	// TODO: update _last_reception
-
 	switch (_parsing_status)
 	{
 		case e_request_line:
@@ -111,12 +109,6 @@ void	Request::parse_request_line( const std::string & line)
 
 void	Request::add_header_line( const std::string & line)
 {
-	// TODO: if empty line, decide whether status is:
-	// - done
-	// - expect_100_continue
-	// - body
-	// - chunk_size
-
 	if ( line.size() == 0 )
 	{
 		if ( request_line.has_syntax_error() )
@@ -129,7 +121,6 @@ void	Request::add_header_line( const std::string & line)
 		if ( set_field_values( _header_section ) )
 			return;
 		// print_field_section(_header_section);
-		// todo: Check that each field-value is correct, depending on the field's requirements
 		_parsing_status = get_status_after_header();
 		return;
 	}
@@ -355,8 +346,6 @@ void	Request::parse_body( const std::string & line)
 
 void	Request::parse_chunk_size( const std::string & line)
 {
-	
-	// TODO: check that whole line's syntax is correct
 	std::string::const_iterator size_end = line.begin();
 	
 	while ( (size_end != line.end()) && is_hexdigit(*size_end) )
@@ -370,15 +359,8 @@ void	Request::parse_chunk_size( const std::string & line)
 	}
 	long size;
 	std::stringstream ss;
-	ss << std::hex << size_str; // TODO: handle error
+	ss << std::hex << size_str;
 	ss >> size;
-	// long size = std::strtol(size_str.c_str(), NULL, 10);
-	// if ( size == LONG_MAX )
-	// {
-	// 	_parsing_status = done;
-	// 	_final_status = bad_request;
-	// 	return;
-	// }
 	_nchars_remaining = static_cast< std::string::size_type >(size);
 	if ( _nchars_remaining == 0 )
 	{
@@ -414,7 +396,6 @@ void	Request::parse_chunk_content( const std::string & line)
 
 void	Request::add_trailer_line( const std::string & line)
 {
-	// TODO: parse trailer section
 	std::cout << "parse_trailer_line: got: " << line << std::endl;
 	if ( line.size() == 0 )
 	{
