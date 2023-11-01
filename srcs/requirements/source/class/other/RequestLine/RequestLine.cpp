@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RequestLine.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 11:25:27 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/02 15:23:23 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/11/01 21:05:59 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ RequestLine& RequestLine::operator=( const RequestLine& other )
 		_http_version = other._http_version;
 		_syntax_is_ok = other._syntax_is_ok;
 		parsed_url = other.parsed_url;
-		parsed_url.query_parameters = other.parsed_url.query_parameters; // TODO: attention peut etre une fuite ?
+		parsed_url.query_parameters = other.parsed_url.query_parameters;
 	}
 	return *this;
 }
