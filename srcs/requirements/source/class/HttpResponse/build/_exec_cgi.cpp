@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   _exec_cgi.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/01 13:44:01 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/11/01 16:13:01 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,11 +150,12 @@ static void	new_char_for_env_update( std::vector<char *> &env_update, char **env
 	// env_update_push_back( env_update, "GATEWAY_INTERFACE=CGI/1.1" );				// optionnel
 	
 	(void) path_target;
-	// env_update_push_back( env_update, ( "PATH_INFO=" + path_target ).c_str() );
-	env_update_push_back( env_update, "PATH_INFO=YoupiBanane/youpi.bla" );			// TODO : ajouter spécification
+	env_update_push_back( env_update, ( "PATH_INFO=" + path_target ).c_str() );
+	// env_update_push_back( env_update, "PATH_INFO=YoupiBanane/youpi.bla" );			// TODO : ajouter spécification
 
 	// env_update_push_back( env_update, "PATH_TRANSLATED=YoupiBanane/youpi.bla" );	// optionnel
-	env_update_push_back( env_update, "REQUEST_URI=YoupiBanane/youpi.bla" );		//
+	// env_update_push_back( env_update, "REQUEST_URI=YoupiBanane/youpi.bla" );		//
+	env_update_push_back( env_update, ("REQUEST_URI=" + path_target ).c_str() );
 	// env_update_push_back( env_update, "SERVER_NAME=127.0.0.1" );					// optionnel
 	// env_update_push_back( env_update, "SERVER_PORT=8080" );						// optionnel
 	env_update_push_back( env_update, "SERVER_PROTOCOL=HTTP/1.1" );
