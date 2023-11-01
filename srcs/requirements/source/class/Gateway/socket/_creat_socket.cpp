@@ -22,8 +22,7 @@ int	Gateway::_creat_socket(void)
 {
 	int	fd;
 
-	fd = socket(AF_INET, SOCK_STREAM /*| SOCK_CLOEXEC*/, 0); // TODO: erreur MacOS remettre plus tard
-	// fd = dup2(fd, dup(fd));
+	fd = socket(AF_INET, SOCK_STREAM /*| SOCK_CLOEXEC*/, 0);
 	int value = 1;
 	if (fd < 0 || setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &value, sizeof(value)) == -1) 
 	{
