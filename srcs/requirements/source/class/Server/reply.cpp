@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 21:00:45 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/01 11:33:30 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 22:07:55 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,14 @@ void	Server::reply( Connection &connection, char **env )
 	{
 		sent = send( connection.get_socket() , connection.response.str_response.c_str() + total_sent , to_send, 0 );
 
-   		total_sent += sent;
-   		to_send -= sent;
+		if ( sent == -1 )
+		{
+			to_send = 0;
+			connection.set_close( true );
+			return;
+		}
+		total_sent += sent;
+		to_send -= sent;
 
 		std::cout << COLOR_DIM_RED << "sent : " << sent << "; ";
 		std::cout << COLOR_DIM_RED << "total_sent : " << total_sent << "; ";
