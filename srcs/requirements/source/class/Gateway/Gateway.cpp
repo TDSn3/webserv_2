@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:30:24 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/10/31 13:21:15 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 20:25:48 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	Gateway::create_servers( std::vector< std::string > content )
 	for ( ; server_block_start != end; ++server_block_start )
 	{
 
-		if ( server_block_start->compare("server {") )	// TODO: tokenize possible
+		if ( server_block_start->compare("server {") )
 			continue;
 
 		for ( server_block_end = server_block_start + 1;
@@ -88,9 +88,8 @@ void	Gateway::create_origin_sockets_mapping( void )
 		{
 			if ( _map_origin_socket.count(*origin_it) )
 				continue;
-			// TODO: handle errors (recursively) in the following lines
 			try {
-				int new_socket = _give_new_socket(*origin_it, POLLIN);	// TODO: a affiner plus tard
+				int new_socket = _give_new_socket(*origin_it, POLLIN);
 				if (new_socket < 0)
 					continue ;
 			}
@@ -101,26 +100,6 @@ void	Gateway::create_origin_sockets_mapping( void )
 			_map_origin_socket.insert(std::make_pair(*origin_it, poll_struct.back() ) );
 		}
 	}
-}
-
-struct addrinfo* Gateway::resolve_name( const Origin& origin )
-{
-	struct addrinfo*	res;
-	struct addrinfo		hints;
-	int					err;
-
-	hints.ai_family = AF_INET;
-	hints.ai_socktype = SOCK_STREAM;
-	hints.ai_protocol = IPPROTO_TCP;
-	hints.ai_flags = AI_PASSIVE;
-
-	// TODO: handle error
-	err = getaddrinfo(origin.get_host().c_str(), origin.get_port().c_str(), &hints, &res);
-	if ( err )
-	{
-		std::cerr << "Error\n";
-	}
-	return res;
 }
 
 void	Gateway::open_connection( Origin origin, pollfd pfd )

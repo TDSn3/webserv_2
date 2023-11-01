@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:52:49 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/10/31 12:30:37 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 20:26:48 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,12 @@ class Gateway
 
 		void						create_servers( std::vector< std::string > content );
 		void						create_origin_sockets_mapping( void );
-		struct addrinfo*			resolve_name( const Origin& );
 		void 						print_origin_sockets_mapping( void );
 		void						add_fd_poll_struct(int fd, short events);
 		void						check_new_connections( void );
 		void						receive_on_connections( void );
 		void						send_responses( char **env );
 		void						close_connections( void );
-
-		// void	process_request( int socket, Origin origin );
 
 	private:
 
