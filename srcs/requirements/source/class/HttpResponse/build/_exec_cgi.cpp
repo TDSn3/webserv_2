@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/01 21:02:09 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 23:01:29 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ std::string	HttpResponse::_exec_cgi( std::string &path, std::string &path_target
 
 	check_file( path );	// ! throw possible
 
+	// TODO: handle failure of new[]
 	new_char_for_execve( request, arg_for_execve, path );
 	new_char_for_env_update( env_update, env, request, path, path_target, server );
 
@@ -53,9 +54,12 @@ std::string	HttpResponse::_exec_cgi( std::string &path, std::string &path_target
 	if ( pid == 0 )
 		fork_child( stdin_pipefd, file_stock_output_fd, arg_for_execve, env_update );
 	else if (pid > 0)
-		fork_parent( stdin_pipefd, request.get_body(), pid );
+		fork_parent( stdin_pipefd, request.get_body(), pid ); // TODO: if FAILURE, close file_stock_output_fd
 
+	// TODO: if not failure of fork_parent, do:
 	read_file_stock_output( file_stock_output_fd, ret );
+	// TODO: delete vectors content (see below),
+	// then if FAILURE of read_file_stock_output, set 'ret' to empty string and return
 
 	for ( size_t i = 0; i < arg_for_execve.size() -1 ; i++ )
 		delete [] arg_for_execve[i];
@@ -174,9 +178,9 @@ static void fork_child( int stdin_pipefd[2], int file_stock_output_fd, std::vect
 static void fork_parent( int stdin_pipefd[2], std::string &str, int pid )
 {
 	close( stdin_pipefd[0] );
-	write( stdin_pipefd[1], str.c_str(), str.size() );
+	write( stdin_pipefd[1], str.c_str(), str.size() ); // TODO: cannot write without going through poll. Use regular file
 	close( stdin_pipefd[1] );
-	waitpid(pid, 0, 0);
+	waitpid(pid, 0, 0); // TODO: add timeout and if timeout kill and return FAILURE 
 }
 
 static void	read_file_stock_output( int file_stock_output_fd, std::string &str )
@@ -191,6 +195,18 @@ static void	read_file_stock_output( int file_stock_output_fd, std::string &str )
 		ret = read( file_stock_output_fd, buffer, sizeof( buffer ) );
 		str.append( buffer, ret );
 	}
+
+	// TODO
+	// ret = read( file_stock_output_fd, buffer, sizeof( buffer ) );
+	// while ( ret > 0 )
+	// {
+	// 	str.append( buffer, ret );
+	// 	ret = read( file_stock_output_fd, buffer, sizeof( buffer ) );
+	// }
+	// close( file_stock_output_fd );
+	// if ( ret == -1 )
+	// 	return ( FAILURE );
+	// return ( SUCCESS );
 
 	close( file_stock_output_fd );
 }
