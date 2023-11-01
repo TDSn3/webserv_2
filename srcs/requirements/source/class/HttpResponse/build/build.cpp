@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:00:08 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/01 15:38:47 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 21:03:16 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ void	HttpResponse::build( Request &request, char **env, Server& server )	// ! th
 	Location	*location;
 	Location	*cgi_location;
 	std::string	new_path;
-
-	// TODO: add 100 continue
 
 	if ( request.get_final_status() == bad_request )
 		my_perror_and_throw( "bad request", StatusCode( 400 ) );
