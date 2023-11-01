@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 13:44:42 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/18 06:26:02 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 21:00:32 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ int	Gateway::_give_new_socket( const Origin& origin, short events )
 	if (listen(new_socket, 256) < 0)						// Prépare le socket pour la connexion
 	{
 		perror("listen");
-		// TODO: err plus tard
+		close( new_socket );
+		return (-1);
 	}
 
 	_set_non_blocking_fd(new_socket);
