@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:00:08 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/01 12:54:06 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/11/01 15:38:47 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	HttpResponse::build( Request &request, char **env, Server& server )	// ! th
 	// TODO: nginx considers that the initially requested resource is a directory iff
 	// it ends with the character '/'.
 	// Question: are POST and DELETE requests allowed on directories ?
-	if ( is_directory(new_path) ) // no default_file found
+	if ( is_directory(new_path) && request.request_line.method == "GET" ) // no default_file found
 	{
 		std::cout << "is_directory\n";
 		if ( !_autoindex_is_on( location ) )
