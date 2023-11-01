@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 12:08:32 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/11/01 12:20:54 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 12:25:40 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ Location*	Server::select_cgi_location( std::string path, std::string method )
 	std::string				extension_name;
 	
 	std::cout << "Searching location for path: " << path << std::endl;
-	dot_pos = path.find('.') == std::string::npos;
-	if ( path.empty() || dot_pos )
+	dot_pos = path.find('.');
+	if ( path.empty() || dot_pos == std::string::npos )
 		return NULL;
 	for ( ; location_it != _locations.end(); location_it++ )
 	{
