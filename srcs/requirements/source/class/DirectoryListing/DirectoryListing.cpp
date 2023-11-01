@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 09:07:41 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/11/01 13:49:57 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 19:39:33 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ _time_size_split(DIR_LISTING_TIME_SIZE_SPLIT)
 
 void	DirectoryListing::_set_entries( void )
 {
-	DIR				*directory = opendir(_dirname.c_str()); // TODO: handle error
+	DIR				*directory = opendir(_dirname.c_str());
 	struct dirent	*dir_entry;
 	std::string		name;
 	std::string		time;
@@ -42,7 +42,7 @@ void	DirectoryListing::_set_entries( void )
 		if ( std::string(dir_entry->d_name) == "." || std::string(dir_entry->d_name) == ".." )
 			continue;
 		name = std::string(dir_entry->d_name);
-		stat_ret = stat( (_dirname + "/" + name).c_str(), &statbuf ); // TODO: handle error
+		stat_ret = stat( (_dirname + "/" + name).c_str(), &statbuf );
 		if ( stat_ret == -1 )
 			continue;
 		if ( is_directory( _dirname + "/" + name ))
@@ -78,7 +78,6 @@ void	DirectoryListing::_set_html_entry_lines( void )
 
 	for ( ; it != end; ++it )
 	{
-		// curr_line = "<a href=\"" + _target_resource.substr(1) + "/" + it->name + "\">";
 		curr_line = "<a href=\"" + it->name + "\">";
 		curr_line += it->name;
 		curr_line += "</a>";
