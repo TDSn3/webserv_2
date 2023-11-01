@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:00:08 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/01 07:24:18 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/11/01 10:55:17 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@ void	HttpResponse::build( Request &request, char **env, Server& server )	// ! th
 	new_path = server.root;
 	// also appends default_file
 	_rewrite_path( new_path, location, request.request_line.parsed_url.path );
+
+	std::cout << COLOR_BOLD_YELLOW << new_path << "\n" << COLOR_RESET;
+	std::cout << COLOR_BOLD_YELLOW << request.request_line.parsed_url.path << "\n" << COLOR_RESET;
 
 	// TODO: nginx considers that the initially requested resource is a directory iff
 	// it ends with the character '/'.
