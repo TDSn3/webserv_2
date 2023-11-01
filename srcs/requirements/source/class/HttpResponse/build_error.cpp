@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_error.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:01:25 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/01 10:43:18 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/11/01 11:39:31 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	HttpResponse::build_error(Request &request, Server &server, const int statu
 {
 	std::ostringstream	oss;
 	
+	(void)request;
 	status_line.version = std::string(HTTP_VERSION);
 	status_line.code = status_code;
 	_make_reason_phrase();
