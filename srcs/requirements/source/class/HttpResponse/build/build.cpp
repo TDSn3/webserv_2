@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:00:08 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/31 10:38:18 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 10:55:17 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,9 @@ void	HttpResponse::build( Request &request, char **env, Server& server )	// ! th
 	// also appends default_file
 	_rewrite_path( new_path, location, request.request_line.parsed_url.path );
 
+	std::cout << COLOR_BOLD_YELLOW << new_path << "\n" << COLOR_RESET;
+	std::cout << COLOR_BOLD_YELLOW << request.request_line.parsed_url.path << "\n" << COLOR_RESET;
+
 	// TODO: nginx considers that the initially requested resource is a directory iff
 	// it ends with the character '/'.
 	// Question: are POST and DELETE requests allowed on directories ?
@@ -88,7 +91,7 @@ void	HttpResponse::build( Request &request, char **env, Server& server )	// ! th
 		return ;
 	}
 
-	_make_response( new_path );											// ! throw possible
+	_make_response( request, new_path );									// ! throw possible
 
 	to_send =  str_response.size();
 	sent = 0;

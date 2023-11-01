@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 19:41:02 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/10/19 08:59:00 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 10:22:00 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ _parsing_error(other._parsing_error),
 _origins(other._origins),
 _names(other._names),
 _max_client_body_size( other._max_client_body_size ),
+_default_error_pages(other._default_error_pages),
 _locations(other._locations),
 root(other.root){}
 

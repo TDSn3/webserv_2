@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpResponse.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 15:43:46 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/20 23:07:28 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 08:19:48 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ class HttpResponse
 		void			build(Request &request, char **env, Server& server);						// ! throw possible
 		void			build_100_continue(Request &request, Server& server);
 		void			build_error(Request &request, const int status_code);
+		void			build_error(Request &request, Server& server, const int status_code);
 		bool			status(void);
 		void			clear(void);
 
@@ -69,7 +70,7 @@ class HttpResponse
 
 		std::string		_read_file_in_str(std::string path);							// ! throw possible
 		std::string		_exec_cgi(std::string &path, Request &request, char **env);		// ! throw possible
-		void			_make_response( std::string &path );			// ! throw possible
+		void			_make_response( Request &request, std::string &path );			// ! throw possible
 		void			_add_content_type( std::string &path );
 		void			_make_reason_phrase(void);
 		void			_add_status_line(void);
