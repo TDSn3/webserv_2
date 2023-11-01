@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 09:52:55 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/01 07:52:57 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/11/01 08:07:18 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,7 @@ void	HttpResponse::_make_response( Request &request, std::string &path )	// ! th
 	std::map< std::string, std::vector< std::string > > :: iterator	it = request._header_section.begin();
 
 	while ( it != request._header_section.end() )
-	{
-		std::cout << COLOR_YELLOW << it->first << " || " << *( it->second.begin() ) << "\n" << COLOR_RESET;
-		
+	{		
 		if ( to_lower_str( it->first ) == "connection" )
 			if ( it->second.empty() == false && to_lower_str( *( it->second.begin() ) ) == "close" )
 				_add_field_line( "connection", "close" );

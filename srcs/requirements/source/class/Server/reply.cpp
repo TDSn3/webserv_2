@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reply.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 21:00:45 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/19 15:34:02 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 09:54:14 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	Server::reply( Connection &connection, char **env )
 	}
 	catch( const StatusCode &e )
 	{
-		e.build_response_error( connection );
+		e.build_response_error( connection, *this );
 	}
 
 	size_t	&to_send = connection.response.to_send;

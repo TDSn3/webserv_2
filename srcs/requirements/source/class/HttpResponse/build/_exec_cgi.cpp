@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/07 19:57:04 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/11/01 10:08:05 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ std::string	HttpResponse::_exec_cgi( std::string &path, Request &request, char *
 	std::string			ret;
 	std::vector<char *>	arg_for_execve;
 	std::vector<char *>	env_update;
+
+	std::cout << COLOR_BOLD_MAGENTA << request.request_line.parsed_url.path << COLOR_RESET << "\n";
 
 	file_stock_output_fd = open( file_stock_output_path.c_str(), O_RDWR | O_CREAT | O_TRUNC, 0666 );
 
@@ -137,6 +139,8 @@ static void	new_char_for_env_update( std::vector<char *> &env_update, char **env
 		str += it2->first + "=" + it2->second;
 	}
 	env_update_push_back( env_update, str.c_str() );
+
+	// std::cout << COLOR_BOLD_MAGENTA << request.request_line.parsed_url.path << COLOR_RESET << "\n";
 
 	env_update_push_back( env_update, "GATEWAY_INTERFACE=CGI/1.1" );
 	env_update_push_back( env_update, "PATH_INFO=YoupiBanane/youpi.bla" );			// TODO : ajouter spécification
