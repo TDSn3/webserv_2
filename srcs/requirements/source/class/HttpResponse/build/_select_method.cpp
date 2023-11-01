@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   _select_method.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:58:54 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/01 13:01:27 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/11/01 21:02:50 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ bool	HttpResponse::_select_method( Request &request, char **env, Location *locat
 		else if ( request.request_line.method == "POST" )
 		{
 			if ( _post_method( request, env, path, *location, server ) == true )	// ! throw possible
-				return ( true );													// TODO: add parsing on body
+				return ( true );
 		}
 		else if ( request.request_line.method == "DELETE" )
 			_delete_method( path );
