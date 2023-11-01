@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/01 16:13:01 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 21:02:09 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ static void	new_char_for_env_update( std::vector<char *> &env_update, char **env
 	
 	(void) path_target;
 	env_update_push_back( env_update, ( "PATH_INFO=" + path_target ).c_str() );
-	// env_update_push_back( env_update, "PATH_INFO=YoupiBanane/youpi.bla" );			// TODO : ajouter spécification
+	// env_update_push_back( env_update, "PATH_INFO=YoupiBanane/youpi.bla" );
 
 	// env_update_push_back( env_update, "PATH_TRANSLATED=YoupiBanane/youpi.bla" );	// optionnel
 	// env_update_push_back( env_update, "REQUEST_URI=YoupiBanane/youpi.bla" );		//
