@@ -6,13 +6,13 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:58:54 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/20 16:35:16 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 01:59:06 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
-bool	HttpResponse::_select_method( Request &request, char **env, Location *location, std::string path )	// ! throw possible
+bool	HttpResponse::_select_method( Request &request, char **env, Location *location, std::string path, Server &server )	// ! throw possible
 {
 	if ( is_allowed_methods( location, request.request_line.method ) == true )
 	{			
@@ -36,8 +36,8 @@ bool	HttpResponse::_select_method( Request &request, char **env, Location *locat
 		}
 		else if ( request.request_line.method == "POST" )
 		{
-			if ( _post_method( request, env, path ) == true )	// ! throw possible
-				return ( true );								// TODO: add parsing on body
+			if ( _post_method( request, env, path, *location, server ) == true )	// ! throw possible
+				return ( true );													// TODO: add parsing on body
 		}
 		else if ( request.request_line.method == "DELETE" )
 			_delete_method( path );
