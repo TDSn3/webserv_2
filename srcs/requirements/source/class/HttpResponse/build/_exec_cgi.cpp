@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/01 23:01:29 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 23:13:23 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ std::string	HttpResponse::_exec_cgi( std::string &path, std::string &path_target
 	// path_target = path_target.substr( server.root.size() + 1 );
 	// std::cout << "============> " << path_target << "\n";
 
+	// TODO: check failure of open
 	file_stock_output_fd = open( file_stock_output_path.c_str(), O_RDWR | O_CREAT | O_TRUNC, 0666 );
 
 	check_file( path );	// ! throw possible
