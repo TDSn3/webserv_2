@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:11:02 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/10/31 13:56:01 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 19:33:39 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,6 @@ bool Connection::get_close( void ) const
 	return _close;
 }
 
-/*
-TODO: Set close flag to true if connection has timed out.
-*/
-
 void Connection::update_close( void )
 {
 	return;
@@ -88,13 +84,11 @@ void Connection::close_connection( void )
 
 void Connection::receive( void )
 {
-	// TODO: update time of last reception
-	// TODO: handle error in recv
 	ssize_t	ret = recv(_socket, _read_buffer, BUFF_SIZE, 0);
 
 	if (ret > 0)
 		_read_buffer[ret] = 0;
-	else	// la connexion a été fermée par le client
+	else	// read error or connection closed by client -> close connection
 	{
 		std::cout << COLOR_RED << "Déconnexion de [" << _origin.get_host() << ":" << _origin.get_port() << "]" << COLOR_RESET << "\n" << std::endl;
 		_close = true;
@@ -129,7 +123,6 @@ void Connection::receive( void )
 		}
 		if (_request.get_parsing_error())
 			_continue_reading = false;
-		// TODO: change is_complete() to is_ready_for_reply()
 		if (_request.is_complete() && _request.has_close_option())
 			_continue_reading = false;
 	}
