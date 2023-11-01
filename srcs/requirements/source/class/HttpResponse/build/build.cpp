@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:00:08 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/01 21:03:16 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/01 21:04:29 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,16 +66,13 @@ void	HttpResponse::build( Request &request, char **env, Server& server )	// ! th
 	}
 	if ( !location )
 	{
-		std::cout << COLOR_BOLD_RED << "No matching location\n" << COLOR_RESET; // TODO: reply with error
+		std::cout << COLOR_BOLD_RED << "No matching location\n" << COLOR_RESET;
 		my_perror_and_throw( "Not Found", StatusCode( 404 ) );
 	}
 
 	std::cout << COLOR_BOLD_YELLOW << new_path << "\n" << COLOR_RESET;
 	std::cout << COLOR_BOLD_YELLOW << request.request_line.parsed_url.path << "\n" << COLOR_RESET;
 
-	// TODO: nginx considers that the initially requested resource is a directory iff
-	// it ends with the character '/'.
-	// Question: are POST and DELETE requests allowed on directories ?
 	if ( is_directory(new_path) && request.request_line.method == "GET" ) // no default_file found
 	{
 		std::cout << "is_directory\n";
