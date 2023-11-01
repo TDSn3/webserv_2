@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:11:02 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/10/31 11:59:17 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/31 13:56:01 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,11 @@ TODO: Set close flag to true if connection has timed out.
 void Connection::update_close( void )
 {
 	return;
+}
+
+void	Connection::set_close( bool value )
+{
+	_close = value;
 }
 
 void Connection::close_connection( void )

@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 15:49:59 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/21 10:00:45 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/31 22:20:41 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ enum e_final_status
 
 bool						is_whitespace( char c );
 std::vector< std::string >	tokenize( std::string str );
+std::string					remove_port_part( const std::string &host_field_value );
 
 extern volatile sig_atomic_t	siginit_status;
 

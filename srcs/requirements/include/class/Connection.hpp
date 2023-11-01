@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Connection.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:05:04 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/10/03 14:24:25 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/31 13:55:20 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ class Connection
 		bool					get_close( void ) const;
 		Request&				get_request( void );
 		void					update_close( void );
+		void					set_close( bool value );
 		void					close_connection( void );
 		void					receive( void );
 		bool					is_ready_for_reply( void );

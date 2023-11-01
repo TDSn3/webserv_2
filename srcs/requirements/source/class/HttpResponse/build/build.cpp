@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:00:08 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/01 10:55:17 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/11/01 11:33:21 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	HttpResponse::build( Request &request, char **env, Server& server )	// ! th
 		}
 	}
 
-	else if ( _select_method( request, env, location, new_path ) == true )	// ! throw possible
+	else if ( _select_method( request, env, location, new_path, server ) == true )	// ! throw possible
 	{
 		to_send =  str_response.size();
 		sent = 0;

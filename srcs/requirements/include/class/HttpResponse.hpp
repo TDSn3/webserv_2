@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpResponse.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 15:43:46 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/01 08:19:48 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/11/01 11:30:06 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,10 @@ class HttpResponse
 		void			_add_body(std::string path);
 		void			_set_status_line( int code, std::string reason_phrase);
 		bool			_get_method( Request &request, char **env, std::string &path );		// ! throw possible
-		bool			_post_method( Request &request, char **env, std::string &path );	// ! throw possible
+		bool			_post_method( Request &request, char **env, std::string &path, Location &location, Server &server );	// ! throw possible
 		void			_delete_method( std::string &path );								// ! throw possible
 		void			_build_directory_listing( std::string dirname, std::string target_resource );
+		std::string		_resolve_out_path( Location &location, std::string &path, Server &server );
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -88,7 +89,7 @@ class HttpResponse
 /*                                                                            */
 /* ************************************************************************** */
 
-		bool			_select_method( Request &request, char **env, Location *location, std::string path );	// ! throw possible
+		bool			_select_method( Request &request, char **env, Location *location, std::string path, Server& server );	// ! throw possible
 		void			_rewrite_path( std::string &new_path, Location *location, std::string path );
 		bool			_autoindex_is_on( Location *location );
 

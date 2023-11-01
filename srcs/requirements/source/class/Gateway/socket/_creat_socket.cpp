@@ -21,14 +21,13 @@
 int	Gateway::_creat_socket(void)
 {
 	int	fd;
-	
+
 	fd = socket(AF_INET, SOCK_STREAM /*| SOCK_CLOEXEC*/, 0); // TODO: erreur MacOS remettre plus tard
-	if (fd < 0) 
-	{
-		// TODO: err plus tard
-	}
-	fd = dup(fd);
+	// fd = dup2(fd, dup(fd));
 	int value = 1;
-	setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &value, sizeof(value));
+	if (fd < 0 || setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &value, sizeof(value)) == -1) 
+	{
+		throw std::exception();
+	}
 	return (fd);
 }

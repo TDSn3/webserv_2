@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:30:24 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/25 15:48:56 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/31 13:21:15 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,14 @@ Gateway::Gateway( std::string config_file ) : _fatal_error(false)
 
 Gateway::~Gateway( void )
 {
+
+	socket_iter_type	socket_iter = _map_origin_socket.begin();
+	for ( ; socket_iter != _map_origin_socket.end(); socket_iter = _map_origin_socket.begin())
+	{
+		std::cout << "closing socket " << socket_iter->second.fd << std::endl;
+		close(socket_iter->second.fd);
+		_map_origin_socket.erase(socket_iter);
+	}
 }
 
 void	Gateway::create_servers( std::vector< std::string > content )
@@ -81,9 +89,15 @@ void	Gateway::create_origin_sockets_mapping( void )
 			if ( _map_origin_socket.count(*origin_it) )
 				continue;
 			// TODO: handle errors (recursively) in the following lines
-			int new_socket = _give_new_socket(*origin_it, POLLIN);	// TODO: a affiner plus tard
-			if (new_socket < 0)
-				continue ;
+			try {
+				int new_socket = _give_new_socket(*origin_it, POLLIN);	// TODO: a affiner plus tard
+				if (new_socket < 0)
+					continue ;
+			}
+			catch ( std::exception &e ){
+				std::cout << "_give_new_socket failed\n";
+				continue;
+			}
 			_map_origin_socket.insert(std::make_pair(*origin_it, poll_struct.back() ) );
 		}
 	}

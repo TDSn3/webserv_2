@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Gateway.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:52:49 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/09/17 11:32:46 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/10/31 12:30:37 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,15 @@ class Gateway
 {
 	public:
 
+		typedef std::vector< Server >::iterator			server_iter_type;
+		typedef std::map< Origin, pollfd >::iterator	socket_iter_type;
+		typedef std::vector< Connection >::iterator		connection_iter_type;
+
 		Gateway( std::string config_file );
 		~Gateway();
 
 		std::vector<pollfd>			poll_struct;
+		std::map< Origin, pollfd >	_map_origin_socket;
 
 		void						create_servers( std::vector< std::string > content );
 		void						create_origin_sockets_mapping( void );
@@ -47,15 +52,10 @@ class Gateway
 
 	private:
 
-		typedef std::vector< Server >::iterator			server_iter_type;
-		typedef std::map< Origin, pollfd >::iterator	socket_iter_type;
-		typedef std::vector< Connection >::iterator		connection_iter_type;
-
 		Gateway						&operator = ( const Gateway & );
 
 		bool						_fatal_error;
 		std::vector< Server >		_servers;
-		std::map< Origin, pollfd >	_map_origin_socket;
 		std::vector< Connection >	_connections;
 		fd_set						_readfds;
 		fd_set						_writefds;

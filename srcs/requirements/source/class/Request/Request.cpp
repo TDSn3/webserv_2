@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 11:59:07 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/10/02 12:24:41 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/10/31 22:08:09 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -511,5 +511,5 @@ void	Request::print_field_section( field_section_type& fields )
 
 std::string	Request::get_host_value( void )
 {
-	return _host_value;
+	return remove_port_part(_host_value);
 }
