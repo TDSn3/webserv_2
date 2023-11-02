@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/02 18:21:41 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/02 18:33:38 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ std::string	HttpResponse::_exec_cgi( std::string &path, std::string &path_target
 	std::vector<char *>	arg_for_execve;
 	std::vector<char *>	env_update;
 
-	file_stock_output_fd = open( file_stock_output_path.c_str(), O_RDWR | O_CREAT | O_TRUNC, 0666 );
-	file_stock_output_fd2 = open( file_stock_output_path2.c_str(), O_RDWR | O_CREAT | O_TRUNC, 0666 );
+	file_stock_output_fd = open( file_stock_output_path.c_str(), O_RDWR | O_CREAT | O_TRUNC, 666 );
+	file_stock_output_fd2 = open( file_stock_output_path2.c_str(), O_RDWR | O_CREAT | O_TRUNC, 666 );
 
 	try
 	{
@@ -51,7 +51,6 @@ std::string	HttpResponse::_exec_cgi( std::string &path, std::string &path_target
 		// pipe( stdin_pipefd );
 		// close( stdin_pipefd[0] );
 		write( file_stock_output_fd2, request.get_body().c_str(), request.get_body().size() );
-		close( file_stock_output_fd2 );
 		pid = fork();
 
 		if ( pid == 0 )
@@ -70,6 +69,8 @@ std::string	HttpResponse::_exec_cgi( std::string &path, std::string &path_target
 		// parse_cgi_output( ret, request.get_body() );
 		parse_cgi_output2( ret, cgi_output );
 
+		close( file_stock_output_fd );
+		close( file_stock_output_fd2 );
 		return ( ret );
 
 	}
@@ -184,9 +185,9 @@ static void	new_char_for_env_update( std::vector<char *> &env_update, char **env
 
 static void fork_child( int stdin_pipefd[2], int file_stock_output_fd, int file_stock_output_fd2, std::vector<char *> &arg_for_execve, std::vector<char *> &env_update )
 {
-	sleep(5);
 	dup2( file_stock_output_fd2, STDIN_FILENO );
 	// close( stdin_pipefd[1] );
+	
 	dup2( file_stock_output_fd, STDOUT_FILENO );
 	execve( arg_for_execve[0], arg_for_execve.data(), env_update.data() );
 }
