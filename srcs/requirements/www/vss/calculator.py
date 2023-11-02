@@ -3,19 +3,29 @@
 import cgi
 import sys
 
-content = "Script CGI en Python :"
+form = cgi.FieldStorage()
 
-for arg in sys.argv:
-	content += "\n" + arg
+expression = form.getvalue('expression', '')
+result = ''
 
-content_length = len(content.encode('utf-8'))
+try:
+	result = eval(expression)
+except:
+	pass
 
+if not expression or not result:
+	file = 'www/vss/calculator_failure.html'
+else:
+	file = 'www/vss/calculator_success.html'
+
+with open(file, 'r') as f:
+	content = f.read()
+
+content = content.format(_expression = expression, _result = result)
 
 
 print("status: 200 OK")
 
 print("content-type: text/html")
-print(f"Content-Length: {content_length}")
 print()
-
 print(content)
