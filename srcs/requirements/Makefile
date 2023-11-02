@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+         #
+#    By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/30 09:01:22 by tda-silv          #+#    #+#              #
-#    Updated: 2023/11/01 19:27:11 by yfoucade         ###   ########.fr        #
+#    Updated: 2023/11/02 13:19:53 by tda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,6 +70,7 @@ clean:
 fclean: clean
 	rm -f $(NAME)
 	rm -f log
+	rm -f .TEMP
 
 re: fclean all
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   _exec_cgi.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/01 21:02:09 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/02 13:29:50 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void			read_file_stock_output( int file_stock_output_fd, std::string &str
 static std::string	to_lower_str( std::string str );
 static std::string	to_upper_str( std::string str );
 static std::string	dash_to_underscore( std::string str );
-static void			parse_cgi_output( std::string &str, std::string &body );
+static void			parse_cgi_output( std::string &str );
 
 std::string	HttpResponse::_exec_cgi( std::string &path, std::string &path_target, Request &request, char **env, Server &server )	// ! throw possible
 {
@@ -33,11 +33,6 @@ std::string	HttpResponse::_exec_cgi( std::string &path, std::string &path_target
 	std::string			ret;
 	std::vector<char *>	arg_for_execve;
 	std::vector<char *>	env_update;
-
-	std::cout << "++++++++++++> " << path << "\n";
-	std::cout << "++++++++++++> " << path_target << "\n";
-	// path_target = path_target.substr( server.root.size() + 1 );
-	// std::cout << "============> " << path_target << "\n";
 
 	file_stock_output_fd = open( file_stock_output_path.c_str(), O_RDWR | O_CREAT | O_TRUNC, 0666 );
 
@@ -63,7 +58,7 @@ std::string	HttpResponse::_exec_cgi( std::string &path, std::string &path_target
 	for ( size_t i = 0; i < env_update.size() -1 ; i++ )
 		delete [] env_update[i];
 
-	parse_cgi_output( ret, request.get_body() );
+	parse_cgi_output( ret );
 
 	return ( ret );
 
@@ -143,23 +138,12 @@ static void	new_char_for_env_update( std::vector<char *> &env_update, char **env
 	{
 		str += it2->first + "=" + it2->second;
 	}
+
 	env_update_push_back( env_update, str.c_str() );
-
-	// std::cout << COLOR_BOLD_MAGENTA << request.request_line.parsed_url.path << COLOR_RESET << "\n";
-
-	// env_update_push_back( env_update, "GATEWAY_INTERFACE=CGI/1.1" );				// optionnel
-	
-	(void) path_target;
+	env_update_push_back( env_update, "GATEWAY_INTERFACE=CGI/1.1" );
 	env_update_push_back( env_update, ( "PATH_INFO=" + path_target ).c_str() );
-	// env_update_push_back( env_update, "PATH_INFO=YoupiBanane/youpi.bla" );
-
-	// env_update_push_back( env_update, "PATH_TRANSLATED=YoupiBanane/youpi.bla" );	// optionnel
-	// env_update_push_back( env_update, "REQUEST_URI=YoupiBanane/youpi.bla" );		//
 	env_update_push_back( env_update, ("REQUEST_URI=" + path_target ).c_str() );
-	// env_update_push_back( env_update, "SERVER_NAME=127.0.0.1" );					// optionnel
-	// env_update_push_back( env_update, "SERVER_PORT=8080" );						// optionnel
 	env_update_push_back( env_update, "SERVER_PROTOCOL=HTTP/1.1" );
-
 	env_update.push_back( NULL );
 }
 
@@ -222,7 +206,7 @@ static std::string dash_to_underscore( std::string str )
 	return ( ret );
 }
 
-static void	parse_cgi_output( std::string &str, std::string &body )
+static void	parse_cgi_output( std::string &str )
 {
 	std::string			header_update;
 	std::ostringstream	oss;
@@ -231,8 +215,19 @@ static void	parse_cgi_output( std::string &str, std::string &body )
 	for ( size_t i = 0; str[i]; i++ )
 	{
 		if ( str[i] == '\n' && str[i + 1] && ( str[i + 1] == '\n' || ( str[i + 1] == '\r' && str[i + 2] && str[i + 2] == '\n' ) ) )
-		{
-			oss << body.size();
+		{			
+			size_t	body_size = 0;
+			size_t	j = 0;
+
+			if ( str[i] == '\n' && str[i + 1] && ( str[i + 1] == '\n' ) )
+				j = i + 2;
+			else if ( str[i + 1] == '\r' && str[i + 2] && str[i + 2] == '\n' )
+				j = i + 3;
+
+			for ( ; str[j]; j++ )
+				body_size++;
+
+			oss << body_size;
 			str.insert( i + 1, "Content-Length: " + oss.str() + "\r\n" );
 			return ;
 		}
