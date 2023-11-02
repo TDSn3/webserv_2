@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:58:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/10/21 12:49:58 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/02 12:16:11 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@
 # include "class/HttpResponse.hpp"
 # include "class/other/StatusCode.hpp"
 
+# include "class/CGIResponse.hpp"
 # include "class/Connection.hpp"
 # include "class/DirectoryListing.hpp"
 # include "class/Gateway.hpp"
