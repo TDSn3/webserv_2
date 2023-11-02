@@ -2,6 +2,7 @@
 
 import cgi
 import sys
+import os
 
 content = "Script CGI en Python :"
 
@@ -12,10 +13,11 @@ content_length = len(content.encode('utf-8'))
 
 
 
-print("HTTP/1.1 200 OK")
+print("status: 200 OK")
 
 print("content-type: text/html")
 # print(f"Content-Length: {content_length}")
 print()
-print()
+print(str(sys.argv))
+print(str(os.environ["PATH_INFO"]))
 print(content)
