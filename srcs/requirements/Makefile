@@ -6,7 +6,7 @@
 #    By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/30 09:01:22 by tda-silv          #+#    #+#              #
-#    Updated: 2023/11/01 19:27:11 by yfoucade         ###   ########.fr        #
+#    Updated: 2023/11/02 17:59:13 by yfoucade         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ INC_DIR		= include/
 
 CC			= c++
 
-CFLAGS		= -Wall -Wextra -Wshadow -Werror -std=c++98
+CFLAGS		= -Wall -Wextra -Wshadow -std=c++98
 
 # **************************************************************************** #
 #                                                                              #
