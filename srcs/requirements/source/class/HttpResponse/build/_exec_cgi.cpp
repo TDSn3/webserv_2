@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/02 18:33:38 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/02 18:48:02 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,9 +185,18 @@ static void	new_char_for_env_update( std::vector<char *> &env_update, char **env
 
 static void fork_child( int stdin_pipefd[2], int file_stock_output_fd, int file_stock_output_fd2, std::vector<char *> &arg_for_execve, std::vector<char *> &env_update )
 {
+	char buffer[4096 + 1];
+	int ret;
+	lseek( file_stock_output_fd2, 0, SEEK_SET );	// Réinitialise le pointeur du fd
 	dup2( file_stock_output_fd2, STDIN_FILENO );
 	// close( stdin_pipefd[1] );
-	
+	ret = read( file_stock_output_fd2, buffer, sizeof( buffer ) );
+	while ( ret > 0 )
+	{
+		buffer[ret] = 0;
+		std::cout << buffer;
+		ret = read( file_stock_output_fd2, buffer, sizeof( buffer ) );
+	}
 	dup2( file_stock_output_fd, STDOUT_FILENO );
 	execve( arg_for_execve[0], arg_for_execve.data(), env_update.data() );
 }
@@ -216,8 +225,6 @@ static void	read_file_stock_output( int file_stock_output_fd, std::string &str )
 	{
 		my_perror_and_throw( "Internal Server Error", 500 );
 	}
-
-	close( file_stock_output_fd );
 }
 
 // static std::string to_lower_str( std::string str )
