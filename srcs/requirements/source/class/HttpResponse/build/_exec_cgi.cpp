@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/02 13:39:36 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/02 14:51:01 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ static void	new_char_for_env_update( std::vector<char *> &env_update, char **env
 	std::string														str;
 	std::ostringstream												oss;
 	
+	(void)server;
 	for ( size_t i = 0; env[i]; i++ )
 		env_update_push_back( env_update, env[i] );
 
@@ -150,7 +151,7 @@ static void	new_char_for_env_update( std::vector<char *> &env_update, char **env
 
 	env_update_push_back( env_update, ( "REQUEST_METHOD=" + request.request_line.method ).c_str() );
 
-	path_target = path_target.substr( server.root.size() + 1 );
+	// path_target = path_target.substr( server.root.size() + 1 );
 
 	env_update_push_back( env_update, ( "SCRIPT_NAME=" + path ).c_str() );
 
