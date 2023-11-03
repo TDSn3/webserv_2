@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 13:08:11 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/11/03 13:08:12 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/03 13:35:11 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static void			parse_cgi_output2( std::string &str, std::string &cgi_output );
 std::string	HttpResponse::_exec_cgi( Gateway &gateway, std::string &path, std::string &path_target, Request &request, char **env, Server &server )	// ! throw possible
 {
 	int					cgi_input_fd;
+	int					nchars_written;
 	pid_t				pid;
 	std::string			cgi_input_path(".TEMP_IN");
 	std::string			cgi_output_path(".TEMP_OUT");
@@ -42,8 +43,10 @@ std::string	HttpResponse::_exec_cgi( Gateway &gateway, std::string &path, std::s
 		new_char_for_execve( request, arg_for_execve, path );
 		new_char_for_env_update( env_update, env, request, path, path_target, server );
 		cgi_input_fd = open( cgi_input_path.c_str(), O_RDWR | O_CREAT | O_TRUNC, 0666 );
-		write( cgi_input_fd, request.get_body().c_str(), request.get_body().size() );
+		nchars_written = write( cgi_input_fd, request.get_body().c_str(), request.get_body().size() );
 		close( cgi_input_fd );
+		if ( (nchars_written == 0 && request.get_body().size()) || (nchars_written == -1) )
+			my_perror_and_throw( "Couldn't write in CGI's input file", StatusCode(500) );
 		pid = fork();
 
 		if ( pid == 0 )
