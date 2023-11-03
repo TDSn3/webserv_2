@@ -6,5 +6,5 @@
 *.a
 webserv
 **/post_body
-**/.TEMP
+**/.TEMP*
 **/www/uploads/*
