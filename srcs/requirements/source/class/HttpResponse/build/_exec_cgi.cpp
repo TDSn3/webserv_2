@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/03 05:15:19 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/03 06:44:42 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,27 @@ static void			check_file( std::string &path );
 static void			new_char_for_execve( Request &request, std::vector<char *> &arg_for_execve, std::string &path );
 static void			env_update_push_back( std::vector<char *> &env_update, const char *str_to_add );
 static void			new_char_for_env_update( std::vector<char *> &env_update, char **env, Request &request, std::string path, std::string path_target, Server &server );
-static void			fork_child( int stdin_pipefd[2], int file_stock_output_fd, std::vector<char *> &arg_for_execve, std::vector<char *> &env_update );
-static void			fork_parent( int stdin_pipefd[2], std::string &str, int pid );
-static void			read_file_stock_output( int file_stock_output_fd, std::string &str );
+static void			fork_child( std::string cgi_input_path, int cgi_output_fd, std::vector<char *> &arg_for_execve, std::vector<char *> &env_update );
+static void			fork_parent( int pid );
+static void			read_file_stock_output( int cgi_output_fd, std::string &str );
 static std::string	to_upper_str( std::string str );
 static std::string	dash_to_underscore( std::string str );
 static void			parse_cgi_output2( std::string &str, std::string &cgi_output );
 
 std::string	HttpResponse::_exec_cgi( std::string &path, std::string &path_target, Request &request, char **env, Server &server )	// ! throw possible
 {
-	int					file_stock_output_fd;
-	int					stdin_pipefd[2];
+	int					cgi_input_fd;
+	int					cgi_output_fd;
 	pid_t				pid;
-	std::string			file_stock_output_path(".TEMP");
+	std::string			cgi_input_path(".TEMP_IN");
+	std::string			cgi_output_path(".TEMP_OUT");
 	std::string			ret;
 	std::string			cgi_output;
 	std::vector<char *>	arg_for_execve;
 	std::vector<char *>	env_update;
 
-	file_stock_output_fd = open( file_stock_output_path.c_str(), O_RDWR | O_CREAT | O_TRUNC, 0666 );
+	cgi_input_fd = open( cgi_input_path.c_str(), O_RDWR | O_CREAT | O_TRUNC, 0666 );
+	cgi_output_fd = open( cgi_output_path.c_str(), O_RDWR | O_CREAT | O_TRUNC, 0666 );
 
 	try
 	{
@@ -43,16 +45,16 @@ std::string	HttpResponse::_exec_cgi( std::string &path, std::string &path_target
 		new_char_for_execve( request, arg_for_execve, path );
 		new_char_for_env_update( env_update, env, request, path, path_target, server );
 
-		pipe( stdin_pipefd );
-
+		write( cgi_input_fd, request.get_body().c_str(), request.get_body().size() );
+		close( cgi_input_fd );
 		pid = fork();
 
 		if ( pid == 0 )
-			fork_child( stdin_pipefd, file_stock_output_fd, arg_for_execve, env_update );
+			fork_child( cgi_input_path, cgi_output_fd, arg_for_execve, env_update );
 		else if (pid > 0)
-			fork_parent( stdin_pipefd, request.get_body(), pid );
+			fork_parent( pid );
 
-		read_file_stock_output( file_stock_output_fd, cgi_output );
+		read_file_stock_output( cgi_output_fd, cgi_output );
 
 		for ( size_t i = 0; i < arg_for_execve.size() -1 ; i++ )
 			delete [] arg_for_execve[i];
@@ -175,43 +177,60 @@ static void	new_char_for_env_update( std::vector<char *> &env_update, char **env
 	env_update.push_back( NULL );
 }
 
-static void fork_child( int stdin_pipefd[2], int file_stock_output_fd, std::vector<char *> &arg_for_execve, std::vector<char *> &env_update )
+static void fork_child( std::string cgi_input_path, int output_fd, std::vector<char *> &arg_for_execve, std::vector<char *> &env_update )
 {
-	dup2( stdin_pipefd[0], STDIN_FILENO );
-	close( stdin_pipefd[1] );
-	dup2( file_stock_output_fd, STDOUT_FILENO );
+	int input_fd = open( cgi_input_path.c_str(), O_RDONLY, 0666 );
+	if ( input_fd == -1 || output_fd == -1 )
+	{
+		// todo: throw a ChildProcessException and free arg_for_execve and env_update,
+		// the exception will eventually be catched by Gateway,
+		// which will free memory and exit with status 1.
+		// parent process catches exit status and knows what to do.
+		// OR
+		// Set the global variable sigint_signal to some value
+		// do not read/write anything if sigint_signal is set to that value
+		// listen loop will test for that value and break.
+		// OR
+		// in calling function (_exec_cgi), free arg_for_execve and env_update,
+		// then exit( FAILURE ); and use on_exit() to free memory. (forbidden)
+		// OR
+		// create Gateway (or a pointer to Gateway) as a global variable,
+		// free everything from here and exit( FAILURE ).
+		;
+	}
+	dup2( input_fd, STDIN_FILENO );
+	dup2( output_fd, STDOUT_FILENO );
 	execve( arg_for_execve[0], arg_for_execve.data(), env_update.data() );
+	// todo: throw same exception here
 }
 
-static void fork_parent( int stdin_pipefd[2], std::string &str, int pid )
+static void fork_parent( int pid )
 {
-	close( stdin_pipefd[0] );
-	write( stdin_pipefd[1], str.c_str(), str.size() );
-	close( stdin_pipefd[1] );
+	
 	waitpid(pid, 0, 0);
 }
 
-static void	read_file_stock_output( int file_stock_output_fd, std::string &str )
+static void	read_file_stock_output( int cgi_output_fd, std::string &str )
 {
 	char	buffer[4096];
 	ssize_t	ret;
 
 	ret = 1;
-	lseek( file_stock_output_fd, 0, SEEK_SET );	// Réinitialise le pointeur du fd
+	lseek( cgi_output_fd, 0, SEEK_SET );	// Réinitialise le pointeur du fd
 
-	ret = read( file_stock_output_fd, buffer, sizeof( buffer ) );
+	ret = read( cgi_output_fd, buffer, sizeof( buffer ) );
 	while ( ret > 0 )
 	{
 		str.append( buffer, ret );
-		ret = read( file_stock_output_fd, buffer, sizeof( buffer ) );
+		ret = read( cgi_output_fd, buffer, sizeof( buffer ) );
 	}
-	close( file_stock_output_fd );
+	close( cgi_output_fd );
 	if ( ret == -1 )
 	{
 		my_perror_and_throw( "Internal Server Error", 500 );
 	}
 
-	close( file_stock_output_fd );
+	close( cgi_output_fd );
 }
 
 static std::string to_upper_str( std::string str )
