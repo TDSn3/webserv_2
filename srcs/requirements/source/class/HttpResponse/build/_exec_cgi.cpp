@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/03 06:44:42 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/03 06:48:50 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,10 @@ static void fork_child( std::string cgi_input_path, int output_fd, std::vector<c
 
 static void fork_parent( int pid )
 {
-	
+	// todo:
+	// in a loop, waitpid with w_nohang option and keep track of elapsed time,
+	// after some time, kill child and throw exception.
+
 	waitpid(pid, 0, 0);
 }
 
