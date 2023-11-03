@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/03 11:26:15 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/03 12:00:29 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,8 +211,20 @@ static void fork_parent( int pid )
 	// todo:
 	// in a loop, waitpid with w_nohang option and keep track of elapsed time,
 	// after some time, kill child and throw exception.
+	int		waitpid_return_value = 0;
+	time_t	tic, toc;
+	int		cgi_exit_status;
 
-	waitpid(pid, 0, 0);
+	tic = time( NULL );
+	while ( !waitpid_return_value )
+	{
+		waitpid_return_value = waitpid(pid, &cgi_exit_status, WNOHANG);
+		toc = time( NULL );
+		if ( difftime(toc, tic) > 10 )
+			kill(pid, SIGINT);
+	}
+	// if ( waitpid_return_value == -1 )
+	// 	my_perror_and_throw();
 }
 
 static void	read_file_stock_output( int cgi_output_fd, std::string &str )
