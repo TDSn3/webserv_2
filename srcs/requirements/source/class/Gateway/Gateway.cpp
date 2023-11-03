@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:30:24 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/11/01 20:42:32 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/03 12:36:17 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,17 @@ Gateway::Gateway( std::string config_file ) : _fatal_error(false)
 Gateway::~Gateway( void )
 {
 
-	socket_iter_type	socket_iter = _map_origin_socket.begin();
-	for ( ; socket_iter != _map_origin_socket.end(); socket_iter = _map_origin_socket.begin())
+	// socket_iter_type	socket_iter = _map_origin_socket.begin();
+	// for ( ; socket_iter != _map_origin_socket.end(); socket_iter = _map_origin_socket.begin())
+	// {
+	// 	std::cout << "closing socket " << socket_iter->second.fd << std::endl;
+	// 	close(socket_iter->second.fd);
+	// 	_map_origin_socket.erase(socket_iter);
+	// }
+	while ( poll_struct.size() )
 	{
-		std::cout << "closing socket " << socket_iter->second.fd << std::endl;
-		close(socket_iter->second.fd);
-		_map_origin_socket.erase(socket_iter);
+		close(poll_struct[0].fd);
+		poll_struct.erase(poll_struct.begin());
 	}
 }
 
