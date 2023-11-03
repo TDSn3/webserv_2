@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   _select_method.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:58:54 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/02 14:48:33 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/03 11:55:24 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
-bool	HttpResponse::_select_method( Request &request, char **env, Location *location, std::string path, Server &server )	// ! throw possible
+bool	HttpResponse::_select_method( Gateway &gateway, Request &request, char **env, Location *location, std::string path, Server &server )	// ! throw possible
 {
 	if ( is_allowed_methods( location, request.request_line.method ) == true )
 	{			
@@ -22,7 +22,7 @@ bool	HttpResponse::_select_method( Request &request, char **env, Location *locat
 			if ( location->_parameters[ "cgi" ].empty() == false )
 			{
 				std::cout << COLOR_BOLD_CYAN << " : " << location->_parameters[ "cgi" ][0] << COLOR_RESET << std::endl;
-				str_response = _exec_cgi( location->_parameters[ "cgi" ][0], path, request, env, server );			// ! throw possible
+				str_response = _exec_cgi( gateway, location->_parameters[ "cgi" ][0], path, request, env, server );			// ! throw possible
 				return ( true );
 			}
 			else
@@ -33,7 +33,7 @@ bool	HttpResponse::_select_method( Request &request, char **env, Location *locat
 			std::cout << COLOR_BOLD_CYAN << "CGI" << COLOR_RESET;
 			{
 				std::cout << COLOR_BOLD_CYAN << " : " << path << COLOR_RESET << std::endl;
-				str_response = _exec_cgi( path, path, request, env, server );			// ! throw possible
+				str_response = _exec_cgi( gateway, path, path, request, env, server );			// ! throw possible
 				return ( true );
 			}
 		}
