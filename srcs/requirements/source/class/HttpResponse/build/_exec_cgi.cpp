@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 13:08:11 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/11/03 13:35:11 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/03 15:03:11 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ std::string	HttpResponse::_exec_cgi( Gateway &gateway, std::string &path, std::s
 
 		read_file_stock_output( cgi_output_path, cgi_output );
 
-		for ( size_t i = 0; i < arg_for_execve.size() -1 ; i++ )
+		for ( size_t i = 0; i < arg_for_execve.size(); i++ )
 			delete [] arg_for_execve[i];
 
-		for ( size_t i = 0; i < env_update.size() -1 ; i++ )
+		for ( size_t i = 0; i < env_update.size(); i++ )
 			delete [] env_update[i];
 
 		// parse_cgi_output( ret, request.get_body() );
@@ -183,28 +183,21 @@ static void fork_child( Gateway &gateway, std::string input_path, std::string ou
 	int output_fd = open( output_path.c_str(), O_RDWR | O_CREAT | O_TRUNC, 0666 );
 	if ( input_fd == -1 || output_fd == -1 )
 	{
-		// todo: throw a ChildProcessException and free arg_for_execve and env_update,
-		// the exception will eventually be catched by Gateway,
-		// which will free memory and exit with status 1.
-		// parent process catches exit status and knows what to do.
-		// OR
-		// Set the global variable sigint_signal to some value
-		// do not read/write anything if sigint_signal is set to that value
-		// listen loop will test for that value and break.
-		// OR
-		// in calling function (_exec_cgi), free arg_for_execve and env_update,
-		// then exit( FAILURE ); and use on_exit() to free memory. (forbidden)
-		// OR
-		// create Gateway (or a pointer to Gateway) as a global variable,
-		// free everything from here and exit( FAILURE ).
-		// OR
-		// pass the Gateway to each 
-		;
+		gateway.~Gateway();
+		for ( size_t i = 0; i < arg_for_execve.size(); i++ )
+			delete [] arg_for_execve[i];
+
+		for ( size_t i = 0; i < env_update.size(); i++ )
+			delete [] env_update[i];
 	}
 	dup2( input_fd, STDIN_FILENO );
 	dup2( output_fd, STDOUT_FILENO );
 	execve( arg_for_execve[0], arg_for_execve.data(), env_update.data() );
 	gateway.~Gateway();
+	for ( size_t i = 0; i < arg_for_execve.size(); i++ )
+		delete [] arg_for_execve[i];
+	for ( size_t i = 0; i < env_update.size(); i++ )
+		delete [] env_update[i];
 	// todo: throw same exception here
 }
 
@@ -222,7 +215,7 @@ static void fork_parent( int pid )
 	{
 		waitpid_return_value = waitpid(pid, &cgi_exit_status, WNOHANG);
 		toc = time( NULL );
-		if ( difftime(toc, tic) > 10 )
+		if ( difftime(toc, tic) > 30 )
 			kill(pid, SIGINT);
 	}
 	if ( waitpid_return_value == -1 || !WIFEXITED(cgi_exit_status) || WEXITSTATUS(cgi_exit_status) )
