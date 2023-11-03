@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/03 06:48:50 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/03 11:26:15 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,8 @@ static void fork_child( std::string cgi_input_path, int output_fd, std::vector<c
 		// OR
 		// create Gateway (or a pointer to Gateway) as a global variable,
 		// free everything from here and exit( FAILURE ).
+		// OR
+		// pass the Gateway to each 
 		;
 	}
 	dup2( input_fd, STDIN_FILENO );
