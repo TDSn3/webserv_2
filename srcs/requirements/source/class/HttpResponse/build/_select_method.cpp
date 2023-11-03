@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:58:54 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/01 21:02:50 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/02 14:48:33 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,15 @@ bool	HttpResponse::_select_method( Request &request, char **env, Location *locat
 			}
 			else
 				std::cout << std::endl;
+		}
+		else if ( location && location->_uri[0] == '.' )
+		{
+			std::cout << COLOR_BOLD_CYAN << "CGI" << COLOR_RESET;
+			{
+				std::cout << COLOR_BOLD_CYAN << " : " << path << COLOR_RESET << std::endl;
+				str_response = _exec_cgi( path, path, request, env, server );			// ! throw possible
+				return ( true );
+			}
 		}
 
 		if ( request.request_line.method == "GET" )

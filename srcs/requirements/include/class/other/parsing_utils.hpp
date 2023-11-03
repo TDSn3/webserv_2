@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 02:17:04 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/08/24 21:16:10 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/02 13:26:58 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,3 +46,5 @@ bool	is_field_vchar( unsigned char c );
 
 void	ft_tolower( std::string& );
 void	trim( std::string& );
+
+std::string	ft_tolower_str( std::string str );

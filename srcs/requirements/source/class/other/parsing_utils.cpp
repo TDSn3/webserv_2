@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:27:30 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/10/01 13:05:34 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/02 13:26:36 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,19 @@ void	ft_tolower( std::string& str )
 		*it =  static_cast<char>(tolower(*it) );
 		++it;
 	}
+}
+
+std::string	ft_tolower_str( std::string str )
+{
+	std::string::iterator it = str.begin();
+	std::string::iterator end = str.end();
+	
+	while ( it != end )
+	{
+		*it =  static_cast<char>(tolower(*it) );
+		++it;
+	}
+	return str;
 }
 
 void	trim( std::string& str )

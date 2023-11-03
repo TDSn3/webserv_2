@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 12:11:02 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/11/01 19:33:39 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/02 17:42:13 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,15 @@ Connection& Connection::operator=( const Connection& other )
 	if ( this != &other )
 	{
 		response_status = other.response_status;
+		response = other.response;
 		_origin = other._origin;
 		_socket = other._socket;
 		_request = other._request;
 		_close = other._close;
 		_continue_reading = other._continue_reading;
 		_parse_buffer = other._parse_buffer;
+		_parse_buffer = other._parse_buffer;
+		_line_end = other._line_end;
 	}
 	return *this;
 }

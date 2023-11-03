@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 15:43:46 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/01 13:48:37 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/02 17:48:01 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ struct s_status_line
 	std::string	version;
 	int			code;
 	std::string	reason_phrase;
+	s_status_line( void ){
+		version = "HTTP/1.1";
+		code = 200;
+		reason_phrase = "OK";
+	}
 };
 
 /* ************************************************************************** */
