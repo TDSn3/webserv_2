@@ -6,7 +6,7 @@
 /*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/02 14:51:01 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/03 05:15:19 by yfoucade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,8 @@ static void			new_char_for_env_update( std::vector<char *> &env_update, char **e
 static void			fork_child( int stdin_pipefd[2], int file_stock_output_fd, std::vector<char *> &arg_for_execve, std::vector<char *> &env_update );
 static void			fork_parent( int stdin_pipefd[2], std::string &str, int pid );
 static void			read_file_stock_output( int file_stock_output_fd, std::string &str );
-// static std::string	to_lower_str( std::string str );
 static std::string	to_upper_str( std::string str );
 static std::string	dash_to_underscore( std::string str );
-// static void			parse_cgi_output( std::string &str, std::string &body );
 static void			parse_cgi_output2( std::string &str, std::string &cgi_output );
 
 std::string	HttpResponse::_exec_cgi( std::string &path, std::string &path_target, Request &request, char **env, Server &server )	// ! throw possible
@@ -35,11 +33,6 @@ std::string	HttpResponse::_exec_cgi( std::string &path, std::string &path_target
 	std::string			cgi_output;
 	std::vector<char *>	arg_for_execve;
 	std::vector<char *>	env_update;
-
-	std::cout << "++++++++++++> " << path << "\n";
-	std::cout << "++++++++++++> " << path_target << "\n";
-	// path_target = path_target.substr( server.root.size() + 1 );
-	// std::cout << "============> " << path_target << "\n";
 
 	file_stock_output_fd = open( file_stock_output_path.c_str(), O_RDWR | O_CREAT | O_TRUNC, 0666 );
 
@@ -174,7 +167,7 @@ static void	new_char_for_env_update( std::vector<char *> &env_update, char **env
 
 	// env_update_push_back( env_update, "PATH_TRANSLATED=YoupiBanane/youpi.bla" );	// optionnel
 	// env_update_push_back( env_update, "REQUEST_URI=YoupiBanane/youpi.bla" );		//
-	env_update_push_back( env_update, ("REQUEST_URI=" + path_target ).c_str() );
+	env_update_push_back( env_update, ( "REQUEST_URI=" + path_target ).c_str() );
 	// env_update_push_back( env_update, "SERVER_NAME=127.0.0.1" );					// optionnel
 	// env_update_push_back( env_update, "SERVER_PORT=8080" );						// optionnel
 	env_update_push_back( env_update, "SERVER_PROTOCOL=HTTP/1.1" );
@@ -221,15 +214,6 @@ static void	read_file_stock_output( int file_stock_output_fd, std::string &str )
 	close( file_stock_output_fd );
 }
 
-// static std::string to_lower_str( std::string str )
-// {
-// 	std::string	ret;
-
-// 	for ( size_t i = 0; str[i]; i++ )
-// 		ret += std::tolower( static_cast<unsigned char> ( str[i] ) ) ;
-// 	return ( ret );
-// }
-
 static std::string to_upper_str( std::string str )
 {
 	std::string	ret;
@@ -247,35 +231,6 @@ static std::string dash_to_underscore( std::string str )
 		str[i] == '-' ? ( ret += "_" ) : ( ret += str[i] );
 	return ( ret );
 }
-
-// static void	parse_cgi_output( std::string &str, std::string &body )
-// {
-// 	// TODO: create a CGIResponse object that will construct the response
-// 	// from the CGI output.
-// 	std::string			header_update;
-// 	std::ostringstream	oss;
-
-// 	size_t	start = 0;
-// 	for ( size_t i = 0; str[i]; i++ )
-// 	{
-// 		if ( str[i] == '\n' && str[i + 1] && ( str[i + 1] == '\n' || ( str[i + 1] == '\r' && str[i + 2] && str[i + 2] == '\n' ) ) )
-// 		{
-// 			oss << body.size();
-// 			str.insert( i + 1, "Content-Length: " + oss.str() + "\r\n" );
-// 			return ;
-// 		}
-// 		if ( i > 0 && str[i - 1] == '\n' )
-// 			start = i;
-// 		if ( str[i] == '\n' && i != start )	// Si je suis à la fin de la ligne et que le début de la ligne n'est pas un '\n'
-// 		{
-// 			if ( to_lower_str( str.substr( start, start + 7) ) == "status:" )
-// 			{
-// 				str.replace( start, start + 7, "HTTP/1.1" );
-// 				i++;
-// 			}
-// 		}
-// 	}
-// }
 
 static void	parse_cgi_output2( std::string &str, std::string &cgi_output )
 {
