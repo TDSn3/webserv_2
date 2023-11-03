@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   _exec_cgi.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:19:36 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/03 11:26:15 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/03 11:53:25 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ static void			check_file( std::string &path );
 static void			new_char_for_execve( Request &request, std::vector<char *> &arg_for_execve, std::string &path );
 static void			env_update_push_back( std::vector<char *> &env_update, const char *str_to_add );
 static void			new_char_for_env_update( std::vector<char *> &env_update, char **env, Request &request, std::string path, std::string path_target, Server &server );
-static void			fork_child( std::string cgi_input_path, int cgi_output_fd, std::vector<char *> &arg_for_execve, std::vector<char *> &env_update );
+static void			fork_child( Gateway &gateway, std::string cgi_input_path, int cgi_output_fd, std::vector<char *> &arg_for_execve, std::vector<char *> &env_update );
 static void			fork_parent( int pid );
 static void			read_file_stock_output( int cgi_output_fd, std::string &str );
 static std::string	to_upper_str( std::string str );
 static std::string	dash_to_underscore( std::string str );
 static void			parse_cgi_output2( std::string &str, std::string &cgi_output );
 
-std::string	HttpResponse::_exec_cgi( std::string &path, std::string &path_target, Request &request, char **env, Server &server )	// ! throw possible
+std::string	HttpResponse::_exec_cgi( Gateway &gateway, std::string &path, std::string &path_target, Request &request, char **env, Server &server )	// ! throw possible
 {
 	int					cgi_input_fd;
 	int					cgi_output_fd;
@@ -50,7 +50,7 @@ std::string	HttpResponse::_exec_cgi( std::string &path, std::string &path_target
 		pid = fork();
 
 		if ( pid == 0 )
-			fork_child( cgi_input_path, cgi_output_fd, arg_for_execve, env_update );
+			fork_child( gateway, cgi_input_path, cgi_output_fd, arg_for_execve, env_update );
 		else if (pid > 0)
 			fork_parent( pid );
 
@@ -177,7 +177,7 @@ static void	new_char_for_env_update( std::vector<char *> &env_update, char **env
 	env_update.push_back( NULL );
 }
 
-static void fork_child( std::string cgi_input_path, int output_fd, std::vector<char *> &arg_for_execve, std::vector<char *> &env_update )
+static void fork_child( Gateway &gateway, std::string cgi_input_path, int output_fd, std::vector<char *> &arg_for_execve, std::vector<char *> &env_update )
 {
 	int input_fd = open( cgi_input_path.c_str(), O_RDONLY, 0666 );
 	if ( input_fd == -1 || output_fd == -1 )
@@ -203,6 +203,7 @@ static void fork_child( std::string cgi_input_path, int output_fd, std::vector<c
 	dup2( input_fd, STDIN_FILENO );
 	dup2( output_fd, STDOUT_FILENO );
 	execve( arg_for_execve[0], arg_for_execve.data(), env_update.data() );
+	gateway.~Gateway();
 	// todo: throw same exception here
 }
 

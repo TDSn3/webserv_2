@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Gateway.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:52:49 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/11/01 20:26:48 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/03 11:42:36 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ class Gateway
 		void						add_fd_poll_struct(int fd, short events);
 		void						check_new_connections( void );
 		void						receive_on_connections( void );
-		void						send_responses( char **env );
+		void						send_responses( Gateway &gateway, char **env );
 		void						close_connections( void );
 
 	private:

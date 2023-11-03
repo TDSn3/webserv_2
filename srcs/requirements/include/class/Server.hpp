@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 17:47:51 by yfoucade          #+#    #+#             */
-/*   Updated: 2023/11/01 22:04:08 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/03 11:43:11 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ class Server
 		const std::set< Origin >				&get_origins( void ) const;	// used
 		bool									listens_to_origin( const Origin& );
 		bool									has_server_name( const std::string& );
-		void									reply( Connection &connection, char **env );
+		void									reply( Gateway &gateway, Connection &connection, char **env );
 		Location*								select_non_cgi_location( std::string path );
 		Location*								select_cgi_location( std::string path, std::string method );
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpResponse.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 15:43:46 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/02 17:48:01 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/03 11:54:17 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 class Request;
 class Server;
+class Gateway;
 
 struct s_status_line
 {
@@ -62,7 +63,7 @@ class HttpResponse
 
 		std::string		str_response;
 
-		void			build(Request &request, char **env, Server& server);						// ! throw possible
+		void			build(Gateway &gateway, Request &request, char **env, Server& server);						// ! throw possible
 		void			build_100_continue(Request &request, Server& server);
 		void			build_error(Request &request, const int status_code);
 		void			build_error(Request &request, Server& server, const int status_code);
@@ -74,7 +75,7 @@ class HttpResponse
 	private:
 
 		std::string		_read_file_in_str(std::string path);							// ! throw possible
-		std::string		_exec_cgi(std::string &path, std::string &path_target, Request &request, char **env, Server &server);		// ! throw possible
+		std::string		_exec_cgi(Gateway &gateway, std::string &path, std::string &path_target, Request &request, char **env, Server &server);		// ! throw possible
 		void			_make_response( Request &request, std::string &path );			// ! throw possible
 		void			_add_content_type( std::string &path );
 		void			_make_reason_phrase(void);
@@ -94,7 +95,7 @@ class HttpResponse
 /*                                                                            */
 /* ************************************************************************** */
 
-		bool			_select_method( Request &request, char **env, Location *location, std::string path, Server& server );	// ! throw possible
+		bool			_select_method( Gateway &gateway, Request &request, char **env, Location *location, std::string path, Server& server );	// ! throw possible
 		void			_rewrite_path( std::string &new_path, Location *location, std::string path );
 		bool			_autoindex_is_on( Location *location );
 		std::string		remove_double_slash( std::string &new_path );

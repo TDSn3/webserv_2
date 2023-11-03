@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   reply.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfoucade <yfoucade@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 21:00:45 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/11/01 22:07:55 by yfoucade         ###   ########.fr       */
+/*   Updated: 2023/11/03 11:44:51 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
-void	Server::reply( Connection &connection, char **env )
+void	Server::reply( Gateway &gateway, Connection &connection, char **env )
 {
 	try
 	{
@@ -22,7 +22,7 @@ void	Server::reply( Connection &connection, char **env )
 			if ( connection.get_request().get_parsing_status() == expect_100_continue )
 				connection.response.build_100_continue( connection.get_request(), *this );
 			else
-				connection.response.build( connection.get_request(), env, *this );	// Si build throw, build une réponse d'erreur
+				connection.response.build( gateway, connection.get_request(), env, *this );	// Si build throw, build une réponse d'erreur
 			connection.response_status = true;
 		}
 	}
